@@ -6,7 +6,7 @@ DROP TABLE IF EXISTS PONEY;
 CREATE TABLE PONEY (
     id_po INT,
     nom_po VARCHAR(42),
-    charge_max DECIMAL(3,2),
+    charge_max DECIMAL(4,2),
     PRIMARY KEY(id_po)
 );
 
@@ -16,7 +16,7 @@ CREATE TABLE PERSONNE (
     prenom_pe VARCHAR(42),
     age INT,
     categorie VARCHAR(10),
-    poids DECIMAL(3,2),
+    poids DECIMAL(4,2),
     email VARCHAR(42),
     PRIMARY KEY (id_pe)
 );

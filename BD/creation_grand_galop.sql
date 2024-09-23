@@ -25,7 +25,7 @@ CREATE TABLE COURS (
     id_c INT,
     id_pe INT,
     nb_pe INT CHECK (nb_pe <= 10 AND nb_pe >= 1),
-    h_de_debut TIME,
+    h_de_debut INT,
     duree INT CHECK (duree = 1 OR duree = 2),
     date_c DATE,
     PRIMARY KEY (id_c)

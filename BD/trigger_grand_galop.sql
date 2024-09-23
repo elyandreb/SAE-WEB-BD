@@ -1,4 +1,4 @@
--- Trigger pour verifier que le poid du cavalier est inférieure à la charge max du poney
+-- Triggers verifiant que le poid du cavalier est inférieur à la charge max du poney
 
 delimiter |
 CREATE OR REPLACE TRIGGER cavalierMoinsChargePoneyInsert before insert on RESERVER for each row
@@ -30,23 +30,60 @@ begin
 end|
 delimiter ;
 
+-- Triggers verifiant que le nombre d'élève inscrit est inferieur aux nombre max d'eleve au cours
+
+delimiter |
+CREATE OR REPLACE TRIGGER nbInscritInferieurMaxInscriptionInsert before insert on RESERVER for each row
+begin
+    DECLARE nbInscrit INT;
+    DECLARE maxInscription INT;
+    DECLARE mes VARCHAR(100) default '';
+    select count(*) into nbInscrit from RESERVER where id_c=new.id_c GROUP BY id_c;
+    select nb_pe into maxInscription from COURS where id_c=new.id_c;
+    if nbInscrit >= maxInscription then
+        set mes = concat(mes,"Ajout impossible car le cours à déjà le nombre max d'inscrit (",maxInscription,")");
+        signal SQLSTATE '45000' SET MESSAGE_TEXT = mes ;
+    end if;
+end|
+delimiter ;
+
+delimiter |
+CREATE OR REPLACE TRIGGER nbInscritInferieurMaxInscriptionUpdate before update on RESERVER for each row
+begin
+    DECLARE nbInscrit INT;
+    DECLARE maxInscription INT;
+    DECLARE mes VARCHAR(100) default '';
+    select count(*) into nbInscrit from RESERVER where id_c=new.id_c GROUP BY id_c;
+    select nb_pe into maxInscription from COURS where id_c=new.id_c;
+    if nbInscrit >= maxInscription then
+        set mes = concat(mes,"Ajout impossible car le cours à déjà le nombre max d'inscrit (",maxInscription,")");
+        signal SQLSTATE '45000' SET MESSAGE_TEXT = mes ;
+    end if;
+end|
+delimiter ;
+
 -- insert temporaires de test
 
 insert into PONEY(id_po,nom_po,charge_max) values
 (1,"Nathanael",30),
-(2,"Joe",40);
+(2,"Joe",40),
+(3,"BigGuy",50),
+(4,"Joey",25);
 
 insert into PERSONNE(id_pe,nom_pe,prenom_pe,age,categorie,poids,email) values
 (1,"Smith","John",14,"adherant",39,"john.smith"),
 (2,"Lenon","Harry",8,"adherant",27.5,"harry.lenon"),
+(4,"Fred","Bob",8,"adherant",27.5,"harry.lenon"),
+(5,"Sobas","Sebastien",8,"adherant",24.5,"harry.lenon"),
 (3,"Marley","Johnson",25,"moniteur",65,"johnson.marley");
 
 insert into COURS(id_c,id_pe,nb_pe,h_de_debut,duree,date_c) values
 (1,3,10,15,1,NOW()),
-(2,3,5,17,1,NOW());
+(2,3,3,17,1,NOW());
 
-insert into RESERVER values
-(1,2,1),
-(2,1,1),
-(2,2,2),
-(1,1,2);
+insert into RESERVER(id_pe,id_po,id_c) values(1,2,1);
+insert into RESERVER(id_pe,id_po,id_c) values(2,1,1);
+insert into RESERVER(id_pe,id_po,id_c) values(1,2,2);
+insert into RESERVER(id_pe,id_po,id_c) values(2,1,2);
+insert into RESERVER(id_pe,id_po,id_c) values(4,3,2);
+insert into RESERVER(id_pe,id_po,id_c) values(5,4,2);

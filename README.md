@@ -19,7 +19,10 @@ Pour la gestion de notre travail nous avons utilisé plusieurs outils tel que <a
 - CU avec Elyandre mais Dan apportait son avis régulièrement
 
 #### Elyandre :
--
+- Création du dépôt GitHub 
+- Création du README 
+- Création du CU avec Loris 
+- Analyse des contraintes et création du MCD avec Loris et Dan 
 
 #### Dan : 
 - 

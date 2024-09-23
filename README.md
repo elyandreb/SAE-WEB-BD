@@ -15,7 +15,7 @@ Pour la gestion de notre travail nous avons utilisé plusieurs outils tel que <a
 ### Séance du 16/09/2024 (3h) :
 #### Loris :
 - Réfléxion MLD/MCD ensemble
-- scripts de création des tables de la BD
+- Scripts de création des tables de la BD
 - CU avec Elyandre mais Dan apportait son avis régulièrement
 
 #### Elyandre :
@@ -25,4 +25,7 @@ Pour la gestion de notre travail nous avons utilisé plusieurs outils tel que <a
 - Analyse des contraintes et création du MCD avec Loris et Dan 
 
 #### Dan : 
-- 
+- Réfléxion MCD
+- Création des outils de gestion de projets (Trello, Google Docs)
+- Ajout des premier documents important au README
+- Don d'avis pour cas d'utilisation

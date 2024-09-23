@@ -30,3 +30,16 @@ INSERT INTO PONEY (id_po, nom_po, charge_max) VALUES
 (28, 'Archie', 35.12),
 (29, 'Maggie', 28.89),
 (30, 'Duke', 41.67);
+
+-- Insertion de 10 moniteurs générés par IA (Copilot) car tâche répétitive.
+INSERT INTO PERSONNE (id_pe, nom_pe, prenom_pe, age, categorie, poids, email) VALUES
+(1, 'Dupont', 'Jean', 35, 'moniteur', 75.50, 'jean.dupont@gmail.com'),
+(2, 'Martin', 'Sophie', 29, 'moniteur', 62.30, 'sophie.martin@wanadoo.com'),
+(3, 'Bernard', 'Luc', 42, 'moniteur', 80.20, 'luc.bernard@yahoo.com'),
+(4, 'Robert', 'Marie', 31, 'moniteur', 68.40, 'marie.robert@yahoo.com'),
+(5, 'Petit', 'Pierre', 37, 'moniteur', 77.10, 'pierre.petit@gmail.com'),
+(6, 'Durand', 'Claire', 28, 'moniteur', 59.80, 'claire.durand@wanadoo.com'),
+(7, 'Leroy', 'Julien', 45, 'moniteur', 85.60, 'julien.leroy@gmail.com'),
+(8, 'Moreau', 'Isabelle', 33, 'moniteur', 64.50, 'isabelle.moreau@gmail.com'),
+(9, 'Simon', 'Thomas', 39, 'moniteur', 78.90, 'thomas.simon@laposte.fr'),
+(10, 'Laurent', 'Emilie', 30, 'moniteur', 61.70, 'emilie.laurent@orange.fr');

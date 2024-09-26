@@ -38,7 +38,9 @@ Pour la gestion de notre travail nous avons utilisé plusieurs outils tel que <a
 - début du trigger pasDeCheuvauchement avec Dan
 
 #### Elyandre :
-- 
+- Création d'un groupe sur Figma pour réaliser les maquettes de l'application web
+- Réalisation de la maquette de la page de connexion (fini)
+- Réalisation de la maquette d'une des pages d'accueil (en cours)
 
 #### Dan : 
 - Création du trigger pour vérifier que le poid du cavalier est inférieur à la charge max du poney

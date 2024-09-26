@@ -32,7 +32,10 @@ Pour la gestion de notre travail nous avons utilisé plusieurs outils tel que <a
 
 ### Séance du 23/09/2024 (3h) :
 #### Loris :
-- 
+- Ajout de l'historique des séances dans le README
+- Réfléxion sur quelles pages mettre avec la consultation des autres et ajout des idées dans un google doc commun
+- Création des insertions pour PONEY et PERSONNE
+- début du trigger pasDeCheuvauchement avec Dan
 
 #### Elyandre :
 - 

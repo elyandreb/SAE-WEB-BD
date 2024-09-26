@@ -29,3 +29,15 @@ Pour la gestion de notre travail nous avons utilisé plusieurs outils tel que <a
 - Création des outils de gestion de projets (Trello, Google Docs)
 - Ajout des premier documents important au README
 - Don d'avis pour cas d'utilisation
+
+### Séance du 23/09/2024 (3h) :
+#### Loris :
+- 
+
+#### Elyandre :
+- 
+
+#### Dan : 
+- Création du trigger pour vérifier que le poid du cavalier est inférieur à la charge max du poney
+- Création du trigger qui vérifie que le nombre d'inscrit à un cour est inférieur au nombre max de participants à ce cours
+- Ajout de quelque inserts pour tester les triggers

@@ -1,4 +1,4 @@
--- Insertions des poneys. Généré par IA (Copilot) car tâche répétitive.
+-- Insertions des poneys. Généré par IA (Copilot de Bing) car tâche répétitive.
 INSERT INTO PONEY (id_po, nom_po, charge_max) VALUES
 (1, 'Bella', 23.45),
 (2, 'Charlie', 27.89),
@@ -31,7 +31,7 @@ INSERT INTO PONEY (id_po, nom_po, charge_max) VALUES
 (29, 'Maggie', 28.89),
 (30, 'Duke', 41.67);
 
--- Insertion de 10 moniteurs générés par IA (Copilot) car tâche répétitive.
+-- Insertion de 10 moniteurs générés par IA (Copilot de Bing) car tâche répétitive.
 INSERT INTO PERSONNE (id_pe, nom_pe, prenom_pe, age, categorie, poids, email) VALUES
 (1, 'Dupont', 'Jean', 35, 'moniteur', 75.50, 'jean.dupont@gmail.com'),
 (2, 'Martin', 'Sophie', 29, 'moniteur', 62.30, 'sophie.martin@wanadoo.com'),
@@ -44,7 +44,7 @@ INSERT INTO PERSONNE (id_pe, nom_pe, prenom_pe, age, categorie, poids, email) VA
 (9, 'Simon', 'Thomas', 39, 'moniteur', 78.90, 'thomas.simon@laposte.fr'),
 (10, 'Laurent', 'Emilie', 30, 'moniteur', 61.70, 'emilie.laurent@orange.fr');
 
--- Insertion de 100 adhérents générés par IA (Copilot) car tâche répétitive.
+-- Insertion de 100 adhérents générés par IA (Copilot de Bing) car tâche répétitive.
 INSERT INTO PERSONNE (id_pe, nom_pe, prenom_pe, age, categorie, poids, email) VALUES
 (11, 'Lemoine', 'Alice', 10, 'adherent', 30.50, 'alice.lemoine@gmail.com'),
 (12, 'Morel', 'Lucas', 12, 'adherent', 35.20, 'lucas.morel@yahoo.com'),

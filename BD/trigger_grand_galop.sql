@@ -6,7 +6,7 @@ begin
     DECLARE poidCavalier INT;
     DECLARE chargePoney INT;
     DECLARE mes VARCHAR(100) default '';
-    select poids into poidCavalier from PERSONNE where id_pe = new.id_pe;
+    select poids into poidCavalier from ADHERENT where id_a = new.id_a;
     select charge_max into chargePoney from PONEY where id_po = new.id_po;
     if poidCavalier > chargePoney then
         set mes = concat(mes,"Ajout impossible car le cavalier pèse ",poidCavalier,"kg et le poney supporte un charge max de ",chargePoney,"kg.");
@@ -21,7 +21,7 @@ begin
     DECLARE poidCavalier INT;
     DECLARE chargePoney INT;
     DECLARE mes VARCHAR(100) default '';
-    select poids into poidCavalier from PERSONNE where id_pe = new.id_pe;
+    select poids into poidCavalier from ADHERENT where id_a = new.id_a;
     select charge_max into chargePoney from PONEY where id_po = new.id_po;
     if poidCavalier > chargePoney then
         set mes = concat(mes,"Ajout impossible car le cavalier pèse ",poidCavalier,"kg et le poney supporte un charge max de ",chargePoney,"kg.");
@@ -69,23 +69,25 @@ CREATE OR REPLACE TRIGGER pasDeCheuvauchement before insert on RESERVER for each
 begin
     DECLARE heureAvant INT;
     DECLARE heureApres INT;
-    DECLARE dureeCours INT;
     DECLARE mes VARCHAR(100) default '';
     DECLARE dureeAvant INT;
     DECLARE heureCours INT;
+    DECLARE dureeCours INT;
+    DECLARE dateCours INT;
 
+    SELECT h_de_debut, duree, date_c INTO heureCours, dureeCours, dateCours FROM RESERVER NATURAL JOIN COURS WHERE id_c = new.id_c;
+    
     SELECT h_de_debut,duree INTO heureAvant, dureeAvant FROM RESERVER NATURAL JOIN COURS 
-    WHERE date_c = new.date_c AND h_de_debut < new.h_de_debut AND id_pe = new.id_pe 
+    WHERE date_c = dateCours AND h_de_debut < heureCours AND id_a = new.id_a 
     ORDER BY h_de_debut DESC LIMIT 1;
 
     SELECT h_de_debut INTO heureApres FROM RESERVER NATURAL JOIN COURS 
-    WHERE date_c = new.date_c AND h_de_debut > new.h_de_debut AND id_pe = new.id_pe 
+    WHERE date_c = dateCours AND h_de_debut > heureCours AND id_a = new.id_a 
     ORDER BY h_de_debut LIMIT 1;
 
-    SELECT h_de_debut, duree INTO heureCours, dureeCours FROM RESERVER NATURAL JOIN COURS WHERE id_c = new.id_c;
     
     IF heureCours < heureAvant + dureeAvant OR heureCours + dureeCours > heureApres THEN
-        SET mes = concat(mes,"Ajout impossible car il existe déjà un cours sur le créneau ", heureCours, "-", heureCours+dureeCours".");
+        SET mes = concat(mes,"Ajout impossible car il existe déjà un cours sur le créneau ", heureCours, "-", heureCours+dureeCours,".");
         signal SQLSTATE '45000' SET MESSAGE_TEXT = mes ;
     end if;
 end|
@@ -100,23 +102,24 @@ insert into PONEY(id_po,nom_po,charge_max) values
 (3,"BigGuy",50),
 (4,"Joey",25);
 
-insert into PERSONNE(id_pe,nom_pe,prenom_pe,age,categorie,poids,email) values
-(1,"Smith","John",14,"adherant",39,"john.smith"),
-(2,"Lenon","Harry",8,"adherant",27.5,"harry.lenon"),
-(4,"Fred","Bob",8,"adherant",27.5,"harry.lenon"),
-(5,"Sobas","Sebastien",8,"adherant",24.5,"harry.lenon"),
-(3,"Marley","Johnson",25,"moniteur",65,"johnson.marley"),
-(6,"Jedusor","Tom",25,"moniteur",65,"tom.jedusor");
+insert into ADHERENT values
+(1,"Smith","John",STR_TO_DATE("10/10/2010", "%d/%m/%Y"),39.0,"john.smith"),
+(2,"Lenon","Harry",STR_TO_DATE("10/10/2010", "%d/%m/%Y"),27.5,"harry.lenon"),
+(4,"Fred","Bob",STR_TO_DATE("10/10/2010", "%d/%m/%Y"),27.5,"harry.lenon"),
+(5,"Sobas","Sebastien",STR_TO_DATE("10/10/2010", "%d/%m/%Y"),24.5,"harry.lenon");
 
-insert into COURS(id_c,id_pe,nb_pe,h_de_debut,duree,date_c) values
-(1,3,10,15,1,NOW()),
-(2,3,3,17,1,NOW()),
-(3,6,9,14,2, NOW());
+INSERT into MONITEUR VALUES
+(1,"Marley","Johnson",STR_TO_DATE("10/10/1999", "%d/%m/%Y"),65,"johnson.marley"),
+(2,"Jedusor","Tom",STR_TO_DATE("10/10/2000", "%d/%m/%Y"),65,"tom.jedusor");
 
-insert into RESERVER(id_pe,id_po,id_c) values(1,2,1);
-insert into RESERVER(id_pe,id_po,id_c) values(2,1,1);
-insert into RESERVER(id_pe,id_po,id_c) values(1,2,2);
-insert into RESERVER(id_pe,id_po,id_c) values(2,1,2);
-insert into RESERVER(id_pe,id_po,id_c) values(4,3,2);
-insert into RESERVER(id_pe,id_po,id_c) values(5,4,2);
+insert into COURS(id_c,id_m,nb_pe,h_de_debut,duree,date_c) values (1,1,10,15,1,NOW());
+insert into COURS(id_c,id_m,nb_pe,h_de_debut,duree,date_c) values(2,1,3,17,1,NOW());
+insert into COURS(id_c,id_m,nb_pe,h_de_debut,duree,date_c) values (3,2,9,14,2, NOW());
+
+insert into RESERVER(id_a,id_po,id_c) values(1,2,1);
+insert into RESERVER(id_a,id_po,id_c) values(2,1,1);
+insert into RESERVER(id_a,id_po,id_c) values(1,2,2);
+insert into RESERVER(id_a,id_po,id_c) values(2,1,2);
+insert into RESERVER(id_a,id_po,id_c) values(4,3,2);
+insert into RESERVER(id_a,id_po,id_c) values(5,4,2);
 INSERT INTO RESERVER VALUES (1,2,3);

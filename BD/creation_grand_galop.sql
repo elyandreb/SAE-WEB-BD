@@ -7,7 +7,7 @@ DROP TABLE IF EXISTS PONEY;
 CREATE TABLE PONEY (
     id_po INT,
     nom_po VARCHAR(42),
-    charge_max DECIMAL(3,2),
+    charge_max DECIMAL(4,2),
     PRIMARY KEY(id_po)
 );
 

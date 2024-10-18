@@ -75,19 +75,22 @@ begin
     DECLARE dureeCours INT;
     DECLARE dateCours INT;
 
-    SELECT h_de_debut, duree, date_c INTO heureCours, dureeCours, dateCours FROM RESERVER NATURAL JOIN COURS WHERE id_c = new.id_c;
+    SELECT h_de_debut, duree, date_c INTO heureCours, dureeCours, dateCours FROM COURS WHERE id_c = new.id_c;
     
     SELECT h_de_debut,duree INTO heureAvant, dureeAvant FROM RESERVER NATURAL JOIN COURS 
-    WHERE date_c = dateCours AND h_de_debut < heureCours AND id_a = new.id_a 
+    WHERE date_c = dateCours AND h_de_debut < heureCours AND id_a = new.id_a
     ORDER BY h_de_debut DESC LIMIT 1;
 
-    SELECT h_de_debut INTO heureApres FROM RESERVER NATURAL JOIN COURS 
-    WHERE date_c = dateCours AND h_de_debut > heureCours AND id_a = new.id_a 
+    SELECT h_de_debut FROM RESERVER NATURAL JOIN COURS 
+    WHERE date_c = '10/10/2010' AND h_de_debut > 0 AND id_a = 1 
     ORDER BY h_de_debut LIMIT 1;
 
-    
-    IF heureCours < heureAvant + dureeAvant OR heureCours + dureeCours > heureApres THEN
-        SET mes = concat(mes,"Ajout impossible car il existe déjà un cours sur le créneau ", heureCours, "-", heureCours+dureeCours,".");
+    IF heureCours < heureAvant + dureeAvant AND heureAvant != NULL AND dureeAvant != NULL THEN
+        SET mes = concat(mes,"Ajout impossible car il existe déjà un cours précédent sur le créneau ", heureCours, "-", heureCours+dureeCours,".");
+        signal SQLSTATE '45000' SET MESSAGE_TEXT = mes ;
+    end if;
+    IF heureCours + dureeCours > heureApres AND heureApres != NULL THEN
+        SET mes = concat(mes,"Ajout impossible car il existe déjà un cours suivant sur le créneau ", heureCours, "-", heureCours+dureeCours,".");
         signal SQLSTATE '45000' SET MESSAGE_TEXT = mes ;
     end if;
 end|
@@ -103,7 +106,7 @@ insert into PONEY(id_po,nom_po,charge_max) values
 (4,"Joey",25);
 
 insert into ADHERENT values
-(1,"Smith","John",STR_TO_DATE("10/10/2010", "%d/%m/%Y"),39.0,"john.smith"),
+(1,"Smith","John",STR_TO_DATE("10/10/2010", "%d/%m/%Y"),39.0,"john.smith"), -- date mauvaise par rapport au NOW()
 (2,"Lenon","Harry",STR_TO_DATE("10/10/2010", "%d/%m/%Y"),27.5,"harry.lenon"),
 (4,"Fred","Bob",STR_TO_DATE("10/10/2010", "%d/%m/%Y"),27.5,"harry.lenon"),
 (5,"Sobas","Sebastien",STR_TO_DATE("10/10/2010", "%d/%m/%Y"),24.5,"harry.lenon");

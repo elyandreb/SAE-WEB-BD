@@ -89,13 +89,13 @@ begin
     ORDER BY h_de_debut LIMIT 1;
 
     -- on verifie que le cours d'avant ne chevauche pas la reservation qu'on veut ajouter
-    IF heureAvant IS NOT NULL AND dureeAvant IS NOT NULL AND heureCours < heureAvant + dureeAvant  THEN
-        SET mes = concat(mes,"Ajout impossible car il existe déjà un cours précédent sur le créneau ", heureCours, "-", heureCours+dureeCours,".");
+    IF heureAvant IS NOT NULL AND dureeAvant IS NOT NULL AND heureCours < heureAvant + dureeAvant THEN
+        SET mes = concat(mes,"Ajout impossible car il existe déjà un cours précédent sur le créneau ", heureCours, "-", heureCours+dureeCours,". Pour l'adhérant",new.id_a);
         signal SQLSTATE '45000' SET MESSAGE_TEXT = mes ;
     end if;
     -- on verifie que le cours d'après ne chevauche pas la reservation qu'on veut ajouter
     IF heureApres IS NOT NULL AND heureCours + dureeCours > heureApres THEN
-        SET mes = concat(mes,"Ajout impossible car il existe déjà un cours suivant sur le créneau ", heureCours, "-", heureCours+dureeCours,".");
+        SET mes = concat(mes,"Ajout impossible car il existe déjà un cours suivant sur le créneau ", heureCours, "-", heureCours+dureeCours,". Pour l'adhérant",new.id_a);
         signal SQLSTATE '45000' SET MESSAGE_TEXT = mes ;
     end if;
 end|
@@ -129,12 +129,52 @@ begin
 
     -- on verifie que le cours d'avant ne chevauche pas la reservation qu'on veut modifier
     IF heureAvant IS NOT NULL AND dureeAvant IS NOT NULL AND heureCours < heureAvant + dureeAvant  THEN
-        SET mes = concat(mes,"Ajout impossible car il existe déjà un cours précédent sur le créneau ", heureCours, "-", heureCours+dureeCours,".");
+        SET mes = concat(mes,"Ajout impossible car il existe déjà un cours précédent sur le créneau ", heureCours, "-", heureCours+dureeCours,". Pour l'adhérant",new.id_a);
         signal SQLSTATE '45000' SET MESSAGE_TEXT = mes ;
     end if;
     -- on verifie que le cours d'après ne chevauche pas la reservation qu'on veut modifier
     IF heureApres IS NOT NULL AND heureCours + dureeCours > heureApres THEN
-        SET mes = concat(mes,"Ajout impossible car il existe déjà un cours suivant sur le créneau ", heureCours, "-", heureCours+dureeCours,".");
+        SET mes = concat(mes,"Ajout impossible car il existe déjà un cours suivant sur le créneau ", heureCours, "-", heureCours+dureeCours,". Pour l'adhérant",new.id_a);
+        signal SQLSTATE '45000' SET MESSAGE_TEXT = mes ;
+    end if;
+end|
+delimiter ;
+
+
+--Trigger vérifiant si les cours d'un poney ne se chevauchent pas (insert)
+
+delimiter |
+CREATE OR REPLACE TRIGGER pasDeCheuvauchementPoneyInsert before insert on RESERVER for each row
+begin
+    DECLARE heureAvant INT;
+    DECLARE heureApres INT;
+    DECLARE mes VARCHAR(100) default '';
+    DECLARE dureeAvant INT;
+    DECLARE heureCours INT;
+    DECLARE dureeCours INT;
+    DECLARE dateCours INT;
+
+    -- on recupère les donnée sur le cour
+    SELECT h_de_debut, duree, date_c INTO heureCours, dureeCours, dateCours FROM COURS WHERE id_c = new.id_c;
+    
+    -- on récupère les info du plus proche cours précédent
+    SELECT h_de_debut,duree INTO heureAvant, dureeAvant FROM RESERVER NATURAL JOIN COURS 
+    WHERE date_c = dateCours AND h_de_debut < heureCours AND id_po = new.id_po
+    ORDER BY h_de_debut DESC LIMIT 1;
+
+    -- on récupère les info du plus proche cours suivant
+    SELECT h_de_debut INTO heureApres FROM RESERVER NATURAL JOIN COURS 
+    WHERE date_c = dateCours AND h_de_debut > heureCours AND id_po = new.id_po
+    ORDER BY h_de_debut LIMIT 1;
+
+    -- on verifie que le cours d'avant ne chevauche pas la reservation qu'on veut ajouter
+    IF heureAvant IS NOT NULL AND dureeAvant IS NOT NULL AND heureCours < heureAvant + dureeAvant  THEN
+        SET mes = concat(mes,"Ajout impossible car il existe déjà un cours précédent sur le créneau ", heureCours, "-", heureCours+dureeCours,". pour le poney ",new.id_po);
+        signal SQLSTATE '45000' SET MESSAGE_TEXT = mes ;
+    end if;
+    -- on verifie que le cours d'après ne chevauche pas la reservation qu'on veut ajouter
+    IF heureApres IS NOT NULL AND heureCours + dureeCours > heureApres THEN
+        SET mes = concat(mes,"Ajout impossible car il existe déjà un cours suivant sur le créneau ", heureCours, "-", heureCours+dureeCours,". pour le poney ",new.id_po);
         signal SQLSTATE '45000' SET MESSAGE_TEXT = mes ;
     end if;
 end|

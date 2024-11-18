@@ -47,7 +47,6 @@ Pour la gestion de notre travail nous avons utilisé plusieurs outils tel que <a
 - Création du trigger qui vérifie que le nombre d'inscrit à un cour est inférieur au nombre max de participants à ce cours
 - Ajout de quelque inserts pour tester les triggers
 
-
 ### Séance du 12/11/2024 (1h30) :
 #### Loris :
 - Réfléxion supplémentaire sur les maquettes ajoutées sur le Gdoc commun
@@ -58,3 +57,16 @@ Pour la gestion de notre travail nous avons utilisé plusieurs outils tel que <a
 
 
 #### Dan : 
+
+### Séance du 18/11/2024 (3h) :
+#### Loris :
+- Maquette "emploi du temps adhérent" (avec pour base celle du moniteur réalisé par Elyandre)
+- Maquette "control panel admin"
+- Maquette "Accueil adhérent"
+- Maquette "Accueil moniteur"
+
+#### Elyandre :
+
+
+#### Dan : 
+- Absent

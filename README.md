@@ -46,3 +46,15 @@ Pour la gestion de notre travail nous avons utilisé plusieurs outils tel que <a
 - Création du trigger pour vérifier que le poid du cavalier est inférieur à la charge max du poney
 - Création du trigger qui vérifie que le nombre d'inscrit à un cour est inférieur au nombre max de participants à ce cours
 - Ajout de quelque inserts pour tester les triggers
+
+
+### Séance du 12/11/2024 (1h30) :
+#### Loris :
+- Réfléxion supplémentaire sur les maquettes ajoutées sur le Gdoc commun
+- Création du squelette des pages sur Figma
+- Création de la maquette "S'inscrire"
+
+#### Elyandre :
+
+
+#### Dan : 

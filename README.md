@@ -54,7 +54,9 @@ Pour la gestion de notre travail nous avons utilisé plusieurs outils tels que <
 - Création de la maquette "S'inscrire"
 
 #### Elyandre :
-
+- Mise à jour du Trello avec Loris
+- Création de la maquette emploie du temps pour un moniteur
+- Mise à jour de la maquette Connexion.
 
 #### Dan : 
 
@@ -66,7 +68,10 @@ Pour la gestion de notre travail nous avons utilisé plusieurs outils tels que <
 - Maquette "Accueil moniteur"
 
 #### Elyandre :
-
+- Changement de la charte graphique
+- Ajout d'un logo dans la navbar
+- Création de la page profil
+  
 
 #### Dan : 
 - Absent

@@ -180,6 +180,72 @@ begin
 end|
 delimiter ;
 
+--Trigger vérifiant si les cours d'un moniteur ne se chevauchent pas (insert)
+
+delimiter |
+CREATE OR REPLACE TRIGGER pasDeCheuvauchementMoniteurInsert before insert on COURS for each row
+begin
+    DECLARE heureAvant INT;
+    DECLARE heureApres INT;
+    DECLARE mes VARCHAR(100) default '';
+    DECLARE dureeAvant INT;
+    
+    -- on récupère les info du plus proche cours précédent
+    SELECT h_de_debut,duree INTO heureAvant, dureeAvant FROM COURS 
+    WHERE date_c = new.date_c AND h_de_debut < new.h_de_debut AND id_m = new.id_m
+    ORDER BY h_de_debut DESC LIMIT 1;
+
+    -- on récupère les info du plus proche cours suivant
+    SELECT h_de_debut INTO heureApres FROM COURS 
+    WHERE date_c = new.date_c AND h_de_debut > new.h_de_debut AND id_m = new.id_m
+    ORDER BY h_de_debut LIMIT 1;
+
+    -- on verifie que le cours d'avant ne chevauche pas la reservation qu'on veut ajouter
+    IF heureAvant IS NOT NULL AND dureeAvant IS NOT NULL AND new.h_de_debut < heureAvant + dureeAvant THEN
+        SET mes = concat(mes,"Ajout impossible car il existe déjà un cours précédent sur le créneau ", new.h_de_debut, "-", new.h_de_debut+new.duree,". Pour le moniteur",new.id_m);
+        signal SQLSTATE '45000' SET MESSAGE_TEXT = mes ;
+    end if;
+    -- on verifie que le cours d'après ne chevauche pas la reservation qu'on veut ajouter
+    IF heureApres IS NOT NULL AND new.h_de_debut + new.duree > heureApres THEN
+        SET mes = concat(mes,"Ajout impossible car il existe déjà un cours suivant sur le créneau ", new.h_de_debut, "-", new.h_de_debut+new.duree,". Pour le moniteur",new.id_m);
+        signal SQLSTATE '45000' SET MESSAGE_TEXT = mes ;
+    end if;
+end|
+delimiter ;
+
+--Trigger vérifiant si les cours d'un moniteur ne se chevauchent pas (update)
+
+delimiter |
+CREATE OR REPLACE TRIGGER pasDeCheuvauchementMoniteurUpdate before update on COURS for each row
+begin
+    DECLARE heureAvant INT;
+    DECLARE heureApres INT;
+    DECLARE mes VARCHAR(100) default '';
+    DECLARE dureeAvant INT;
+
+    -- on récupère les info du plus proche cours précédent
+    SELECT h_de_debut,duree INTO heureAvant, dureeAvant FROM COURS 
+    WHERE date_c = new.date_c AND h_de_debut < new.h_de_debut AND id_m = new.id_m
+    ORDER BY h_de_debut DESC LIMIT 1;
+
+    -- on récupère les info du plus proche cours suivant
+    SELECT h_de_debut INTO heureApres FROM COURS 
+    WHERE date_c = new.date_c AND h_de_debut > new.h_de_debut AND id_m = new.id_m
+    ORDER BY h_de_debut LIMIT 1;
+
+    -- on verifie que le cours d'avant ne chevauche pas la reservation qu'on veut modifier
+    IF heureAvant IS NOT NULL AND dureeAvant IS NOT NULL AND new.h_de_debut < heureAvant + dureeAvant  THEN
+        SET mes = concat(mes,"Ajout impossible car il existe déjà un cours précédent sur le créneau ", new.h_de_debut, "-", new.h_de_debut+new.duree,". Pour le moniteur",new.id_m);
+        signal SQLSTATE '45000' SET MESSAGE_TEXT = mes ;
+    end if;
+    -- on verifie que le cours d'après ne chevauche pas la reservation qu'on veut modifier
+    IF heureApres IS NOT NULL AND new.h_de_debut + new.duree > heureApres THEN
+        SET mes = concat(mes,"Ajout impossible car il existe déjà un cours suivant sur le créneau ", new.h_de_debut, "-", new.h_de_debut+new.duree,". Pour le moniteur",new.id_m);
+        signal SQLSTATE '45000' SET MESSAGE_TEXT = mes ;
+    end if;
+end|
+delimiter ;
+
 -- insert temporaires de test
 
 insert into PONEY(id_po,nom_po,charge_max) values

@@ -6,7 +6,7 @@
 
 ## Documents utiles
 
-Pour la gestion de notre travail nous avons utilisé plusieurs outils tel que <a href="https://trello.com/invite/b/66e84b61c9e3645db671c2d0/ATTIe2a64062e9a118a43e849aa5165b04b0ADD686AF/302-sae-web-bd-2024-2025">Trello</a> pour la gestion et la repartition des tâches et un 
+Pour la gestion de notre travail nous avons utilisé plusieurs outils tels que <a href="https://trello.com/invite/b/66e84b61c9e3645db671c2d0/ATTIe2a64062e9a118a43e849aa5165b04b0ADD686AF/302-sae-web-bd-2024-2025">Trello</a> pour la gestion et la répartition des tâches et un 
 <a href="https://docs.google.com/document/d/1QOKi6AJ1f7ixYgi4_V4HSCbfHmSv0v1zCaBToUGGEPk/edit?pli=1&addon_store"> Google Docs</a> pour le brainstorming et le partage des données de base du projet.  
 
 
@@ -14,7 +14,7 @@ Pour la gestion de notre travail nous avons utilisé plusieurs outils tel que <a
 
 ### Séance du 16/09/2024 (3h) :
 #### Loris :
-- Réfléxion MLD/MCD ensemble
+- Réflexion MLD/MCD ensemble
 - Scripts de création des tables de la BD
 - CU avec Elyandre mais Dan apportait son avis régulièrement
 
@@ -25,7 +25,7 @@ Pour la gestion de notre travail nous avons utilisé plusieurs outils tel que <a
 - Analyse des contraintes et création du MCD avec Loris et Dan 
 
 #### Dan : 
-- Réfléxion MCD
+- Réflexion MCD
 - Création des outils de gestion de projets (Trello, Google Docs)
 - Ajout des premier documents important au README
 - Don d'avis pour cas d'utilisation
@@ -33,7 +33,7 @@ Pour la gestion de notre travail nous avons utilisé plusieurs outils tel que <a
 ### Séance du 23/09/2024 (3h) :
 #### Loris :
 - Ajout de l'historique des séances dans le README
-- Réfléxion sur quelles pages mettre avec la consultation des autres et ajout des idées dans un google doc commun
+- Réflexion sur quelles pages mettre avec la consultation des autres et ajout des idées dans un google doc commun
 - Création des insertions pour PONEY et PERSONNE
 - début du trigger pasDeCheuvauchement avec Dan
 
@@ -49,7 +49,7 @@ Pour la gestion de notre travail nous avons utilisé plusieurs outils tel que <a
 
 ### Séance du 12/11/2024 (1h30) :
 #### Loris :
-- Réfléxion supplémentaire sur les maquettes ajoutées sur le Gdoc commun
+- Réflexion supplémentaire sur les maquettes ajoutées sur le Gdoc commun
 - Création du squelette des pages sur Figma
 - Création de la maquette "S'inscrire"
 

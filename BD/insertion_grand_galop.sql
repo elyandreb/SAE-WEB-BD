@@ -438,3 +438,74 @@ INSERT INTO COURS (id_c, id_m, nb_pe, h_de_debut, duree, date_c, prix) VALUES
 (274, 2, 8, 11, 1, '2025-06-29', 28.00), -- Samedi fin de matinée
 (275, 2, 8, 14, 1, '2025-06-29', 28.00), -- Samedi après-midi
 (276, 2, 8, 16, 1, '2025-06-29', 28.00); -- Samedi après-midi
+
+-- Insertions des réservations. Généré par IA (Copilot de Bing) car tâche répétitive.
+INSERT INTO RESERVER (id_a, id_po, id_c) VALUES
+(11, 1, 25),  -- Adhérent Alice monte Poney 1 le 9 janvier
+(12, 2, 25),  -- Adhérent Lucas monte Poney 2 le 9 janvier
+(13, 3, 25),  -- Adhérent Emma monte Poney 3 le 9 janvier
+(14, 4, 25),  -- Adhérent Hugo monte Poney 4 le 9 janvier
+(15, 5, 25),  -- Adhérent Chloe monte Poney 5 le 9 janvier
+(16, 6, 25),  -- Adhérent Louis monte Poney 6 le 9 janvier
+(17, 7, 25),  -- Adhérent Léa monte Poney 7 le 9 janvier
+(18, 8, 25),  -- Adhérent Tom monte Poney 8 le 9 janvier
+(19, 9, 25),  -- Adhérent Jade monte Poney 9 le 9 janvier
+(20, 10, 25), -- Adhérent Arthur monte Poney 10 le 9 janvier
+
+(11, 1, 26),  -- Adhérent Alice monte Poney 1 le 16 janvier
+(12, 2, 26),  -- Adhérent Lucas monte Poney 2 le 16 janvier
+(13, 3, 26),  -- Adhérent Emma monte Poney 3 le 16 janvier
+(14, 4, 26),  -- Adhérent Hugo monte Poney 4 le 16 janvier
+(15, 5, 26),  -- Adhérent Chloe monte Poney 5 le 16 janvier
+(16, 6, 26),  -- Adhérent Louis monte Poney 6 le 16 janvier
+(17, 7, 26),  -- Adhérent Léa monte Poney 7 le 16 janvier
+(18, 8, 26),  -- Adhérent Tom monte Poney 8 le 16 janvier
+(19, 9, 26),  -- Adhérent Jade monte Poney 9 le 16 janvier
+(20, 10, 26), -- Adhérent Arthur monte Poney 10 le 16 janvier
+
+-- Réservations pour les mardis
+(11, 1, 27),  -- Adhérent Alice monte Poney 1 le 23 janvier
+(12, 2, 27),  -- Adhérent Lucas monte Poney 2 le 23 janvier
+(13, 3, 27),  -- Adhérent Emma monte Poney 3 le 23 janvier
+(14, 4, 27),  -- Adhérent Hugo monte Poney 4 le 23 janvier
+(15, 5, 27),  -- Adhérent Chloe monte Poney 5 le 23 janvier
+(16, 6, 27),  -- Adhérent Louis monte Poney 6 le 23 janvier
+(17, 7, 27),  -- Adhérent Léa monte Poney 7 le 23 janvier
+(18, 8, 27),  -- Adhérent Tom monte Poney 8 le 23 janvier
+(19, 9, 27),  -- Adhérent Jade monte Poney 9 le 23 janvier
+(20, 10, 27), -- Adhérent Arthur monte Poney 10 le 23 janvier
+
+-- Réservations pour les mercredis
+(21, 11, 49),  -- Adhérent Nina monte Poney 11 le 10 janvier
+(22, 12, 49),  -- Adhérent Leo monte Poney 12 le 10 janvier
+(23, 13, 49),  -- Adhérent Lina monte Poney 13 le 10 janvier
+(24, 14, 49),  -- Adhérent Ethan monte Poney 14 le 10 janvier
+(25, 15, 49),  -- Adhérent Mia monte Poney 15 le 10 janvier
+(26, 16, 49),  -- Adhérent Noah monte Poney 16 le 10 janvier
+(27, 17, 49),  -- Adhérent Léonie monte Poney 17 le 10 janvier
+(28, 18, 49),  -- Adhérent Tom monte Poney 18 le 10 janvier
+(29, 19, 49),  -- Adhérent Lola monte Poney 19 le 10 janvier
+(30, 20, 49),  -- Adhérent Arthur monte Poney 20 le 10 janvier
+
+-- Réservations pour les jeudis
+(31, 21, 125),  -- Adhérent Alice monte Poney 21 le 11 janvier
+(32, 22, 125),  -- Adhérent Lucas monte Poney 22 le 11 janvier
+(33, 23, 125),  -- Adhérent Emma monte Poney 23 le 11 janvier
+(34, 24, 125),  -- Adhérent Hugo monte Poney 24 le 11 janvier
+(35, 25, 125),  -- Adhérent Chloe monte Poney 25 le 11 janvier
+(36, 26, 125),  -- Adhérent Louis monte Poney 26 le 11 janvier
+(37, 27, 125),  -- Adhérent Léa monte Poney 27 le 11 janvier
+(38, 28, 125),  -- Adhérent Tom monte Poney 28 le 11 janvier
+(39, 29, 125),  -- Adhérent Jade monte Poney 29 le 11 janvier
+(40, 30, 125),  -- Adhérent Arthur monte Poney 30 le 11 janvier
+
+-- Réservations pour les vendredis
+(41, 31, 149),  -- Adhérent Alice monte Poney 31 le 12 janvier
+(42, 32, 149),  -- Adhérent Lucas monte Poney 32 le 12 janvier
+(43, 33, 149),  -- Adhérent Emma monte Poney 33 le 12 janvier
+(44, 34, 149),  -- Adhérent Hugo monte Poney 34 le 12 janvier
+(45, 35, 149),  -- Adhérent Chloe monte Poney 35 le 12 janvier
+(46, 36, 149),  -- Adhérent Louis monte Poney 36 le 12 janvier
+(47, 37, 149),  -- Adhérent Léa monte Poney 37 le 12 janvier
+(48, 38, 149),  -- Adhérent Tom monte Poney 38 le 12 janvier
+(49, 39, 149),  -- Adhérent Jade monte Poney 39 le 12 janvier

@@ -82,7 +82,7 @@ Pour la gestion de notre travail nous avons utilisé plusieurs outils tels que <
 - Ajout de tous les éléments nécessaires dans le rendu
 
 #### Elyandre :
-- 
+- Ajustements sur les maquettes
   
 
 #### Dan : 

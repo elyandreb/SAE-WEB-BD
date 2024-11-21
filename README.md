@@ -7,7 +7,7 @@
 ## Documents utiles
 
 Pour la gestion de notre travail nous avons utilisé plusieurs outils tels que <a href="https://trello.com/invite/b/66e84b61c9e3645db671c2d0/ATTIe2a64062e9a118a43e849aa5165b04b0ADD686AF/302-sae-web-bd-2024-2025">Trello</a> pour la gestion et la répartition des tâches et un 
-<a href="https://docs.google.com/document/d/1QOKi6AJ1f7ixYgi4_V4HSCbfHmSv0v1zCaBToUGGEPk/edit?pli=1&addon_store"> Google Docs</a> pour le brainstorming et le partage des données de base du projet.  
+<a href="https://docs.google.com/document/d/1QOKi6AJ1f7ixYgi4_V4HSCbfHmSv0v1zCaBToUGGEPk/edit?pli=1&addon_store"> Google Docs</a> pour le brainstorming et le partage des données de base du projet, <a href="https://www.figma.com/design/SrcZYuSWxSrsRGlv7qquiy/Grand-galop?node-id=0-1&t=e4VgvLPyFRquz97s-1">Figma</a> pour les maquettes.
 
 
 ## Historique des séances :

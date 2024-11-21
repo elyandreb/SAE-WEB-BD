@@ -75,3 +75,15 @@ Pour la gestion de notre travail nous avons utilisé plusieurs outils tels que <
 
 #### Dan : 
 - Absent
+
+### Séance du 21/11/2024 (1h30) :
+#### Loris :
+- Création du rendu
+- Ajout de tous les éléments nécessaires dans le rendu
+
+#### Elyandre :
+- 
+  
+
+#### Dan : 
+- Absent

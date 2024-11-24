@@ -97,6 +97,7 @@ Pour la gestion de notre travail nous avons utilisé plusieurs outils tels que <
 - Triggers pour empêcher le chevauchement pour un moniteur et celui pour l'update du poney
 
 #### Elyandre :
-  
+  - création du fichier pour le rendu des maquettes
+  - Assemblage des différents travaux pour le rendu intermédiaire avec Loris
 
 #### Dan : 

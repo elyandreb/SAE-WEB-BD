@@ -87,3 +87,16 @@ Pour la gestion de notre travail nous avons utilisé plusieurs outils tels que <
 
 #### Dan : 
 - Absent
+
+### Travail supplémentaire hors créneaux SAE :
+#### Loris :
+- Modification MCD pour ajouter la cotisation
+- Création tables COTISER et COTISATION
+- Insertions pour les tables COTISER et COTISATION
+- Création de tous les fichiers pour le rendu (sauf les maquettes)
+- Triggers pour empêcher le chevauchement pour un moniteur et celui pour l'update du poney
+
+#### Elyandre :
+  
+
+#### Dan : 

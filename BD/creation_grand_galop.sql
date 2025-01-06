@@ -20,6 +20,7 @@ CREATE TABLE ADHERENT (
     date_de_naissance DATE,
     poids DECIMAL(4,2),
     email VARCHAR(42),
+    mdp VARCHAR(42),
     PRIMARY KEY (id_a)
 );
 
@@ -36,6 +37,7 @@ CREATE TABLE MONITEUR (
     date_de_naissance DATE,
     poids DECIMAL(4,2),
     email VARCHAR(42),
+    mdp VARCHAR(42),
     PRIMARY KEY (id_m)
 );
 

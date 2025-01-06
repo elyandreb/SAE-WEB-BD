@@ -9,9 +9,8 @@ from wtforms.validators import DataRequired, EqualTo, Email, Length, Regexp, Val
 from project.models import User
 
 class LoginForm (FlaskForm):
-    phone_number = StringField("Numéro de téléphone", validators=[DataRequired(), 
-                                                                  Length(min=10, max=10, message = 'Longueur incorrecte.'), 
-                                                                  Regexp(r'^\d{10}$', message="Le numéro de téléphone est invalide.")])
+    id_a = StringField("id de l'adhérent", validators=[DataRequired(), 
+                                                                  Regexp(r'^\d{10}$', message="L'id est invalide'.")])
     password = PasswordField("Mot de passe", validators=[DataRequired(), Length(max=64)])
 
     def get_authentificated_user(self):
@@ -21,7 +20,7 @@ class LoginForm (FlaskForm):
         Returns:
             User: L'utilisateur si le mot de passe est correct, None sinon
         """
-        user = User.query.get(self.phone_number.data)
+        user = User.query.get(self.id_a.data)
         if user is None:
             return None
         m = sha256()
@@ -30,9 +29,9 @@ class LoginForm (FlaskForm):
         return user if passwd == user.mdp else None
 
 class RegisterForm (FlaskForm):
-    phone_number = StringField("Numéro téléphone", validators=[DataRequired(), 
+    id_a = StringField("Numéro téléphone", validators=[DataRequired(), 
                                                                Length(min=10, max=10, message = 'Longueur incorrecte.'),
-                                                               Regexp(r'^\d{10}$', message="Le numéro de téléphone est invalide.")])
+                                                               Regexp(r'^\d{10}$', message="L'id est invalide'.")])
     name = StringField("Nom", validators=[DataRequired(), 
                                           Length(max=32)])
                                           
@@ -58,7 +57,7 @@ class RegisterForm (FlaskForm):
         if User.query.filter_by(email=field.data).first():
             raise ValidationError("Cet e-mail est déjà utilisé.")
 
-    def validate_phone_number(self, field):
+    def validate_id_a(self, field):
         if User.query.filter_by(num_tel=field.data).first():
             raise ValidationError("Ce numéro de téléphone est déjà utilisé.")
 
@@ -69,7 +68,7 @@ class RegisterForm (FlaskForm):
         Returns:
             User: L'utilisateur si le mot de passe est correct, None sinon
         """
-        user = User.query.get(self.phone_number.data)
+        user = User.query.get(self.id_a.data)
         if user is None:
             return None
         m = sha256()
@@ -81,7 +80,7 @@ class RegisterForm (FlaskForm):
         passwd = self.password.data
         m = sha256()
         m.update(passwd.encode())
-        return User(num_tel=self.phone_number.data,
+        return User(num_tel=self.id_a.data,
                  mdp=m.hexdigest(),
                  nom = self.name.data,
                  prenom = self.first_name.data,

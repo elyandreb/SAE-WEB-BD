@@ -3,7 +3,7 @@ from flask import render_template, url_for, redirect, request
 from flask_wtf import FlaskForm, RecaptchaField
 from flask_login import login_user , current_user, logout_user, login_required
 from hashlib import sha256
-from wtforms import StringField, PasswordField, EmailField
+from wtforms import StringField, PasswordField, EmailField, DateField
 from wtforms.validators import DataRequired, EqualTo, Email, Length, Regexp, ValidationError
 from wtforms.validators import DataRequired, EqualTo, Email, Length, Regexp, ValidationError
 from project.models import User
@@ -33,16 +33,16 @@ class RegisterForm (FlaskForm):
                                                                Length(min=10, max=10, message = 'Longueur incorrecte.'),
                                                                Regexp(r'^\d{10}$', message="L'id est invalide'.")])
     name = StringField("Nom", validators=[DataRequired(), 
-                                          Length(max=32)])
+                                          Length(max=42)])
                                           
                                           
     first_name = StringField("Prénom", validators=[DataRequired(), 
-                                                   Length(max=32)])
+                                                   Length(max=42)])
 
     email = EmailField("Email", validators=[DataRequired(), Email(message='Adresse mail invalide.'), 
                                             Length(max=64)])
-
-    address = StringField("Adresse", validators=[DataRequired(), Length(max=64)])
+    
+    birth_date = DateField('Date de naissance', format='%d/%m/%Y', validators=[DataRequired()])
 
     password = PasswordField("Mot de passe", validators=[DataRequired(), 
                                                          Length(max=64)])

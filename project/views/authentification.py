@@ -38,17 +38,17 @@ class LoginForm (FlaskForm):
             m.update(self.password.data.encode())
             passwd = m.hexdigest()
             return user if passwd == user.mdp else None
-            
+
         else : 
             return None
 
 class RegisterForm (FlaskForm):
-    id_a = StringField("Numéro téléphone", validators=[DataRequired(), 
-                                                               Length(min=10, max=10, message = 'Longueur incorrecte.'),
-                                                               Regexp(r'^\d{10}$', message="L'id est invalide'.")])
+    id_a = StringField("Id de l'utilisateur", validators=[DataRequired(), 
+                                                          Length(min=2, message='Longueur incorrecte.'), 
+                                                          Regexp(r'^[am]\d*$', message="L'id est invalide.")])
+
     name = StringField("Nom", validators=[DataRequired(), 
                                           Length(max=42)])
-                                          
                                           
     first_name = StringField("Prénom", validators=[DataRequired(), 
                                                    Length(max=42)])
@@ -64,18 +64,6 @@ class RegisterForm (FlaskForm):
     password_check = PasswordField("Confirmez votre mot de passe", validators=[DataRequired(), 
                                                                                EqualTo('password', message='Les mots de passe doivent correspondre.'),])
 
-    ### !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    ### Pouvoir différencier l'authentification Moniteur et Adhérent
-    ### !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-    def validate_email(self, field):
-        if User.query.filter_by(email=field.data).first():
-            raise ValidationError("Cet e-mail est déjà utilisé.")
-
-    def validate_id_a(self, field):
-        if User.query.filter_by(num_tel=field.data).first():
-            raise ValidationError("Ce numéro de téléphone est déjà utilisé.")
-
     def get_authentificated_user(self):
         """permet de savoir si le mot de passe de 
         l'utilisateur est bon
@@ -83,19 +71,33 @@ class RegisterForm (FlaskForm):
         Returns:
             User: L'utilisateur si le mot de passe est correct, None sinon
         """
-        user = User.query.get(self.id_a.data)
-        if user is None:
+        id_user = self.id_a.data
+        if id_user[0] == "a" :
+            user = Adherent.query.get(id_user[1:])
+            if user is None:
+                return None
+            m = sha256()
+            m.update(self.password.data.encode())
+            passwd = m.hexdigest()
+            return user if passwd == user.mdp else None
+
+        if id_user[0] == "m" :
+            user = Moniteur.query.get(id_user[1:])
+            if user is None:
+                return None
+            m = sha256()
+            m.update(self.password.data.encode())
+            passwd = m.hexdigest()
+            return user if passwd == user.mdp else None
+
+        else : 
             return None
-        m = sha256()
-        m.update(self.password.data.encode())
-        passwd = m.hexdigest()
-        return user if passwd == user.mdp else None
     
     def create_user(self) :
         passwd = self.password.data
         m = sha256()
         m.update(passwd.encode())
-        return User(num_tel=self.id_a.data,
+        return Adherent(id_ad=self.id_a.data,
                  mdp=m.hexdigest(),
                  nom = self.name.data,
                  prenom = self.first_name.data,
@@ -123,24 +125,11 @@ def register():
     f = RegisterForm()
     if f.validate_on_submit():
         u = f.create_user()
-        if User.query.get(u.get_id()) :
+        if Adherent.query.get(u.get_id()) :
             return render_template("inscription.html", form = f)
         else :
-            db.session.add(u)                  #
-            db.session.commit()                # à enlever une fois le captcha mis en place
-            login_user(u)                      #
-            return redirect(url_for("home"))   #
-
-        # à ajouter une fois le captcha mis en place
-        """try :
-            if User.query.get(u.get_id()) :
-                return render_template("inscription.html", form = f)
-            else :
-                db.session.add(u)
-                db.session.commit()
-                login_user(u)
-                return redirect(url_for("home"))
-        except Exception :
-            return render_template("inscription.html", form = f)
-            db.session.rollback()"""
+            db.session.add(u)
+            db.session.commit()
+            login_user(u)
+            return redirect(url_for("home"))
     return render_template("inscription.html", form = f)

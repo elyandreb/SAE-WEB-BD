@@ -1,34 +1,34 @@
 -- Insertions des poneys. Généré par IA (Copilot de Bing) car tâche répétitive.
 INSERT INTO PONEY (id_po, nom_po, charge_max) VALUES
-(1, 'Bella', 23.45),
-(2, 'Charlie', 27.89),
+(1, 'Bella', 35.45),
+(2, 'Charlie', 34.89),
 (3, 'Daisy', 35.67),
-(4, 'Max', 29.34),
+(4, 'Max', 32.34),
 (5, 'Luna', 41.23),
-(6, 'Rocky', 33.21),
+(6, 'Rocky', 43.21),
 (7, 'Molly', 38.76),
-(8, 'Buddy', 24.56),
+(8, 'Buddy', 34.56),
 (9, 'Lucy', 45.67),
-(10, 'Jack', 30.12),
-(11, 'Sadie', 26.78),
+(10, 'Jack', 35.12),
+(11, 'Sadie', 36.78),
 (12, 'Toby', 39.45),
-(13, 'Coco', 28.34),
+(13, 'Coco', 38.34),
 (14, 'Bailey', 42.56),
 (15, 'Milo', 31.78),
-(16, 'Ruby', 36.89),
-(17, 'Oscar', 25.67),
+(16, 'Ruby', 46.89),
+(17, 'Oscar', 35.67),
 (18, 'Rosie', 44.23),
 (19, 'Teddy', 32.45),
 (20, 'Lola', 37.89),
-(21, 'Leo', 29.56),
+(21, 'Leo', 43.56),
 (22, 'Zoe', 40.12),
 (23, 'Nala', 34.78),
 (24, 'Finn', 43.21),
-(25, 'Ellie', 27.34),
+(25, 'Ellie', 37.34),
 (26, 'Rex', 46.78),
-(27, 'Penny', 30.45),
+(27, 'Penny', 40.45),
 (28, 'Archie', 35.12),
-(29, 'Maggie', 28.89),
+(29, 'Maggie', 48.89),
 (30, 'Duke', 41.67);
 
 -- Insertion de 10 moniteurs générés par IA (Copilot de Bing) car tâche répétitive.
@@ -500,17 +500,16 @@ INSERT INTO RESERVER (id_a, id_po, id_c) VALUES
 (40, 30, 125),  -- Adhérent Arthur monte Poney 30 le 11 janvier
 
 -- Réservations pour les vendredis
-(41, 31, 149),  -- Adhérent Alice monte Poney 31 le 12 janvier
-(42, 32, 149),  -- Adhérent Lucas monte Poney 32 le 12 janvier
-(43, 33, 149),  -- Adhérent Emma monte Poney 33 le 12 janvier
-(44, 34, 149),  -- Adhérent Hugo monte Poney 34 le 12 janvier
-(45, 35, 149),  -- Adhérent Chloe monte Poney 35 le 12 janvier
-(46, 36, 149),  -- Adhérent Louis monte Poney 36 le 12 janvier
-(47, 37, 149),  -- Adhérent Léa monte Poney 37 le 12 janvier
-(48, 38, 149),  -- Adhérent Tom monte Poney 38 le 12 janvier
-(49, 39, 149);  -- Adhérent Jade monte Poney 39 le 12 janvier
+(41, 1, 149),  -- Adhérent Alice monte Poney 31 le 12 janvier
+(42, 2, 149),  -- Adhérent Lucas monte Poney 32 le 12 janvier
+(43, 3, 149),  -- Adhérent Emma monte Poney 33 le 12 janvier
+(44, 4, 149),  -- Adhérent Hugo monte Poney 34 le 12 janvier
+(45, 5, 149),  -- Adhérent Chloe monte Poney 35 le 12 janvier
+(46, 6, 149),  -- Adhérent Louis monte Poney 36 le 12 janvier
+(47, 7, 149),  -- Adhérent Léa monte Poney 37 le 12 janvier
+(48, 8, 149),  -- Adhérent Tom monte Poney 38 le 12 janvier
 
-INSERT INTO COTISATION VALUES 
+INSERT INTO COTISATION (annee_debut, annee_fin) VALUES 
 (2021,2022),
 (2022,2023),
 (2023,2024),

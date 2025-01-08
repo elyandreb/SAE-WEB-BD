@@ -9,7 +9,7 @@ begin
     select poids into poidCavalier from ADHERENT where id_a = new.id_a;
     select charge_max into chargePoney from PONEY where id_po = new.id_po;
     if poidCavalier > chargePoney then
-        set mes = concat(mes,"Ajout impossible car le cavalier pèse ",poidCavalier,"kg et le poney supporte un charge max de ",chargePoney,"kg.");
+        set mes = concat(mes,"Ajout impossible car le cavalier ",new.id_a, " pèse ",poidCavalier,"kg et le poney ", new.id_po," supporte un charge max de ",chargePoney,"kg.");
         signal SQLSTATE '45000' SET MESSAGE_TEXT = mes ;
     end if;
 end|
@@ -24,7 +24,7 @@ begin
     select poids into poidCavalier from ADHERENT where id_a = new.id_a;
     select charge_max into chargePoney from PONEY where id_po = new.id_po;
     if poidCavalier > chargePoney then
-        set mes = concat(mes,"Ajout impossible car le cavalier pèse ",poidCavalier,"kg et le poney supporte un charge max de ",chargePoney,"kg.");
+        set mes = concat(mes,"Ajout impossible car le cavalier",new.id_a, "pèse ",poidCavalier,"kg et le poney ", new.id_po, "  supporte un charge max de ",chargePoney,"kg.");
         signal SQLSTATE '45000' SET MESSAGE_TEXT = mes ;
     end if;
 end|
@@ -285,35 +285,3 @@ begin
     end if;
 end|
 delimiter ;
-
--- insert temporaires de test
-
-insert into PONEY(id_po,nom_po,charge_max) values
-(1,"Nathanael",30),
-(2,"Joe",40),
-(3,"BigGuy",50),
-(4,"Joey",25);
-
-insert into ADHERENT values
-(1,"Smith","John",STR_TO_DATE("10/10/2010", "%d/%m/%Y"),39.0,"john.smith"), -- date mauvaise par rapport au NOW()
-(2,"Lenon","Harry",STR_TO_DATE("10/10/2010", "%d/%m/%Y"),27.5,"harry.lenon"),
-(4,"Fred","Bob",STR_TO_DATE("10/10/2010", "%d/%m/%Y"),27.5,"harry.lenon"),
-(5,"Sobas","Sebastien",STR_TO_DATE("10/10/2010", "%d/%m/%Y"),24.5,"harry.lenon");
-
-INSERT into MONITEUR VALUES
-(1,"Marley","Johnson",STR_TO_DATE("10/10/1999", "%d/%m/%Y"),65,"johnson.marley"),
-(2,"Jedusor","Tom",STR_TO_DATE("10/10/2000", "%d/%m/%Y"),65,"tom.jedusor");
-
-insert into COURS(id_c,id_m,nb_pe,h_de_debut,duree,date_c) values (1,1,10,15,1,NOW());
-insert into COURS(id_c,id_m,nb_pe,h_de_debut,duree,date_c) values(2,1,3,17,1,NOW());
-insert into COURS(id_c,id_m,nb_pe,h_de_debut,duree,date_c) values (3,2,9,14,2, NOW());
-insert into COURS(id_c,id_m,nb_pe,h_de_debut,duree,date_c) values (4,1,9,15,2, NOW());
-
-insert into RESERVER(id_a,id_po,id_c) values(1,2,1);
-insert into RESERVER(id_a,id_po,id_c) values(2,1,1);
-insert into RESERVER(id_a,id_po,id_c) values(1,2,2);
-insert into RESERVER(id_a,id_po,id_c) values(2,1,2);
-insert into RESERVER(id_a,id_po,id_c) values(4,3,2);
-insert into RESERVER(id_a,id_po,id_c) values(5,4,2);
-INSERT INTO RESERVER VALUES (1,2,3);
-INSERT INTO RESERVER VALUES (1,2,4);

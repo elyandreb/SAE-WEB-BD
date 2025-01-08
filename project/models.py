@@ -1,4 +1,4 @@
-from .app import db
+from .app import db, login_manager
 
 class Poney(db.Model):
     __tablename__ = 'PONEY'
@@ -38,20 +38,44 @@ class Cours(db.Model):
     prix = db.Column(db.Numeric(5, 2))
     reservations = db.relationship('Reserver', back_populates='cours')
 
+    # Relation avec Moniteur
+    moniteur = db.relationship('Moniteur', back_populates='cours')
+
+
 class Cotiser(db.Model):
     __tablename__ = 'COTISER'
     id_a = db.Column(db.Integer, db.ForeignKey('ADHERENT.id_a'), primary_key=True)
     annee_debut = db.Column(db.Integer, db.ForeignKey('COTISATION.annee_debut'), primary_key=True)
     annee_fin = db.Column(db.Integer, db.ForeignKey('COTISATION.annee_fin'), primary_key=True)
     paye = db.Column(db.Boolean)
+
     adherent = db.relationship('Adherent', back_populates='cotisations')
-    cotisation = db.relationship('Cotisation', back_populates='cotisants')
+    cotisation = db.relationship(
+        'Cotisation',
+        back_populates='cotisants',
+        primaryjoin=(
+            "and_(Cotiser.annee_debut == Cotisation.annee_debut, "
+            "Cotiser.annee_fin == Cotisation.annee_fin)"
+        ),
+        foreign_keys=[annee_debut, annee_fin]
+    )
+
 
 class Cotisation(db.Model):
     __tablename__ = 'COTISATION'
     annee_debut = db.Column(db.Integer, primary_key=True)
     annee_fin = db.Column(db.Integer, primary_key=True)
-    cotisants = db.relationship('Cotiser', back_populates='cotisation')
+    cotisants = db.relationship(
+        'Cotiser',
+        back_populates='cotisation',
+        primaryjoin=(
+            "and_(Cotiser.annee_debut == Cotisation.annee_debut, "
+            "Cotiser.annee_fin == Cotisation.annee_fin)"
+        ),
+        foreign_keys="[Cotiser.annee_debut, Cotiser.annee_fin]"
+    )
+
+
 
 class Moniteur(db.Model):
     __tablename__ = 'MONITEUR'
@@ -61,4 +85,11 @@ class Moniteur(db.Model):
     date_de_naissance = db.Column(db.Date)
     poids = db.Column(db.Numeric(4, 2))
     email = db.Column(db.String(42))
+
+    # Relation avec Cours
     cours = db.relationship('Cours', back_populates='moniteur')
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return Adherent.query.get(int(user_id))

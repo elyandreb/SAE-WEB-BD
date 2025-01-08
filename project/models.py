@@ -15,6 +15,7 @@ class Adherent(db.Model):
     date_de_naissance = db.Column(db.Date)
     poids = db.Column(db.Numeric(4, 2))
     email = db.Column(db.String(42))
+    mdp = db.Column(db.String(42))
     cotisations = db.relationship('Cotiser', back_populates='adherent')
     reservations = db.relationship('Reserver', back_populates='adherent')
 
@@ -61,4 +62,5 @@ class Moniteur(db.Model):
     date_de_naissance = db.Column(db.Date)
     poids = db.Column(db.Numeric(4, 2))
     email = db.Column(db.String(42))
+    mdp = db.Column(db.String(42))
     cours = db.relationship('Cours', back_populates='moniteur')

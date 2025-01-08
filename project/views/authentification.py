@@ -6,7 +6,7 @@ from hashlib import sha256
 from wtforms import StringField, PasswordField, EmailField, DateField
 from wtforms.validators import DataRequired, EqualTo, Email, Length, Regexp, ValidationError
 from wtforms.validators import DataRequired, EqualTo, Email, Length, Regexp, ValidationError
-from project.models import User
+from project.models import Moniteur, Adherent
 
 class LoginForm (FlaskForm):
     id_a = StringField("id de l'adhérent", validators=[DataRequired(), 
@@ -20,13 +20,27 @@ class LoginForm (FlaskForm):
         Returns:
             User: L'utilisateur si le mot de passe est correct, None sinon
         """
-        user = User.query.get(self.id_a.data)
-        if user is None:
+        id_user = self.id_a.data
+        if id_user[0] == "a" :
+            user = Adherent.query.get(id_user[1:])
+            if user is None:
+                return None
+            m = sha256()
+            m.update(self.password.data.encode())
+            passwd = m.hexdigest()
+            return user if passwd == user.mdp else None
+
+        if id_user[0] == "m" :
+            user = Moniteur.query.get(id_user[1:])
+            if user is None:
+                return None
+            m = sha256()
+            m.update(self.password.data.encode())
+            passwd = m.hexdigest()
+            return user if passwd == user.mdp else None
+            
+        else : 
             return None
-        m = sha256()
-        m.update(self.password.data.encode())
-        passwd = m.hexdigest()
-        return user if passwd == user.mdp else None
 
 class RegisterForm (FlaskForm):
     id_a = StringField("Numéro téléphone", validators=[DataRequired(), 
@@ -50,8 +64,9 @@ class RegisterForm (FlaskForm):
     password_check = PasswordField("Confirmez votre mot de passe", validators=[DataRequired(), 
                                                                                EqualTo('password', message='Les mots de passe doivent correspondre.'),])
 
-    # Commentaire de la ligne en-dessous à enlever une fois le captcha mis en place 
-    #recaptcha = RecaptchaField() 
+    ### !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    ### Pouvoir différencier l'authentification Moniteur et Adhérent
+    ### !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
     def validate_email(self, field):
         if User.query.filter_by(email=field.data).first():

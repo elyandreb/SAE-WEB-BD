@@ -110,15 +110,18 @@ def login():
     if f.validate_on_submit():
         the_user = f.get_authentificated_user()
         if the_user:
-            login_user(the_user)
-            return redirect(url_for("home"))
+            if f.id_a.data[0] == "a" :
+                login_user(the_user)
+                return redirect(url_for("home_adherent"))
+            else : 
+                return redirect(url_for("home_moniteur"))
         return render_template("connexion.html", form = f, error = 'Mot de passe incorrect.')
     return render_template("connexion.html", form = f)
 
 @app.route("/deconnexion")
 def logout():
     logout_user()
-    return redirect(url_for("home"))
+    return redirect(url_for("register"))
 
 @app.route("/inscription", methods = ["GET", "POST"])
 def register():
@@ -131,5 +134,5 @@ def register():
             db.session.add(u)
             db.session.commit()
             login_user(u)
-            return redirect(url_for("home"))
+            return redirect(url_for("home_adherent"))
     return render_template("inscription.html", form = f)

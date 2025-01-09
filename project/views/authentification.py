@@ -47,7 +47,7 @@ class RegisterForm (FlaskForm):
     email = EmailField("Email", validators=[DataRequired(), Email(message='Adresse mail invalide.'), 
                                             Length(max=64)])
     
-    birth_date = DateField("Date de naissance", format='%d/%m/%Y', validators=[DataRequired()])
+    birth_date = DateField("Date de naissance", format='%Y-%m-%d', validators=[DataRequired()])
 
     poids = DecimalField("Poids", validators=[DataRequired(), NumberRange(min=0, message='Le poids doit être un nombre positif.')])
 
@@ -60,10 +60,6 @@ class RegisterForm (FlaskForm):
     def validate_email(self, field):
         if Utilisateur.query.filter_by(email=field.data).first():
             raise ValidationError("Cet e-mail est déjà utilisé.")
-
-    def validate_id_a(self, field):
-        if Utilisateur.query.filter_by(num_tel=field.data).first():
-            raise ValidationError("Ce numéro de téléphone est déjà utilisé.")
 
     def get_authentificated_user(self):
         """permet de savoir si le mot de passe de 
@@ -87,10 +83,11 @@ class RegisterForm (FlaskForm):
         return Utilisateur(
                  nom_u = self.name.data,
                  prenom_u = self.first_name.data,
-                 date_de_naissance=self.birth_date,
+                 date_de_naissance=self.birth_date.data,
                  email = self.email.data,
+                 poids = self.poids.data,
                  mdp=m.hexdigest(),
-                 role="adherent")
+                 le_role="adherent")
 
 @app.route("/connexion", methods = ("GET", "POST", ))
 def login():
@@ -117,15 +114,17 @@ def logout():
 @app.route("/inscription", methods = ["GET", "POST"])
 def register():
     f = RegisterForm()
+    print("test1")
     if f.validate_on_submit():
+        print("test2")
         u = f.create_user()
+        print(u)
         if Utilisateur.query.get(u.get_id()) :
             return render_template("inscription.html", form = f)
         else :
+            print("ça va enregistrer")
             db.session.add(u)
             db.session.commit()
             login_user(u)
-            return redirect(url_for("home"))
-
-        
+            return redirect(url_for("accueil",adherent_id = u.get_id())) 
     return render_template("inscription.html", form = f)

@@ -13,19 +13,19 @@
 
             <!--Id de l'utilisateur-->
             <div class="form-group row justify-content-center">
-                <label for="phone number" class="col-sm-10 mx-auto">
-                    {{ form.id_a.label }} <span>*</span>
+                <label for="id_u" class="col-sm-10 mx-auto">
+                    {{ form.id_u.label }} <span>*</span>
                 </label>
                 <div class="col-sm-10 mx-auto">
-                    {{ form.phone_number(size=50, class_="form-control",
-                                placeholder="Id de l'utilisateur") }}
+                    {{ form.id_u(size=50, class_="form-control",
+                                placeholder="Votre id utilisateur") }}
                 </div>
             </div>
 
-            <!--Erreur si ce n'est pas que des chiffres pour le numéro-->
-            {% if form.id_a.errors %}
+            <!--Erreur si l'id est incorrect-->
+            {% if form.id_u.errors %}
                 <ul class="list-group">
-                    {% for e in form.id_a.errors %}
+                    {% for e in form.id_u.errors %}
                         <li class="list-group-item list-group-item-danger">{{ e }}</li>
                     {% endfor %}
                 </ul>

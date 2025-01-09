@@ -1,16 +1,17 @@
 from project import app, db
 from flask import render_template, url_for, redirect, request
-from flask_wtf import FlaskForm, RecaptchaField
+from flask_wtf import FlaskForm
 from flask_login import login_user , current_user, logout_user, login_required
 from hashlib import sha256
 from wtforms import StringField, PasswordField, EmailField, DateField
 from wtforms.validators import DataRequired, EqualTo, Email, Length, Regexp, ValidationError
-from wtforms.validators import DataRequired, EqualTo, Email, Length, Regexp, ValidationError
 from project.models import Utilisateur
 
 class LoginForm (FlaskForm):
-    id_a = StringField("id de l'adhérent", validators=[DataRequired(), 
-                                                                  Regexp(r'^\d{10}$', message="L'id est invalide'.")])
+    id_u = StringField("Id de l'utilisateur", validators=[DataRequired(), 
+                                                        Length(min=2, message='Longueur incorrecte.'), 
+                                                        Regexp(r'^(a|m|admin)\d*$', message="L'id est invalide.")
+                                                        ])
     password = PasswordField("Mot de passe", validators=[DataRequired(), Length(max=64)])
 
     def get_authentificated_user(self):
@@ -20,19 +21,22 @@ class LoginForm (FlaskForm):
         Returns:
             Utilisateur: L'utilisateur si le mot de passe est correct, None sinon
         """
-        user = Utilisateur.query.get(self.id_u.data)
-        if user is None:
-            return None
-        m = sha256()
-        m.update(self.password.data.encode())
-        passwd = m.hexdigest()
-        return user if passwd == user.mdp else None
-
-        else : 
-            return None
+        id_entier = self.id_u.data
+        if id_entier[0] == "a" or id_entier[0] == "m" or id_entier[0:5] == "admin" :
+            print("id_entier passe")
+            print(id_entier[1:])
+            user = Utilisateur.query.get(id_entier[1:])
+            print(user)
+            if user is None:
+                return None
+            m = sha256()
+            m.update(self.password.data.encode())
+            passwd = m.hexdigest()
+            return user if passwd == user.mdp else None
+        return None
 
 class RegisterForm (FlaskForm):
-    id_a = StringField("Id de l'utilisateur", validators=[DataRequired(), 
+    id_u = StringField("Id de l'utilisateur", validators=[DataRequired(), 
                                                           Length(min=2, message='Longueur incorrecte.'), 
                                                           Regexp(r'^[am]\d*$', message="L'id est invalide.")])
 
@@ -71,7 +75,7 @@ class RegisterForm (FlaskForm):
         Returns:
             Utilisateur: L'utilisateur si le mot de passe est correct, None sinon
         """
-        user = Utilisateur.query.get(self.id_a.data)
+        user = Utilisateur.query.get(self.id_u.data)
         if user is None:
             return None
         m = sha256()
@@ -83,7 +87,7 @@ class RegisterForm (FlaskForm):
         passwd = self.password.data
         m = sha256()
         m.update(passwd.encode())
-        return Utilisateur(num_tel=self.id_a.data,
+        return Utilisateur(num_tel=self.id_u.data,
                  mdp=m.hexdigest(),
                  nom = self.name.data,
                  prenom = self.first_name.data,
@@ -95,12 +99,15 @@ def login():
     f = LoginForm()
     if f.validate_on_submit():
         the_user = f.get_authentificated_user()
+        print(the_user)
         if the_user:
-            if f.id_a.data[0] == "a" :
-                login_user(the_user)
-                return redirect(url_for("home_adherent"))
-            else : 
-                return redirect(url_for("home_moniteur"))
+            login_user(the_user)
+            if f.id_u.data[0:5] == "admin" :
+                return render_template("home_admin.html")
+            elif f.id_u.data[0] == "m" : 
+                return render_template("home_moniteur.html")
+            else : # l'utilisateur est trouvé donc c'est forcément un adherent
+                return render_template("home_adherent.html")
         return render_template("connexion.html", form = f, error = 'Mot de passe incorrect.')
     return render_template("connexion.html", form = f)
 

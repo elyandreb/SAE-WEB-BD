@@ -22,6 +22,9 @@ class Utilisateur(db.Model, UserMixin):
     reservations = db.relationship('Reserver', back_populates='user')
     cours = db.relationship('Cours', back_populates='moniteur')
 
+    def get_id(self):
+        return str(self.id_u)
+
 class Reserver(db.Model):
     __tablename__ = 'RESERVER'
     id_u = db.Column(db.Integer, db.ForeignKey('UTILISATEUR.id_u'), primary_key=True)

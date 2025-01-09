@@ -10,7 +10,7 @@ class Poney(db.Model):
 
 class Utilisateur(db.Model, UserMixin):
     __tablename__ = 'UTILISATEUR'
-    id_u = db.Column(db.Integer, primary_key=True)
+    id_u = db.Column(db.Integer, primary_key=True, autoincrement=True)
     nom_u = db.Column(db.String(42))
     prenom_u = db.Column(db.String(42))
     date_de_naissance = db.Column(db.Date)

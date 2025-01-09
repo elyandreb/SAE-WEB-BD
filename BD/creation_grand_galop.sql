@@ -13,7 +13,7 @@ CREATE TABLE PONEY (
 );
 
 CREATE TABLE UTILISATEUR (
-    id_u INT,
+    id_u INT AUTO_INCREMENT,
     nom_u VARCHAR(42),
     prenom_u VARCHAR(42),
     date_de_naissance DATE,

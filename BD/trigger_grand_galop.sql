@@ -9,7 +9,7 @@ begin
     select poids into poidCavalier from USER where id_u = new.id_u;
     select charge_max into chargePoney from PONEY where id_po = new.id_po;
     if poidCavalier > chargePoney then
-        set mes = concat(mes,"Ajout impossible car le cavalier pèse ",poidCavalier,"kg et le poney supporte un charge max de ",chargePoney,"kg.");
+        set mes = concat(mes,"Ajout impossible car le cavalier", new.id_u, "pèse ",poidCavalier,"kg et le poney", new.id_po,  "supporte un charge max de ",chargePoney,"kg.");
         signal SQLSTATE '45000' SET MESSAGE_TEXT = mes ;
     end if;
 end|
@@ -24,7 +24,7 @@ begin
     select poids into poidCavalier from USER where id_u = new.id_u;
     select charge_max into chargePoney from PONEY where id_po = new.id_po;
     if poidCavalier > chargePoney then
-        set mes = concat(mes,"Ajout impossible car le cavalier pèse ",poidCavalier,"kg et le poney supporte un charge max de ",chargePoney,"kg.");
+        set mes = concat(mes,"Ajout impossible car le cavalier", new.id_u, "pèse ",poidCavalier,"kg et le poney", new.id_po,  "supporte un charge max de ",chargePoney,"kg.");
         signal SQLSTATE '45000' SET MESSAGE_TEXT = mes ;
     end if;
 end|

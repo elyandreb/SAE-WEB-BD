@@ -3,14 +3,14 @@ from datetime import date
 
 from flask_login import login_required
 from project.app import db, app
-from project.models import Adherent, Cotisation, Cotiser, Cours, Moniteur, Reserver
+from project.models import  Cours, Reserver, User
 
 
 @app.route('/accueil/<int:adherent_id>')
 def accueil(adherent_id):
     
     # Récupérer l'adhérent
-    adherent = Adherent.query.get(adherent_id)
+    adherent = User.query.get(adherent_id)
 
     if not adherent:
         return "Adhérent introuvable", 404
@@ -19,7 +19,7 @@ def accueil(adherent_id):
     prochain_cours = (
         db.session.query(Cours)
         .join(Reserver)
-        .filter(Reserver.id_a == adherent_id, Cours.date_c >= date.today())
+        .filter(Reserver.id_u == adherent_id, Cours.date_c >= date.today())
         .order_by(Cours.date_c.asc())
         .first()
     )

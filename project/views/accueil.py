@@ -15,6 +15,8 @@ def accueil(adherent_id):
     if not adherent:
         return "Adhérent introuvable", 404
 
+    if adherent.le_role == "admin":
+        return render_template("admin_home.html", adherent = adherent)
     # Trouver le prochain cours réservé par cet adhérent
     prochain_cours = (
         db.session.query(Cours)

@@ -10,7 +10,7 @@ class Poney(db.Model):
 
 class Utilisateur(db.Model, UserMixin):
     __tablename__ = 'UTILISATEUR'
-    id_u = db.Column(db.Integer, primary_key=True)
+    id_u = db.Column(db.Integer, primary_key=True, autoincrement=True)
     nom_u = db.Column(db.String(42))
     prenom_u = db.Column(db.String(42))
     date_de_naissance = db.Column(db.Date)
@@ -21,6 +21,9 @@ class Utilisateur(db.Model, UserMixin):
     cotisations = db.relationship('Cotiser', back_populates='user')
     reservations = db.relationship('Reserver', back_populates='user')
     cours = db.relationship('Cours', back_populates='moniteur')
+
+    def get_id(self):
+        return str(self.id_u)
 
 class Reserver(db.Model):
     __tablename__ = 'RESERVER'

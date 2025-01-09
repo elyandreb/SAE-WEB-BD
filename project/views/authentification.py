@@ -6,7 +6,7 @@ from hashlib import sha256
 from wtforms import StringField, PasswordField, EmailField, DateField
 from wtforms.validators import DataRequired, EqualTo, Email, Length, Regexp, ValidationError
 from wtforms.validators import DataRequired, EqualTo, Email, Length, Regexp, ValidationError
-from project.models import User
+from project.models import Utilisateur
 
 class LoginForm (FlaskForm):
     id_a = StringField("id de l'adhérent", validators=[DataRequired(), 
@@ -18,9 +18,9 @@ class LoginForm (FlaskForm):
         l'utilisateur est bon
 
         Returns:
-            User: L'utilisateur si le mot de passe est correct, None sinon
+            Utilisateur: L'utilisateur si le mot de passe est correct, None sinon
         """
-        user = User.query.get(self.id_a.data)
+        user = Utilisateur.query.get(self.id_a.data)
         if user is None:
             return None
         m = sha256()
@@ -54,11 +54,11 @@ class RegisterForm (FlaskForm):
     #recaptcha = RecaptchaField() 
 
     def validate_email(self, field):
-        if User.query.filter_by(email=field.data).first():
+        if Utilisateur.query.filter_by(email=field.data).first():
             raise ValidationError("Cet e-mail est déjà utilisé.")
 
     def validate_id_a(self, field):
-        if User.query.filter_by(num_tel=field.data).first():
+        if Utilisateur.query.filter_by(num_tel=field.data).first():
             raise ValidationError("Ce numéro de téléphone est déjà utilisé.")
 
     def get_authentificated_user(self):
@@ -66,9 +66,9 @@ class RegisterForm (FlaskForm):
         l'utilisateur est bon
 
         Returns:
-            User: L'utilisateur si le mot de passe est correct, None sinon
+            Utilisateur: L'utilisateur si le mot de passe est correct, None sinon
         """
-        user = User.query.get(self.id_a.data)
+        user = Utilisateur.query.get(self.id_a.data)
         if user is None:
             return None
         m = sha256()
@@ -80,7 +80,7 @@ class RegisterForm (FlaskForm):
         passwd = self.password.data
         m = sha256()
         m.update(passwd.encode())
-        return User(num_tel=self.id_a.data,
+        return Utilisateur(num_tel=self.id_a.data,
                  mdp=m.hexdigest(),
                  nom = self.name.data,
                  prenom = self.first_name.data,
@@ -108,7 +108,7 @@ def register():
     f = RegisterForm()
     if f.validate_on_submit():
         u = f.create_user()
-        if User.query.get(u.get_id()) :
+        if Utilisateur.query.get(u.get_id()) :
             return render_template("inscription.html", form = f)
         else :
             db.session.add(u)                  #
@@ -118,7 +118,7 @@ def register():
 
         # à ajouter une fois le captcha mis en place
         """try :
-            if User.query.get(u.get_id()) :
+            if Utilisateur.query.get(u.get_id()) :
                 return render_template("inscription.html", form = f)
             else :
                 db.session.add(u)

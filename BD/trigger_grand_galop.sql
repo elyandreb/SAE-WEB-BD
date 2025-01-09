@@ -6,7 +6,7 @@ begin
     DECLARE poidCavalier INT;
     DECLARE chargePoney INT;
     DECLARE mes VARCHAR(100) default '';
-    select poids into poidCavalier from USER where id_u = new.id_u;
+    select poids into poidCavalier from UTILISATEUR where id_u = new.id_u;
     select charge_max into chargePoney from PONEY where id_po = new.id_po;
     if poidCavalier > chargePoney then
         set mes = concat(mes,"Ajout impossible car le cavalier", new.id_u, "pèse ",poidCavalier,"kg et le poney", new.id_po,  "supporte un charge max de ",chargePoney,"kg.");
@@ -21,7 +21,7 @@ begin
     DECLARE poidCavalier INT;
     DECLARE chargePoney INT;
     DECLARE mes VARCHAR(100) default '';
-    select poids into poidCavalier from USER where id_u = new.id_u;
+    select poids into poidCavalier from UTILISATEUR where id_u = new.id_u;
     select charge_max into chargePoney from PONEY where id_po = new.id_po;
     if poidCavalier > chargePoney then
         set mes = concat(mes,"Ajout impossible car le cavalier", new.id_u, "pèse ",poidCavalier,"kg et le poney", new.id_po,  "supporte un charge max de ",chargePoney,"kg.");
@@ -294,13 +294,13 @@ delimiter ;
 --(3,"BigGuy",50),
 --(4,"Joey",25);
 --
---insert into USER values
+--insert into UTILISATEUR values
 --(1,"Smith","John",STR_TO_DATE("10/10/2010", "%d/%m/%Y"),39.0,"john.smith", "adherent"), -- date mauvaise par rapport au NOW()
 --(2,"Lenon","Harry",STR_TO_DATE("10/10/2010", "%d/%m/%Y"),27.5,"harry.lenon", "adherent"),
 --(4,"Fred","Bob",STR_TO_DATE("10/10/2010", "%d/%m/%Y"),27.5,"harry.lenon", "adherent"),
 --(5,"Sobas","Sebastien",STR_TO_DATE("10/10/2010", "%d/%m/%Y"),24.5,"harry.lenon", "adherent");
 --
---INSERT into USER VALUES
+--INSERT into UTILISATEUR VALUES
 --(6,"Marley","Johnson",STR_TO_DATE("10/10/1999", "%d/%m/%Y"),65,"johnson.marley", "moniteur"),
 --(7,"Jedusor","Tom",STR_TO_DATE("10/10/2000", "%d/%m/%Y"),65,"tom.jedusor", "moniteur");
 --

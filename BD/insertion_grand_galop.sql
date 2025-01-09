@@ -146,7 +146,7 @@ INSERT INTO USER (id_u, nom_u, prenom_u, date_de_naissance, poids, email, mdp, l
 (109, 'Simon', 'Thomas', STR_TO_DATE('17/01/1985', '%d/%m/%Y'), 78.90, 'thomas.simon@laposte.fr', "12", "moniteur"),
 (110, 'Laurent', 'Emilie', STR_TO_DATE('24/03/1994', '%d/%m/%Y'), 61.70, 'emilie.laurent@orange.fr', "gjh45d4g5f?dg78ty2dfg15f!75t4", "moniteur"),
 
---Insertion de l'admin
+-- Insertion de l'admin
 (111, 'Admin', 'Auguste', STR_TO_DATE('01/01/1978', '%d/%m/%Y'), 75.50, 'auguste.admin@gmail.com', "mdp admin","admin");
 
 -- Insertions des cours hebdomadaires. Généré par IA (Copilot de Bing) car tâche répétitive.
@@ -290,7 +290,7 @@ INSERT INTO COURS (id_c, id_u, nb_pe, h_de_debut, duree, date_c, prix) VALUES
 (129, 102, 8, 17, 1, '2025-02-08', 28.00), -- Jeudi
 (130, 102, 8, 17, 1, '2025-02-15', 28.00), -- Jeudi
 (131, 102, 8, 17, 1, '2025-02-22', 28.00), -- Jeudi
-(132, 102, 8, 17, 1, '2025-02-29', 28.00), -- Jeudi
+
 (133, 102, 8, 17, 1, '2025-03-07', 28.00), -- Jeudi
 (134, 102, 8, 17, 1, '2025-03-14', 28.00), -- Jeudi
 (135, 102, 8, 17, 1, '2025-03-21', 28.00), -- Jeudi
@@ -442,7 +442,7 @@ INSERT INTO COURS (id_c, id_u, nb_pe, h_de_debut, duree, date_c, prix) VALUES
 (276, 102, 8, 16, 1, '2025-06-29', 28.00); -- Samedi après-midi
 
 -- Insertions des réservations. Généré par IA (Copilot de Bing) car tâche répétitive.
-INSERT INTO RESERVER (id_a, id_po, id_c) VALUES
+INSERT INTO RESERVER (id_u, id_po, id_c) VALUES
 (11, 1, 25),  -- Adhérent Alice monte Poney 1 le 9 janvier
 (12, 2, 25),  -- Adhérent Lucas monte Poney 2 le 9 janvier
 (13, 3, 25),  -- Adhérent Emma monte Poney 3 le 9 janvier
@@ -507,7 +507,7 @@ INSERT INTO COTISATION (annee_debut, annee_fin) VALUES
 (2025, 2026);
 
 -- Insertions de COTISER. Généré par IA (Copilot de Bing) car tâche répétitive.
-INSERT INTO COTISER (id_a, annee_debut, annee_fin, paye) VALUES
+INSERT INTO COTISER (id_u, annee_debut, annee_fin, paye) VALUES
 -- Pour l'année 2023-2024
 (1, 2023, 2024, TRUE),
 (2, 2023, 2024, TRUE),

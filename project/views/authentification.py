@@ -3,8 +3,8 @@ from flask import render_template, url_for, redirect, request
 from flask_wtf import FlaskForm
 from flask_login import login_user , current_user, logout_user, login_required
 from hashlib import sha256
-from wtforms import StringField, PasswordField, EmailField, DateField
-from wtforms.validators import DataRequired, EqualTo, Email, Length, Regexp, ValidationError
+from wtforms import StringField, PasswordField, EmailField, DateField, HiddenField, DecimalField
+from wtforms.validators import DataRequired, EqualTo, Email, Length, Regexp, ValidationError, NumberRange
 from project.models import Utilisateur
 
 class LoginForm (FlaskForm):
@@ -36,9 +36,7 @@ class LoginForm (FlaskForm):
         return None
 
 class RegisterForm (FlaskForm):
-    id_u = StringField("Id de l'utilisateur", validators=[DataRequired(), 
-                                                          Length(min=2, message='Longueur incorrecte.'), 
-                                                          Regexp(r'^[am]\d*$', message="L'id est invalide.")])
+    id_u = HiddenField()
 
     name = StringField("Nom", validators=[DataRequired(), 
                                           Length(max=42)])
@@ -49,16 +47,15 @@ class RegisterForm (FlaskForm):
     email = EmailField("Email", validators=[DataRequired(), Email(message='Adresse mail invalide.'), 
                                             Length(max=64)])
     
-    birth_date = DateField('Date de naissance', format='%d/%m/%Y', validators=[DataRequired()])
+    birth_date = DateField("Date de naissance", format='%d/%m/%Y', validators=[DataRequired()])
+
+    poids = DecimalField("Poids", validators=[DataRequired(), NumberRange(min=0, message='Le poids doit être un nombre positif.')])
 
     password = PasswordField("Mot de passe", validators=[DataRequired(), 
                                                          Length(max=64)])
 
     password_check = PasswordField("Confirmez votre mot de passe", validators=[DataRequired(), 
                                                                                EqualTo('password', message='Les mots de passe doivent correspondre.'),])
-
-    # Commentaire de la ligne en-dessous à enlever une fois le captcha mis en place 
-    #recaptcha = RecaptchaField() 
 
     def validate_email(self, field):
         if Utilisateur.query.filter_by(email=field.data).first():
@@ -87,12 +84,13 @@ class RegisterForm (FlaskForm):
         passwd = self.password.data
         m = sha256()
         m.update(passwd.encode())
-        return Utilisateur(num_tel=self.id_u.data,
+        return Utilisateur(
+                 nom_u = self.name.data,
+                 prenom_u = self.first_name.data,
+                 date_de_naissance=self.birth_date,
+                 email = self.email.data,
                  mdp=m.hexdigest(),
-                 nom = self.name.data,
-                 prenom = self.first_name.data,
-                 adresse = self.address.data,
-                 email = self.email.data)
+                 role="adherent")
 
 @app.route("/connexion", methods = ("GET", "POST", ))
 def login():

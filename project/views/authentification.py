@@ -6,7 +6,7 @@ from hashlib import sha256
 from wtforms import StringField, PasswordField, EmailField, DateField
 from wtforms.validators import DataRequired, EqualTo, Email, Length, Regexp, ValidationError
 from wtforms.validators import DataRequired, EqualTo, Email, Length, Regexp, ValidationError
-from project.models import Moniteur, Adherent
+from project.models import Utilisateur
 
 class LoginForm (FlaskForm):
     id_a = StringField("id de l'adhérent", validators=[DataRequired(), 
@@ -18,26 +18,15 @@ class LoginForm (FlaskForm):
         l'utilisateur est bon
 
         Returns:
-            User: L'utilisateur si le mot de passe est correct, None sinon
+            Utilisateur: L'utilisateur si le mot de passe est correct, None sinon
         """
-        id_user = self.id_a.data
-        if id_user[0] == "a" :
-            user = Adherent.query.get(id_user[1:])
-            if user is None:
-                return None
-            m = sha256()
-            m.update(self.password.data.encode())
-            passwd = m.hexdigest()
-            return user if passwd == user.mdp else None
-
-        if id_user[0] == "m" :
-            user = Moniteur.query.get(id_user[1:])
-            if user is None:
-                return None
-            m = sha256()
-            m.update(self.password.data.encode())
-            passwd = m.hexdigest()
-            return user if passwd == user.mdp else None
+        user = Utilisateur.query.get(self.id_u.data)
+        if user is None:
+            return None
+        m = sha256()
+        m.update(self.password.data.encode())
+        passwd = m.hexdigest()
+        return user if passwd == user.mdp else None
 
         else : 
             return None
@@ -64,40 +53,37 @@ class RegisterForm (FlaskForm):
     password_check = PasswordField("Confirmez votre mot de passe", validators=[DataRequired(), 
                                                                                EqualTo('password', message='Les mots de passe doivent correspondre.'),])
 
+    # Commentaire de la ligne en-dessous à enlever une fois le captcha mis en place 
+    #recaptcha = RecaptchaField() 
+
+    def validate_email(self, field):
+        if Utilisateur.query.filter_by(email=field.data).first():
+            raise ValidationError("Cet e-mail est déjà utilisé.")
+
+    def validate_id_a(self, field):
+        if Utilisateur.query.filter_by(num_tel=field.data).first():
+            raise ValidationError("Ce numéro de téléphone est déjà utilisé.")
+
     def get_authentificated_user(self):
         """permet de savoir si le mot de passe de 
         l'utilisateur est bon
 
         Returns:
-            User: L'utilisateur si le mot de passe est correct, None sinon
+            Utilisateur: L'utilisateur si le mot de passe est correct, None sinon
         """
-        id_user = self.id_a.data
-        if id_user[0] == "a" :
-            user = Adherent.query.get(id_user[1:])
-            if user is None:
-                return None
-            m = sha256()
-            m.update(self.password.data.encode())
-            passwd = m.hexdigest()
-            return user if passwd == user.mdp else None
-
-        if id_user[0] == "m" :
-            user = Moniteur.query.get(id_user[1:])
-            if user is None:
-                return None
-            m = sha256()
-            m.update(self.password.data.encode())
-            passwd = m.hexdigest()
-            return user if passwd == user.mdp else None
-
-        else : 
+        user = Utilisateur.query.get(self.id_a.data)
+        if user is None:
             return None
+        m = sha256()
+        m.update(self.password.data.encode())
+        passwd = m.hexdigest()
+        return user if passwd == user.mdp else None
     
     def create_user(self) :
         passwd = self.password.data
         m = sha256()
         m.update(passwd.encode())
-        return Adherent(id_ad=self.id_a.data,
+        return Utilisateur(num_tel=self.id_a.data,
                  mdp=m.hexdigest(),
                  nom = self.name.data,
                  prenom = self.first_name.data,
@@ -128,11 +114,13 @@ def register():
     f = RegisterForm()
     if f.validate_on_submit():
         u = f.create_user()
-        if Adherent.query.get(u.get_id()) :
+        if Utilisateur.query.get(u.get_id()) :
             return render_template("inscription.html", form = f)
         else :
             db.session.add(u)
             db.session.commit()
             login_user(u)
-            return redirect(url_for("home_adherent"))
+            return redirect(url_for("home"))
+
+        
     return render_template("inscription.html", form = f)

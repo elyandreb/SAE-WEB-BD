@@ -19,7 +19,7 @@ CREATE TABLE UTILISATEUR (
     date_de_naissance DATE,
     poids DECIMAL(4,2),
     email VARCHAR(42),
-    mdp VARCHAR(42),
+    mdp VARCHAR(128),
     le_role ENUM("admin", "adherent", "moniteur"),
     PRIMARY KEY (id_u)
 );

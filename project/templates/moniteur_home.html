@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}Accueil - Moniteur{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <!-- Message de bienvenue -->
+    <h1 class="mb-4 text-center">Bonjour, {{ adherent.prenom_u }}</h1>
+    <p class="text-center fs-5">Voici vos trois prochains cours :</p>
+
+    <!-- Section des cours -->
+    {% if prochains_cours %}
+    <div class="row justify-content-center mt-4">
+        {% for cours in prochains_cours %}
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Cours le {{ cours.date_c.strftime('%d/%m/%Y') }} à {{ cours.h_de_debut }}h</h5>
+                    <p class="card-text">
+                        <strong>Durée :</strong> {{ cours.duree }} heure(s)<br>
+                        <strong>Participants :</strong> {{ cours.nb_pe }}<br>
+                    </p>
+                </div>
+                <div class="card-footer text-center">
+                    <a href="/cours/{{ cours.id_c }}" class="btn btn-primary btn-sm">Voir détails</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-info text-center mt-4">
+        Aucun cours prévu pour le moment.
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

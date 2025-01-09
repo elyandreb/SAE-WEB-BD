@@ -7,7 +7,7 @@
     <!-- En-tête -->
     <div class="row">
         <div class="col">
-            <h1 class="mb-4">Bonjour {{ adherent.prenom_u }}</h1>
+            <h1 class="mb-4">Bonjour {{ utilisateur.prenom_u }}</h1>
             <p class="fs-4">Voici votre prochain cours :</p>
         </div>
     </div>
@@ -19,7 +19,7 @@
                 <div class="card-body text-center">
                     {% if cours %}
                         <h5 class="card-title fs-5">Cours du {{ cours.date_c.strftime('%d/%m/%Y') }}</h5>
-                        <p class="card-text">Avec {{ cours.moniteur.nom_u }}</p>
+                        <p class="card-text">Avec M.{{ cours.moniteur.nom_u }}</p>
                     {% else %}
                         <p class="text-muted">Aucun cours prévu pour le moment.</p>
                     {% endif %}

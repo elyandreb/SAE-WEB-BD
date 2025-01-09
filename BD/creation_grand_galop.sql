@@ -14,8 +14,8 @@ CREATE TABLE PONEY (
 
 CREATE TABLE USER (
     id_u INT,
-    nom_a VARCHAR(42),
-    prenom_a VARCHAR(42),
+    nom_u VARCHAR(42),
+    prenom_u VARCHAR(42),
     date_de_naissance DATE,
     poids DECIMAL(4,2),
     email VARCHAR(42),

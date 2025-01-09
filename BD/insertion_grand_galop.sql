@@ -1,154 +1,153 @@
 -- Insertions des poneys. Généré par IA (Copilot de Bing) car tâche répétitive.
 INSERT INTO PONEY (id_po, nom_po, charge_max) VALUES
-(1, 'Bella', 23.45),
-(2, 'Charlie', 27.89),
+(1, 'Bella', 35.45),
+(2, 'Charlie', 34.89),
 (3, 'Daisy', 35.67),
-(4, 'Max', 29.34),
+(4, 'Max', 32.34),
 (5, 'Luna', 41.23),
-(6, 'Rocky', 33.21),
+(6, 'Rocky', 43.21),
 (7, 'Molly', 38.76),
-(8, 'Buddy', 24.56),
+(8, 'Buddy', 34.56),
 (9, 'Lucy', 45.67),
-(10, 'Jack', 30.12),
-(11, 'Sadie', 26.78),
+(10, 'Jack', 35.12),
+(11, 'Sadie', 36.78),
 (12, 'Toby', 39.45),
-(13, 'Coco', 28.34),
+(13, 'Coco', 38.34),
 (14, 'Bailey', 42.56),
 (15, 'Milo', 31.78),
-(16, 'Ruby', 36.89),
-(17, 'Oscar', 25.67),
+(16, 'Ruby', 46.89),
+(17, 'Oscar', 35.67),
 (18, 'Rosie', 44.23),
 (19, 'Teddy', 32.45),
 (20, 'Lola', 37.89),
-(21, 'Leo', 29.56),
+(21, 'Leo', 43.56),
 (22, 'Zoe', 40.12),
 (23, 'Nala', 34.78),
 (24, 'Finn', 43.21),
-(25, 'Ellie', 27.34),
+(25, 'Ellie', 37.34),
 (26, 'Rex', 46.78),
-(27, 'Penny', 30.45),
+(27, 'Penny', 40.45),
 (28, 'Archie', 35.12),
-(29, 'Maggie', 28.89),
+(29, 'Maggie', 48.89),
 (30, 'Duke', 41.67);
 
-
 -- Insertion de 100 adhérents générés par IA (Copilot de Bing) car tâche répétitive.
-INSERT INTO USER (id_u, nom_u, prenom_u, date_de_naissance, poids, email, le_role) VALUES
-(1, 'Durand', 'Paul', STR_TO_DATE('10/03/2014', '%d/%m/%Y'), 30.50, 'paul.durand@gmail.com', "adherent"),
-(2, 'Petit', 'Marie', STR_TO_DATE('15/06/2012', '%d/%m/%Y'), 35.20, 'marie.petit@yahoo.com', "adherent"),
-(3, 'Martin', 'Julien', STR_TO_DATE('18/01/2015', '%d/%m/%Y'), 28.40, 'julien.martin@laposte.fr', "adherent"),
-(4, 'Bernard', 'Camille', STR_TO_DATE('22/08/2013', '%d/%m/%Y'), 32.10, 'camille.bernard@wanadoo.fr', "adherent"),
-(5, 'Dubois', 'Léon', STR_TO_DATE('30/12/2016', '%d/%m/%Y'), 25.30, 'leon.dubois@gmail.com', "adherent"),
-(6, 'Thomas', 'Léa', STR_TO_DATE('03/11/2011', '%d/%m/%Y'), 40.50, 'lea.thomas@yahoo.com', "adherent"),
-(7, 'Robert', 'Anna', STR_TO_DATE('11/05/2014', '%d/%m/%Y'), 29.80, 'anna.robert@laposte.fr', "adherent"),
-(8, 'Richard', 'Maxime', STR_TO_DATE('19/07/2012', '%d/%m/%Y'), 34.60, 'maxime.richard@wanadoo.fr', "adherent"),
-(9, 'Simon', 'Louise', STR_TO_DATE('27/10/2015', '%d/%m/%Y'), 27.90, 'louise.simon@gmail.com', "adherent"),
-(10, 'Michel', 'Oscar', STR_TO_DATE('14/02/2013', '%d/%m/%Y'), 31.70, 'oscar.michel@yahoo.com', "adherent"),
-(11, 'Lemoine', 'Alice', STR_TO_DATE('04/11/2014', '%d/%m/%Y'), 30.50, 'alice.lemoine@gmail.com', "adherent"),
-(12, 'Morel', 'Lucas', STR_TO_DATE('15/06/2012', '%d/%m/%Y'), 35.20, 'lucas.morel@yahoo.com', "adherent"),
-(13, 'Garcia', 'Emma', STR_TO_DATE('08/05/2015', '%d/%m/%Y'), 28.40, 'emma.garcia@laposte.fr', "adherent"),
-(14, 'Roux', 'Hugo', STR_TO_DATE('22/07/2013', '%d/%m/%Y'), 32.10, 'hugo.roux@wanadoo.fr', "adherent"),
-(15, 'Fournier', 'Chloe', STR_TO_DATE('30/09/2016', '%d/%m/%Y'), 25.30, 'chloe.fournier@gmail.com', "adherent"),
-(16, 'Girard', 'Louis', STR_TO_DATE('03/01/2011', '%d/%m/%Y'), 40.50, 'louis.girard@yahoo.com', "adherent"),
-(17, 'Bonnet', 'Léa', STR_TO_DATE('11/08/2014', '%d/%m/%Y'), 29.80, 'lea.bonnet@laposte.fr', "adherent"),
-(18, 'Dupuis', 'Tom', STR_TO_DATE('19/11/2012', '%d/%m/%Y'), 34.60, 'tom.dupuis@wanadoo.fr', "adherent"),
-(19, 'Michel', 'Jade', STR_TO_DATE('27/02/2015', '%d/%m/%Y'), 27.90, 'jade.michel@gmail.com', "adherent"),
-(20, 'Lemoine', 'Arthur', STR_TO_DATE('14/04/2013', '%d/%m/%Y'), 31.70, 'arthur.lemoine@yahoo.com', "adherent"),
-(21, 'Blanc', 'Nina', STR_TO_DATE('10/03/2014', '%d/%m/%Y'), 30.00, 'nina.blanc@gmail.com', "adherent"),
-(22, 'Renard', 'Leo', STR_TO_DATE('06/12/2012', '%d/%m/%Y'), 36.00, 'leo.renard@yahoo.com', "adherent"),
-(23, 'Marchand', 'Lina', STR_TO_DATE('22/02/2015', '%d/%m/%Y'), 28.00, 'lina.marchand@laposte.fr', "adherent"),
-(24, 'Gauthier', 'Ethan', STR_TO_DATE('05/11/2013', '%d/%m/%Y'), 33.00, 'ethan.gauthier@wanadoo.fr', "adherent"),
-(25, 'Perrin', 'Mia', STR_TO_DATE('30/01/2016', '%d/%m/%Y'), 26.00, 'mia.perrin@gmail.com', "adherent"),
-(26, 'Renaud', 'Noah', STR_TO_DATE('11/05/2011', '%d/%m/%Y'), 41.00, 'noah.renaud@yahoo.com', "adherent"),
-(27, 'Barbier', 'Léonie', STR_TO_DATE('17/06/2014', '%d/%m/%Y'), 30.50, 'leonie.barbier@laposte.fr', "adherent"),
-(28, 'Lemoine', 'Tom', STR_TO_DATE('09/03/2012', '%d/%m/%Y'), 35.50, 'tom.lemoine@wanadoo.fr', "adherent"),
-(29, 'Lefevre', 'Lola', STR_TO_DATE('29/05/2015', '%d/%m/%Y'), 27.50, 'lola.lefevre@gmail.com', "adherent"),
-(30, 'Dupont', 'Arthur', STR_TO_DATE('18/02/2013', '%d/%m/%Y'), 32.50, 'arthur.dupont@yahoo.com', "adherent"),
-(31, 'Moreau', 'Emma', STR_TO_DATE('23/10/2014', '%d/%m/%Y'), 29.00, 'emma.moreau@gmail.com', "adherent"),
-(32, 'Simon', 'Lucas', STR_TO_DATE('03/09/2012', '%d/%m/%Y'), 34.00, 'lucas.simon@yahoo.com', "adherent"),
-(33, 'Michel', 'Chloe', STR_TO_DATE('11/11/2015', '%d/%m/%Y'), 28.50, 'chloe.michel@laposte.fr', "adherent"),
-(34, 'Garcia', 'Hugo', STR_TO_DATE('21/06/2013', '%d/%m/%Y'), 33.50, 'hugo.garcia@wanadoo.fr', "adherent"),
-(35, 'Roux', 'Léa', STR_TO_DATE('17/04/2016', '%d/%m/%Y'), 25.50, 'lea.roux@gmail.com', "adherent"),
-(36, 'Fournier', 'Louis', STR_TO_DATE('13/11/2011', '%d/%m/%Y'), 40.00, 'louis.fournier@yahoo.com', "adherent"),
-(37, 'Girard', 'Alice', STR_TO_DATE('05/05/2014', '%d/%m/%Y'), 30.20, 'alice.girard@laposte.fr', "adherent"),
-(38, 'Bonnet', 'Tom', STR_TO_DATE('24/08/2012', '%d/%m/%Y'), 35.80, 'tom.bonnet@wanadoo.fr', "adherent"),
-(39, 'Dupuis', 'Lina', STR_TO_DATE('17/03/2015', '%d/%m/%Y'), 27.80, 'lina.dupuis@gmail.com', "adherent"),
-(40, 'Michel', 'Ethan', STR_TO_DATE('12/04/2013', '%d/%m/%Y'), 32.80, 'ethan.michel@yahoo.com', "adherent"),
-(41, 'Lemoine', 'Mia', STR_TO_DATE('02/02/2014', '%d/%m/%Y'), 29.80, 'mia.lemoine@gmail.com', "adherent"),
-(42, 'Morel', 'Noah', STR_TO_DATE('20/07/2012', '%d/%m/%Y'), 36.20, 'noah.morel@yahoo.com', "adherent"),
-(43, 'Garcia', 'Léonie', STR_TO_DATE('27/11/2015', '%d/%m/%Y'), 28.20, 'leonie.garcia@laposte.fr', "adherent"),
-(44, 'Roux', 'Tom', STR_TO_DATE('30/09/2013', '%d/%m/%Y'), 33.20, 'tom.roux@wanadoo.fr', "adherent"),
-(45, 'Fournier', 'Lola', STR_TO_DATE('19/06/2016', '%d/%m/%Y'), 26.20, 'lola.fournier@gmail.com', "adherent"),
-(46, 'Girard', 'Arthur', STR_TO_DATE('09/01/2011', '%d/%m/%Y'), 41.20, 'arthur.girard@yahoo.com', "adherent"),
-(47, 'Bonnet', 'Emma', STR_TO_DATE('23/12/2014', '%d/%m/%Y'), 30.40, 'emma.bonnet@laposte.fr', "adherent"),
-(48, 'Dupuis', 'Lucas', STR_TO_DATE('14/04/2012', '%d/%m/%Y'), 35.40, 'lucas.dupuis@wanadoo.fr', "adherent"),
-(49, 'Michel', 'Chloe', STR_TO_DATE('21/10/2015', '%d/%m/%Y'), 27.40, 'chloe.michel@gmail.com', "adherent"),
-(50, 'Lemoine', 'Hugo', STR_TO_DATE('26/07/2013', '%d/%m/%Y'), 32.40, 'hugo.lemoine@yahoo.com', "adherent"),
-(51, 'Blanc', 'Léa', STR_TO_DATE('13/12/2014', '%d/%m/%Y'), 30.60, 'lea.blanc@gmail.com', "adherent"),
-(52, 'Renard', 'Louis', STR_TO_DATE('08/06/2012', '%d/%m/%Y'), 36.60, 'louis.renard@yahoo.com', "adherent"),
-(53, 'Marchand', 'Alice', STR_TO_DATE('20/01/2015', '%d/%m/%Y'), 28.60, 'alice.marchand@laposte.fr', "adherent"),
-(54, 'Gauthier', 'Tom', STR_TO_DATE('14/05/2013', '%d/%m/%Y'), 33.60, 'tom.gauthier@wanadoo.fr', "adherent"),
-(55, 'Perrin', 'Lina', STR_TO_DATE('29/08/2016', '%d/%m/%Y'), 26.60, 'lina.gauthier@orange.fr', "adherent"),
-(56, 'Renaud', 'Ethan', STR_TO_DATE('17/02/2011', '%d/%m/%Y'), 41.60, 'ethan.renaud@yahoo.com', "adherent"),
-(57, 'Barbier', 'Mia', STR_TO_DATE('10/11/2014', '%d/%m/%Y'), 30.80, 'mia.barbier@laposte.fr', "adherent"),
-(58, 'Lemoine', 'Noah', STR_TO_DATE('02/03/2012', '%d/%m/%Y'), 36.80, 'noah.lemoine@wanadoo.fr', "adherent"),
-(59, 'Lefevre', 'Léonie', STR_TO_DATE('27/07/2015', '%d/%m/%Y'), 28.80, 'leonie.lefevre@gmail.com', "adherent"),
-(60, 'Dupont', 'Tom', STR_TO_DATE('17/09/2013', '%d/%m/%Y'), 33.80, 'tom.dupont@yahoo.com', "adherent"),
-(61, 'Moreau', 'Lola', STR_TO_DATE('25/05/2014', '%d/%m/%Y'), 29.20, 'lola.moreau@gmail.com', "adherent"),
-(62, 'Simon', 'Arthur', STR_TO_DATE('14/07/2012', '%d/%m/%Y'), 34.20, 'arthur.simon@yahoo.com', "adherent"),
-(63, 'Michel', 'Emma', STR_TO_DATE('30/08/2015', '%d/%m/%Y'), 28.20, 'emma.michel@laposte.fr', "adherent"),
-(64, 'Garcia', 'Lucas', STR_TO_DATE('17/02/2013', '%d/%m/%Y'), 33.20, 'lucas.garcia@wanadoo.fr', "adherent"),
-(65, 'Roux', 'Chloe', STR_TO_DATE('09/03/2016', '%d/%m/%Y'), 25.20, 'chloe.roux@gmail.com', "adherent"),
-(66, 'Fournier', 'Louis', STR_TO_DATE('11/01/2011', '%d/%m/%Y'), 40.20, 'louis.fournier@yahoo.com', "adherent"),
-(67, 'Girard', 'Alice', STR_TO_DATE('05/11/2014', '%d/%m/%Y'), 30.30, 'alice.girard@laposte.fr', "adherent"),
-(68, 'Bonnet', 'Tom', STR_TO_DATE('29/04/2012', '%d/%m/%Y'), 35.30, 'tom.bonnet@wanadoo.fr', "adherent"),
-(69, 'Dupuis', 'Lina', STR_TO_DATE('26/12/2015', '%d/%m/%Y'), 27.30, 'lina.dupuis@gmail.com', "adherent"),
-(70, 'Michel', 'Ethan', STR_TO_DATE('18/09/2013', '%d/%m/%Y'), 32.30, 'ethan.michel@yahoo.com', "adherent"),
-(71, 'Lemoine', 'Mia', STR_TO_DATE('07/04/2014', '%d/%m/%Y'), 29.30, 'mia.lemoine@gmail.com', "adherent"),
-(72, 'Morel', 'Noah', STR_TO_DATE('14/06/2012', '%d/%m/%Y'), 36.30, 'noah.morel@yahoo.com', "adherent"),
-(73, 'Garcia', 'Léonie', STR_TO_DATE('23/07/2015', '%d/%m/%Y'), 28.30, 'leonie.garcia@laposte.fr', "adherent"),
-(74, 'Roux', 'Tom', STR_TO_DATE('21/10/2013', '%d/%m/%Y'), 33.30, 'tom.roux@wanadoo.fr', "adherent"),
-(75, 'Fournier', 'Lola', STR_TO_DATE('31/12/2016', '%d/%m/%Y'), 26.30, 'lola.fournier@gmail.com', "adherent"),
-(76, 'Girard', 'Arthur', STR_TO_DATE('13/03/2011', '%d/%m/%Y'), 41.30, 'arthur.girard@yahoo.com', "adherent"),
-(77, 'Bonnet', 'Emma', STR_TO_DATE('08/05/2014', '%d/%m/%Y'), 30.40, 'emma.bonnet@laposte.fr', "adherent"),
-(78, 'Dupuis', 'Lucas', STR_TO_DATE('01/06/2012', '%d/%m/%Y'), 35.40, 'lucas.dupuis@wanadoo.fr', "adherent"),
-(79, 'Michel', 'Chloe', STR_TO_DATE('22/11/2015', '%d/%m/%Y'), 27.40, 'chloe.michel@gmail.com', "adherent"),
-(80, 'Lemoine', 'Hugo', STR_TO_DATE('19/08/2013', '%d/%m/%Y'), 32.40, 'hugo.lemoine@yahoo.com', "adherent"),
-(81, 'Blanc', 'Léa', STR_TO_DATE('02/09/2014', '%d/%m/%Y'), 30.60, 'lea.blanc@gmail.com', "adherent"),
-(82, 'Renard', 'Louis', STR_TO_DATE('12/04/2012', '%d/%m/%Y'), 36.60, 'louis.renard@yahoo.com', "adherent"),
-(83, 'Marchand', 'Alice', STR_TO_DATE('05/02/2015', '%d/%m/%Y'), 28.60, 'alice.marchand@laposte.fr', "adherent"),
-(84, 'Gauthier', 'Tom', STR_TO_DATE('15/03/2013', '%d/%m/%Y'), 33.60, 'tom.gauthier@wanadoo.fr', "adherent"),
-(85, 'Perrin', 'Lina', STR_TO_DATE('29/10/2016', '%d/%m/%Y'), 26.60, 'lina.perrin@gmail.com', "adherent"),
-(86, 'Renaud', 'Ethan', STR_TO_DATE('14/01/2011', '%d/%m/%Y'), 41.60, 'ethan.renaud@yahoo.com', "adherent"),
-(87, 'Barbier', 'Mia', STR_TO_DATE('11/08/2014', '%d/%m/%Y'), 30.80, 'mia.barbier@laposte.fr', "adherent"),
-(88, 'Lemoine', 'Noah', STR_TO_DATE('22/12/2012', '%d/%m/%Y'), 36.80, 'noah.lemoine@wanadoo.fr', "adherent"),
-(89, 'Lefevre', 'Léonie', STR_TO_DATE('03/09/2015', '%d/%m/%Y'), 28.80, 'leonie.lefevre@gmail.com', "adherent"),
-(90, 'Dupont', 'Tom', STR_TO_DATE('10/10/2013', '%d/%m/%Y'), 33.80, 'tom.dupont@yahoo.com', "adherent"),
-(91, 'Moreau', 'Lola', STR_TO_DATE('07/05/2014', '%d/%m/%Y'), 29.20, 'lola.moreau@gmail.com', "adherent"),
-(92, 'Simon', 'Arthur', STR_TO_DATE('14/07/2012', '%d/%m/%Y'), 34.20, 'arthur.simon@yahoo.com', "adherent"),
-(93, 'Michel', 'Emma', STR_TO_DATE('30/08/2015', '%d/%m/%Y'), 28.20, 'emma.michel@laposte.fr', "adherent"),
-(94, 'Garcia', 'Lucas', STR_TO_DATE('17/02/2013', '%d/%m/%Y'), 33.20, 'lucas.garcia@wanadoo.fr', "adherent"),
-(95, 'Roux', 'Chloe', STR_TO_DATE('09/03/2016', '%d/%m/%Y'), 25.20, 'chloe.roux@gmail.com', "adherent"),
-(96, 'Fournier', 'Louis', STR_TO_DATE('11/01/2011', '%d/%m/%Y'), 40.20, 'louis.fournier@yahoo.com', "adherent"),
-(97, 'Girard', 'Alice', STR_TO_DATE('05/11/2014', '%d/%m/%Y'), 30.30, 'alice.girard@laposte.fr', "adherent"),
-(98, 'Bonnet', 'Tom', STR_TO_DATE('29/04/2012', '%d/%m/%Y'), 35.30, 'tom.bonnet@wanadoo.fr', "adherent"),
-(99, 'Dupuis', 'Lina', STR_TO_DATE('14/08/2015', '%d/%m/%Y'), 27.30, 'lina.dupuis@gmail.com', "adherent"),
-(100, 'Michel', 'Ethan', STR_TO_DATE('24/02/2013', '%d/%m/%Y'), 32.30, 'ethan.michel@yahoo.com', "adherent");
+INSERT INTO USER (id_u, nom_u, prenom_u, date_de_naissance, poids, email, mdp, le_role) VALUES
+(1, 'Durand', 'Paul', STR_TO_DATE('10/03/2014', '%d/%m/%Y'), 30.50, 'paul.durand@gmail.com', 'moonlightMystery', "adherent"),
+(2, 'Petit', 'Marie', STR_TO_DATE('15/06/2012', '%d/%m/%Y'), 35.20, 'marie.petit@yahoo.com', 'cosmicVoyager', "adherent"),
+(3, 'Martin', 'Julien', STR_TO_DATE('18/01/2015', '%d/%m/%Y'), 28.40, 'julien.martin@laposte.fr', 'starlightWhisper', "adherent"),
+(4, 'Bernard', 'Camille', STR_TO_DATE('22/08/2013', '%d/%m/%Y'), 32.10, 'camille.bernard@wanadoo.fr', 'jungleExplorer', "adherent"),
+(5, 'Dubois', 'Léon', STR_TO_DATE('30/12/2016', '%d/%m/%Y'), 25.30, 'leon.dubois@gmail.com', 'velvetStorm', "adherent"),
+(6, 'Thomas', 'Léa', STR_TO_DATE('03/11/2011', '%d/%m/%Y'), 40.50, 'lea.thomas@yahoo.com', 'crimsonHawk', "adherent"),
+(7, 'Robert', 'Anna', STR_TO_DATE('11/05/2014', '%d/%m/%Y'), 29.80, 'anna.robert@laposte.fr', 'oceanBreeze123', "adherent"),
+(8, 'Richard', 'Maxime', STR_TO_DATE('19/07/2012', '%d/%m/%Y'), 34.60, 'maxime.richard@wanadoo.fr', 'rainbowNinja', "adherent"),
+(9, 'Simon', 'Louise', STR_TO_DATE('27/10/2015', '%d/%m/%Y'), 27.90, 'louise.simon@gmail.com', 'galacticWarrior', "adherent"),
+(10, 'Michel', 'Oscar', STR_TO_DATE('14/02/2013', '%d/%m/%Y'), 31.70, 'oscar.michel@yahoo.com', 'phoenixRise', "adherent"),
+(11, 'Lemoine', 'Alice', STR_TO_DATE('04/11/2014', '%d/%m/%Y'), 30.50, 'alice.lemoine@gmail.com', 'whaleSong22', "adherent"),
+(12, 'Morel', 'Lucas', STR_TO_DATE('15/06/2012', '%d/%m/%Y'), 35.20, 'lucas.morel@yahoo.com', 'dragonFlame', "adherent"),
+(13, 'Garcia', 'Emma', STR_TO_DATE('08/05/2015', '%d/%m/%Y'), 28.40, 'emma.garcia@laposte.fr', 'stellarPilot', "adherent"),
+(14, 'Roux', 'Hugo', STR_TO_DATE('22/07/2013', '%d/%m/%Y'), 32.10, 'hugo.roux@wanadoo.fr', 'forestGuardian', "adherent"),
+(15, 'Fournier', 'Chloe', STR_TO_DATE('30/09/2016', '%d/%m/%Y'), 25.30, 'chloe.fournier@gmail.com', 'nebulaDream', "adherent"),
+(16, 'Girard', 'Louis', STR_TO_DATE('03/01/2011', '%d/%m/%Y'), 40.50, 'louis.girard@yahoo.com', 'unicornSparkles2023', "adherent"),
+(17, 'Bonnet', 'Léa', STR_TO_DATE('11/08/2014', '%d/%m/%Y'), 29.80, 'lea.bonnet@laposte.fr', 'moonShadow', "adherent"),
+(18, 'Dupuis', 'Tom', STR_TO_DATE('19/11/2012', '%d/%m/%Y'), 34.60, 'tom.dupuis@wanadoo.fr', 'tigerLily', "adherent"),
+(19, 'Michel', 'Jade', STR_TO_DATE('27/02/2015', '%d/%m/%Y'), 27.90, 'jade.michel@gmail.com', 'shiningStar', "adherent"),
+(20, 'Lemoine', 'Arthur', STR_TO_DATE('14/04/2013', '%d/%m/%Y'), 31.70, 'arthur.lemoine@yahoo.com', 'quantumLeap', "adherent"),
+(21, 'Blanc', 'Nina', STR_TO_DATE('10/03/2014', '%d/%m/%Y'), 30.00, 'nina.blanc@gmail.com', 'crystalBloom', "adherent"),
+(22, 'Renard', 'Leo', STR_TO_DATE('06/12/2012', '%d/%m/%Y'), 36.00, 'leo.renard@yahoo.com', 'silverArrow', "adherent"),
+(23, 'Marchand', 'Lina', STR_TO_DATE('22/02/2015', '%d/%m/%Y'), 28.00, 'lina.marchand@laposte.fr', 'blazingInferno', "adherent"),
+(24, 'Gauthier', 'Ethan', STR_TO_DATE('05/11/2013', '%d/%m/%Y'), 33.00, 'ethan.gauthier@wanadoo.fr', 'wizardMoon', "adherent"),
+(25, 'Perrin', 'Mia', STR_TO_DATE('30/01/2016', '%d/%m/%Y'), 26.00, 'mia.perrin@gmail.com', 'phoenixFlight', "adherent"),
+(26, 'Renaud', 'Noah', STR_TO_DATE('11/05/2011', '%d/%m/%Y'), 41.00, 'noah.renaud@yahoo.com', 'cosmicSurfer', "adherent"),
+(27, 'Barbier', 'Léonie', STR_TO_DATE('17/06/2014', '%d/%m/%Y'), 30.50, 'leonie.barbier@laposte.fr', 'midnightBlaze', "adherent"),
+(28, 'Lemoine', 'Tom', STR_TO_DATE('09/03/2012', '%d/%m/%Y'), 35.50, 'tom.lemoine@wanadoo.fr', 'galaxyHunter', "adherent"),
+(29, 'Lefevre', 'Lola', STR_TO_DATE('29/05/2015', '%d/%m/%Y'), 27.50, 'lola.lefevre@gmail.com', 'mysticVoyager', "adherent"),
+(30, 'Dupont', 'Arthur', STR_TO_DATE('18/02/2013', '%d/%m/%Y'), 32.50, 'arthur.dupont@yahoo.com', 'thunderWolf', "adherent"),
+(31, 'Moreau', 'Emma', STR_TO_DATE('23/10/2014', '%d/%m/%Y'), 29.00, 'emma.moreau@gmail.com', 'sunsetSorcerer', "adherent"),
+(32, 'Simon', 'Lucas', STR_TO_DATE('03/09/2012', '%d/%m/%Y'), 34.00, 'lucas.simon@yahoo.com', 'frostFury', "adherent"),
+(33, 'Michel', 'Chloe', STR_TO_DATE('11/11/2015', '%d/%m/%Y'), 28.50, 'chloe.michel@laposte.fr', 'tigerFlame', "adherent"),
+(34, 'Garcia', 'Hugo', STR_TO_DATE('21/06/2013', '%d/%m/%Y'), 33.50, 'hugo.garcia@wanadoo.fr', 'oceanVoyage', "adherent"),
+(35, 'Roux', 'Léa', STR_TO_DATE('17/04/2016', '%d/%m/%Y'), 25.50, 'lea.roux@gmail.com', 'mountainPeak', "adherent"),
+(36, 'Fournier', 'Louis', STR_TO_DATE('13/11/2011', '%d/%m/%Y'), 40.00, 'louis.fournier@yahoo.com', 'crystalWave', "adherent"),
+(37, 'Girard', 'Alice', STR_TO_DATE('05/05/2014', '%d/%m/%Y'), 30.20, 'alice.girard@laposte.fr', 'whisperingWind', "adherent"),
+(38, 'Bonnet', 'Tom', STR_TO_DATE('24/08/2012', '%d/%m/%Y'), 35.80, 'tom.bonnet@wanadoo.fr', 'coralReef', "adherent"),
+(39, 'Dupuis', 'Lina', STR_TO_DATE('17/03/2015', '%d/%m/%Y'), 27.80, 'lina.dupuis@gmail.com', 'mysticHorizon', "adherent"),
+(40, 'Michel', 'Ethan', STR_TO_DATE('12/04/2013', '%d/%m/%Y'), 32.80, 'ethan.michel@yahoo.com', 'phantomStar', "adherent"),
+(41, 'Lemoine', 'Mia', STR_TO_DATE('02/02/2014', '%d/%m/%Y'), 29.80, 'mia.lemoine@gmail.com', 'galacticPulse', "adherent"),
+(42, 'Morel', 'Noah', STR_TO_DATE('20/07/2012', '%d/%m/%Y'), 36.20, 'noah.morel@yahoo.com', 'password', "adherent"),
+(43, 'Garcia', 'Léonie', STR_TO_DATE('27/11/2015', '%d/%m/%Y'), 28.20, 'leonie.garcia@laposte.fr', 'unicornSparkles2023', "adherent"),
+(44, 'Roux', 'Tom', STR_TO_DATE('30/09/2013', '%d/%m/%Y'), 33.20, 'tom.roux@wanadoo.fr', 'cosmicVoyager', "adherent"),
+(45, 'Fournier', 'Lola', STR_TO_DATE('19/06/2016', '%d/%m/%Y'), 26.20, 'lola.fournier@gmail.com', 'rainbowNinja', "adherent"),
+(46, 'Girard', 'Arthur', STR_TO_DATE('09/01/2011', '%d/%m/%Y'), 41.20, 'arthur.girard@yahoo.com', 'galacticWarrior', "adherent"),
+(47, 'Bonnet', 'Emma', STR_TO_DATE('23/12/2014', '%d/%m/%Y'), 30.40, 'emma.bonnet@laposte.fr', 'whaleSong22', "adherent"),
+(48, 'Dupuis', 'Lucas', STR_TO_DATE('14/04/2012', '%d/%m/%Y'), 35.40, 'lucas.dupuis@wanadoo.fr', 'jungleExplorer', "adherent"),
+(49, 'Michel', 'Chloe', STR_TO_DATE('21/10/2015', '%d/%m/%Y'), 27.40, 'chloe.michel@gmail.com', 'phoenixRise', "adherent"),
+(50, 'Lemoine', 'Hugo', STR_TO_DATE('26/07/2013', '%d/%m/%Y'), 32.40, 'hugo.lemoine@yahoo.com', 'quantumLeap', "adherent"),
+(51, 'Blanc', 'Léa', STR_TO_DATE('13/12/2014', '%d/%m/%Y'), 30.60, 'lea.blanc@gmail.com', 'oceanBreeze123', "adherent"),
+(52, 'Renard', 'Louis', STR_TO_DATE('08/06/2012', '%d/%m/%Y'), 36.60, 'louis.renard@yahoo.com', 'dragonFlame', "adherent"),
+(53, 'Marchand', 'Alice', STR_TO_DATE('20/01/2015', '%d/%m/%Y'), 28.60, 'alice.marchand@laposte.fr', 'stellarPilot', "adherent"),
+(54, 'Gauthier', 'Tom', STR_TO_DATE('14/05/2013', '%d/%m/%Y'), 33.60, 'tom.gauthier@wanadoo.fr', 'forestGuardian', "adherent"),
+(55, 'Perrin', 'Lina', STR_TO_DATE('29/08/2016', '%d/%m/%Y'), 26.60, 'lina.gauthier@orange.fr', 'skyHighDream', "adherent"),
+(56, 'Renaud', 'Ethan', STR_TO_DATE('17/02/2011', '%d/%m/%Y'), 41.60, 'ethan.renaud@yahoo.com', 'mountainEcho', "adherent"),
+(57, 'Barbier', 'Mia', STR_TO_DATE('10/11/2014', '%d/%m/%Y'), 30.80, 'mia.barbier@laposte.fr', 'wizardMoon', "adherent"),
+(58, 'Lemoine', 'Noah', STR_TO_DATE('02/03/2012', '%d/%m/%Y'), 36.80, 'noah.lemoine@wanadoo.fr', 'nightStalker', "adherent"),
+(59, 'Lefevre', 'Léonie', STR_TO_DATE('27/07/2015', '%d/%m/%Y'), 28.80, 'leonie.lefevre@gmail.com', 'shiningStar', "adherent"),
+(60, 'Dupont', 'Tom', STR_TO_DATE('17/09/2013', '%d/%m/%Y'), 33.80, 'tom.dupont@yahoo.com', 'crimsonTide', "adherent"),
+(61, 'Moreau', 'Lola', STR_TO_DATE('25/05/2014', '%d/%m/%Y'), 29.20, 'lola.moreau@gmail.com', 'midnightMystery', "adherent"),
+(62, 'Simon', 'Arthur', STR_TO_DATE('14/07/2012', '%d/%m/%Y'), 34.20, 'arthur.simon@yahoo.com', 'silverArrow', "adherent"),
+(63, 'Michel', 'Emma', STR_TO_DATE('30/08/2015', '%d/%m/%Y'), 28.20, 'emma.michel@laposte.fr', 'goldenLion', "adherent"),
+(64, 'Garcia', 'Lucas', STR_TO_DATE('17/02/2013', '%d/%m/%Y'), 33.20, 'lucas.garcia@wanadoo.fr', 'frostFury', "adherent"),
+(65, 'Roux', 'Chloe', STR_TO_DATE('09/03/2016', '%d/%m/%Y'), 25.20, 'chloe.roux@gmail.com', 'desertStorm', "adherent"),
+(66, 'Fournier', 'Louis', STR_TO_DATE('11/01/2011', '%d/%m/%Y'), 40.20, 'louis.fournier@yahoo.com', 'thunderStrike', "adherent"),
+(67, 'Girard', 'Alice', STR_TO_DATE('05/11/2014', '%d/%m/%Y'), 30.30, 'alice.girard@laposte.fr', 'auroraBorealis', "adherent"),
+(68, 'Bonnet', 'Tom', STR_TO_DATE('29/04/2012', '%d/%m/%Y'), 35.30, 'tom.bonnet@wanadoo.fr', 'sandDune', "adherent"),
+(69, 'Dupuis', 'Lina', STR_TO_DATE('26/12/2015', '%d/%m/%Y'), 27.30, 'lina.dupuis@gmail.com', 'cycloneSpin', "adherent"),
+(70, 'Michel', 'Ethan', STR_TO_DATE('18/09/2013', '%d/%m/%Y'), 32.30, 'ethan.michel@yahoo.com', 'pearlHorizon', "adherent"),
+(71, 'Lemoine', 'Mia', STR_TO_DATE('07/04/2014', '%d/%m/%Y'), 29.30, 'mia.lemoine@gmail.com', 'meadowLark', "adherent"),
+(72, 'Morel', 'Noah', STR_TO_DATE('14/06/2012', '%d/%m/%Y'), 36.30, 'noah.morel@yahoo.com', 'coralReef', "adherent"),
+(73, 'Garcia', 'Léonie', STR_TO_DATE('23/07/2015', '%d/%m/%Y'), 28.30, 'leonie.garcia@laposte.fr', 'moonlitDance', "adherent"),
+(74, 'Roux', 'Tom', STR_TO_DATE('21/10/2013', '%d/%m/%Y'), 33.30, 'tom.roux@wanadoo.fr', 'sunsetBlaze', "adherent"),
+(75, 'Fournier', 'Lola', STR_TO_DATE('31/12/2016', '%d/%m/%Y'), 26.30, 'lola.fournier@gmail.com', 'ebonyFeather', "adherent"),
+(76, 'Girard', 'Arthur', STR_TO_DATE('13/03/2011', '%d/%m/%Y'), 41.30, 'arthur.girard@yahoo.com', 'cometTrail', "adherent"),
+(77, 'Bonnet', 'Emma', STR_TO_DATE('08/05/2014', '%d/%m/%Y'), 30.40, 'emma.bonnet@laposte.fr', 'crystalWave', "adherent"),
+(78, 'Dupuis', 'Lucas', STR_TO_DATE('01/06/2012', '%d/%m/%Y'), 35.40, 'lucas.dupuis@wanadoo.fr', 'phantomShade', "adherent"),
+(79, 'Michel', 'Chloe', STR_TO_DATE('22/11/2015', '%d/%m/%Y'), 27.40, 'chloe.michel@gmail.com', 'blazingInferno', "adherent"),
+(80, 'Lemoine', 'Hugo', STR_TO_DATE('19/08/2013', '%d/%m/%Y'), 32.40, 'hugo.lemoine@yahoo.com', 'serpentWhisper', "adherent"),
+(81, 'Blanc', 'Léa', STR_TO_DATE('02/09/2014', '%d/%m/%Y'), 30.60, 'lea.blanc@gmail.com', 'eagleWing', "adherent"),
+(82, 'Renard', 'Louis', STR_TO_DATE('12/04/2012', '%d/%m/%Y'), 36.60, 'louis.renard@yahoo.com', 'jaguarPaw', "adherent"),
+(83, 'Marchand', 'Alice', STR_TO_DATE('05/02/2015', '%d/%m/%Y'), 28.60, 'alice.marchand@laposte.fr', 'orchidDream', "adherent"),
+(84, 'Gauthier', 'Tom', STR_TO_DATE('15/03/2013', '%d/%m/%Y'), 33.60, 'tom.gauthier@wanadoo.fr', 'tidalTwist', "adherent"),
+(85, 'Perrin', 'Lina', STR_TO_DATE('29/10/2016', '%d/%m/%Y'), 26.60, 'lina.perrin@gmail.com', 'emeraldGlow', "adherent"),
+(86, 'Renaud', 'Ethan', STR_TO_DATE('14/01/2011', '%d/%m/%Y'), 41.60, 'ethan.renaud@yahoo.com', 'cycloneRush', "adherent"),
+(87, 'Barbier', 'Mia', STR_TO_DATE('11/08/2014', '%d/%m/%Y'), 30.80, 'mia.barbier@laposte.fr', 'moonShadow', "adherent"),
+(88, 'Lemoine', 'Noah', STR_TO_DATE('22/12/2012', '%d/%m/%Y'), 36.80, 'noah.lemoine@wanadoo.fr', 'phantomFury', "adherent"),
+(89, 'Lefevre', 'Léonie', STR_TO_DATE('03/09/2015', '%d/%m/%Y'), 28.80, 'leonie.lefevre@gmail.com', 'dragonWhisper', "adherent"),
+(90, 'Dupont', 'Tom', STR_TO_DATE('10/10/2013', '%d/%m/%Y'), 33.80, 'tom.dupont@yahoo.com', 'crystalBloom', "adherent"),
+(91, 'Moreau', 'Lola', STR_TO_DATE('07/05/2014', '%d/%m/%Y'), 29.20, 'lola.moreau@gmail.com', 'nebulaDream', "adherent"),
+(92, 'Simon', 'Arthur', STR_TO_DATE('14/07/2012', '%d/%m/%Y'), 34.20, 'arthur.simon@yahoo.com', 'goldenAspen', "adherent"),
+(93, 'Michel', 'Emma', STR_TO_DATE('30/08/2015', '%d/%m/%Y'), 28.20, 'emma.michel@laposte.fr', 'rubyMirage', "adherent"),
+(94, 'Garcia', 'Lucas', STR_TO_DATE('17/02/2013', '%d/%m/%Y'), 33.20, 'lucas.garcia@wanadoo.fr', 'stellarPhoenix', "adherent"),
+(95, 'Roux', 'Chloe', STR_TO_DATE('09/03/2016', '%d/%m/%Y'), 25.20, 'chloe.roux@gmail.com', 'tigerLily', "adherent"),
+(96, 'Fournier', 'Louis', STR_TO_DATE('11/01/2011', '%d/%m/%Y'), 40.20, 'louis.fournier@yahoo.com', 'velvetVortex', "adherent"),
+(97, 'Girard', 'Alice', STR_TO_DATE('05/11/2014', '%d/%m/%Y'), 30.30, 'alice.girard@laposte.fr', 'whisperingWind', "adherent"),
+(98, 'Bonnet', 'Tom', STR_TO_DATE('29/04/2012', '%d/%m/%Y'), 35.30, 'tom.bonnet@wanadoo.fr', 'crimsonEcho', "adherent"),
+(99, 'Dupuis', 'Lina', STR_TO_DATE('14/08/2015', '%d/%m/%Y'), 27.30, 'lina.dupuis@gmail.com', 'lunarGlow', "adherent"),
+(100, 'Michel', 'Ethan', STR_TO_DATE('24/02/2013', '%d/%m/%Y'), 32.30, 'ethan.michel@yahoo.com', 'Vroom1234', "adherent"),
 
 -- Insertion de 10 moniteurs générés par IA (Copilot de Bing) car tâche répétitive.
-(101, 'Dupont', 'Jean', STR_TO_DATE('21/05/1991', '%d/%m/%Y'), 75.50, 'jean.dupont@gmail.com', "moniteur"),
-(102, 'Martin', 'Sophie', STR_TO_DATE('02/03/1995', '%d/%m/%Y'), 62.30, 'sophie.martin@wanadoo.com', "moniteur"),
-(103, 'Bernard', 'Luc', STR_TO_DATE('30/11/1972', '%d/%m/%Y'), 80.20, 'luc.bernard@yahoo.com', "moniteur"),
-(104, 'Robert', 'Marie', STR_TO_DATE('27/07/1994', '%d/%m/%Y'), 68.40, 'marie.robert@yahoo.com', "moniteur"),
-(105, 'Petit', 'Pierre', STR_TO_DATE('13/01/1983', '%d/%m/%Y'), 77.10, 'pierre.petit@gmail.com', "moniteur"),
-(106, 'Durand', 'Claire', STR_TO_DATE('05/09/1996', '%d/%m/%Y'), 59.80, 'claire.durand@wanadoo.com', "moniteur"),
-(107, 'Leroy', 'Julien', STR_TO_DATE('06/10/1979', '%d/%m/%Y'), 85.60, 'julien.leroy@gmail.com', "moniteur"),
-(108, 'Moreau', 'Isabelle', STR_TO_DATE('04/04/1991', '%d/%m/%Y'), 64.50, 'isabelle.moreau@gmail.com'), "moniteur",
-(109, 'Simon', 'Thomas', STR_TO_DATE('17/01/1985', '%d/%m/%Y'), 78.90, 'thomas.simon@laposte.fr', "moniteur"),
-(110, 'Laurent', 'Emilie', STR_TO_DATE('24/03/1994', '%d/%m/%Y'), 61.70, 'emilie.laurent@orange.fr', "moniteur"),
+(101, 'Dupont', 'Jean', STR_TO_DATE('21/05/1991', '%d/%m/%Y'), 75.50, 'jean.dupont@gmail.com', "aaaa", "moniteur"),
+(102, 'Martin', 'Sophie', STR_TO_DATE('02/03/1995', '%d/%m/%Y'), 62.30, 'sophie.martin@wanadoo.com', "aabb", "moniteur"),
+(103, 'Bernard', 'Luc', STR_TO_DATE('30/11/1972', '%d/%m/%Y'), 80.20, 'luc.bernard@yahoo.com', "1234", "moniteur"),
+(104, 'Robert', 'Marie', STR_TO_DATE('27/07/1994', '%d/%m/%Y'), 68.40, 'marie.robert@yahoo.com', "azaz12", "moniteur"),
+(105, 'Petit', 'Pierre', STR_TO_DATE('13/01/1983', '%d/%m/%Y'), 77.10, 'pierre.petit@gmail.com', "PetitPierre1234", "moniteur"),
+(106, 'Durand', 'Claire', STR_TO_DATE('05/09/1996', '%d/%m/%Y'), 59.80, 'claire.durand@wanadoo.com', "ffjop", "moniteur"),
+(107, 'Leroy', 'Julien', STR_TO_DATE('06/10/1979', '%d/%m/%Y'), 85.60, 'julien.leroy@gmail.com', "fjdfjjfdjfidhuhgklvm", "moniteur"),
+(108, 'Moreau', 'Isabelle', STR_TO_DATE('04/04/1991', '%d/%m/%Y'), 64.50, 'isabelle.moreau@gmail.com', "21gfg42g1h4h2f", "moniteur"),
+(109, 'Simon', 'Thomas', STR_TO_DATE('17/01/1985', '%d/%m/%Y'), 78.90, 'thomas.simon@laposte.fr', "12", "moniteur"),
+(110, 'Laurent', 'Emilie', STR_TO_DATE('24/03/1994', '%d/%m/%Y'), 61.70, 'emilie.laurent@orange.fr', "gjh45d4g5f?dg78ty2dfg15f!75t4", "moniteur"),
 
--- Insertion de l'admin
-(111, 'Admin', 'Auguste', STR_TO_DATE('01/01/1978', '%d/%m/%Y'), 75.50, 'auguste.admin@gmail.com', "admin");
+--Insertion de l'admin
+(111, 'Admin', 'Auguste', STR_TO_DATE('01/01/1978', '%d/%m/%Y'), 75.50, 'auguste.admin@gmail.com', "mdp admin","admin");
 
 -- Insertions des cours hebdomadaires. Généré par IA (Copilot de Bing) car tâche répétitive.
 INSERT INTO COURS (id_c, id_u, nb_pe, h_de_debut, duree, date_c, prix) VALUES
@@ -443,7 +442,7 @@ INSERT INTO COURS (id_c, id_u, nb_pe, h_de_debut, duree, date_c, prix) VALUES
 (276, 102, 8, 16, 1, '2025-06-29', 28.00); -- Samedi après-midi
 
 -- Insertions des réservations. Généré par IA (Copilot de Bing) car tâche répétitive.
-INSERT INTO RESERVER (id_u, id_po, id_c) VALUES
+INSERT INTO RESERVER (id_a, id_po, id_c) VALUES
 (11, 1, 25),  -- Adhérent Alice monte Poney 1 le 9 janvier
 (12, 2, 25),  -- Adhérent Lucas monte Poney 2 le 9 janvier
 (13, 3, 25),  -- Adhérent Emma monte Poney 3 le 9 janvier
@@ -451,8 +450,6 @@ INSERT INTO RESERVER (id_u, id_po, id_c) VALUES
 (15, 5, 25),  -- Adhérent Chloe monte Poney 5 le 9 janvier
 (16, 6, 25),  -- Adhérent Louis monte Poney 6 le 9 janvier
 (17, 7, 25),  -- Adhérent Léa monte Poney 7 le 9 janvier
-(18, 8, 25),  -- Adhérent Tom monte Poney 8 le 9 janvier
-(19, 9, 25),  -- Adhérent Jade monte Poney 9 le 9 janvier
 (20, 10, 25), -- Adhérent Arthur monte Poney 10 le 9 janvier
 
 (11, 1, 26),  -- Adhérent Alice monte Poney 1 le 16 janvier
@@ -461,8 +458,6 @@ INSERT INTO RESERVER (id_u, id_po, id_c) VALUES
 (14, 4, 26),  -- Adhérent Hugo monte Poney 4 le 16 janvier
 (15, 5, 26),  -- Adhérent Chloe monte Poney 5 le 16 janvier
 (16, 6, 26),  -- Adhérent Louis monte Poney 6 le 16 janvier
-(17, 7, 26),  -- Adhérent Léa monte Poney 7 le 16 janvier
-(18, 8, 26),  -- Adhérent Tom monte Poney 8 le 16 janvier
 (19, 9, 26),  -- Adhérent Jade monte Poney 9 le 16 janvier
 (20, 10, 26), -- Adhérent Arthur monte Poney 10 le 16 janvier
 
@@ -472,9 +467,7 @@ INSERT INTO RESERVER (id_u, id_po, id_c) VALUES
 (13, 3, 27),  -- Adhérent Emma monte Poney 3 le 23 janvier
 (14, 4, 27),  -- Adhérent Hugo monte Poney 4 le 23 janvier
 (15, 5, 27),  -- Adhérent Chloe monte Poney 5 le 23 janvier
-(16, 6, 27),  -- Adhérent Louis monte Poney 6 le 23 janvier
 (17, 7, 27),  -- Adhérent Léa monte Poney 7 le 23 janvier
-(18, 8, 27),  -- Adhérent Tom monte Poney 8 le 23 janvier
 (19, 9, 27),  -- Adhérent Jade monte Poney 9 le 23 janvier
 (20, 10, 27), -- Adhérent Arthur monte Poney 10 le 23 janvier
 
@@ -483,9 +476,7 @@ INSERT INTO RESERVER (id_u, id_po, id_c) VALUES
 (22, 12, 49),  -- Adhérent Leo monte Poney 12 le 10 janvier
 (23, 13, 49),  -- Adhérent Lina monte Poney 13 le 10 janvier
 (24, 14, 49),  -- Adhérent Ethan monte Poney 14 le 10 janvier
-(25, 15, 49),  -- Adhérent Mia monte Poney 15 le 10 janvier
 (26, 16, 49),  -- Adhérent Noah monte Poney 16 le 10 janvier
-(27, 17, 49),  -- Adhérent Léonie monte Poney 17 le 10 janvier
 (28, 18, 49),  -- Adhérent Tom monte Poney 18 le 10 janvier
 (29, 19, 49),  -- Adhérent Lola monte Poney 19 le 10 janvier
 (30, 20, 49),  -- Adhérent Arthur monte Poney 20 le 10 janvier
@@ -498,30 +489,25 @@ INSERT INTO RESERVER (id_u, id_po, id_c) VALUES
 (35, 25, 125),  -- Adhérent Chloe monte Poney 25 le 11 janvier
 (36, 26, 125),  -- Adhérent Louis monte Poney 26 le 11 janvier
 (37, 27, 125),  -- Adhérent Léa monte Poney 27 le 11 janvier
-(38, 28, 125),  -- Adhérent Tom monte Poney 28 le 11 janvier
-(39, 29, 125),  -- Adhérent Jade monte Poney 29 le 11 janvier
-(40, 30, 125),  -- Adhérent Arthur monte Poney 30 le 11 janvier
+(38, 5, 125),  -- Adhérent Tom monte Poney 28 le 11 janvier
 
 -- Réservations pour les vendredis
-(41, 31, 149),  -- Adhérent Alice monte Poney 31 le 12 janvier
-(42, 32, 149),  -- Adhérent Lucas monte Poney 32 le 12 janvier
-(43, 33, 149),  -- Adhérent Emma monte Poney 33 le 12 janvier
-(44, 34, 149),  -- Adhérent Hugo monte Poney 34 le 12 janvier
-(45, 35, 149),  -- Adhérent Chloe monte Poney 35 le 12 janvier
-(46, 36, 149),  -- Adhérent Louis monte Poney 36 le 12 janvier
-(47, 37, 149),  -- Adhérent Léa monte Poney 37 le 12 janvier
-(48, 38, 149),  -- Adhérent Tom monte Poney 38 le 12 janvier
-(49, 39, 149);  -- Adhérent Jade monte Poney 39 le 12 janvier
+(41, 1, 149),  -- Adhérent Alice monte Poney 31 le 12 janvier
+(43, 3, 149),  -- Adhérent Emma monte Poney 33 le 12 janvier
+(45, 5, 149),  -- Adhérent Chloe monte Poney 35 le 12 janvier
+(46, 6, 149),  -- Adhérent Louis monte Poney 36 le 12 janvier
+(47, 7, 149),  -- Adhérent Léa monte Poney 37 le 12 janvier
+(48, 8, 149);  -- Adhérent Tom monte Poney 38 le 12 janvier
 
-INSERT INTO COTISATION VALUES 
-(2021,2022),
-(2022,2023),
-(2023,2024),
-(2024,2025),
-(2025,2026);
+INSERT INTO COTISATION (annee_debut, annee_fin) VALUES 
+(2021, 2022),
+(2022, 2023),
+(2023, 2024),
+(2024, 2025),
+(2025, 2026);
 
 -- Insertions de COTISER. Généré par IA (Copilot de Bing) car tâche répétitive.
-INSERT INTO COTISER (id_u, annee_debut, annee_fin, paye) VALUES
+INSERT INTO COTISER (id_a, annee_debut, annee_fin, paye) VALUES
 -- Pour l'année 2023-2024
 (1, 2023, 2024, TRUE),
 (2, 2023, 2024, TRUE),

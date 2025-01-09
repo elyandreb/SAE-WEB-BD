@@ -33,7 +33,7 @@ INSERT INTO PONEY (id_po, nom_po, charge_max) VALUES
 
 
 -- Insertion de 100 adhérents générés par IA (Copilot de Bing) car tâche répétitive.
-INSERT INTO USER (id_u, nom_a, prenom_a, date_de_naissance, poids, email, le_role) VALUES
+INSERT INTO USER (id_u, nom_u, prenom_u, date_de_naissance, poids, email, le_role) VALUES
 (1, 'Durand', 'Paul', STR_TO_DATE('10/03/2014', '%d/%m/%Y'), 30.50, 'paul.durand@gmail.com', "adherent"),
 (2, 'Petit', 'Marie', STR_TO_DATE('15/06/2012', '%d/%m/%Y'), 35.20, 'marie.petit@yahoo.com', "adherent"),
 (3, 'Martin', 'Julien', STR_TO_DATE('18/01/2015', '%d/%m/%Y'), 28.40, 'julien.martin@laposte.fr', "adherent"),

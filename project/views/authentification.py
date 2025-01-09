@@ -8,9 +8,7 @@ from wtforms.validators import DataRequired, EqualTo, Email, Length, Regexp, Val
 from project.models import Utilisateur
 
 class LoginForm (FlaskForm):
-    id_u = StringField("Id de l'utilisateur", validators=[DataRequired(), 
-                                                        Length(min=2, message='Longueur incorrecte.'), 
-                                                        Regexp(r'^(a|m|admin)\d*$', message="L'id est invalide.")
+    id_u = StringField("Id de l'utilisateur", validators=[DataRequired()
                                                         ])
     password = PasswordField("Mot de passe", validators=[DataRequired(), Length(max=64)])
 
@@ -21,19 +19,13 @@ class LoginForm (FlaskForm):
         Returns:
             Utilisateur: L'utilisateur si le mot de passe est correct, None sinon
         """
-        id_entier = self.id_u.data
-        if id_entier[0] == "a" or id_entier[0] == "m" or id_entier[0:5] == "admin" :
-            print("id_entier passe")
-            print(id_entier[1:])
-            user = Utilisateur.query.get(id_entier[1:])
-            print(user)
-            if user is None:
-                return None
-            m = sha256()
-            m.update(self.password.data.encode())
-            passwd = m.hexdigest()
-            return user if passwd == user.mdp else None
-        return None
+        user = Utilisateur.query.get(self.id_u.data)
+        if user is None:
+            return None
+        m = sha256()
+        m.update(self.password.data.encode())
+        passwd = m.hexdigest()
+        return user if passwd == user.mdp else None
 
 class RegisterForm (FlaskForm):
     id_u = HiddenField()
@@ -94,16 +86,10 @@ def login():
     f = LoginForm()
     if f.validate_on_submit():
         the_user = f.get_authentificated_user()
-        print(the_user)
         if the_user:
             login_user(the_user)
-            if f.id_u.data[0:5] == "admin" :
-                return render_template("home_admin.html")
-            elif f.id_u.data[0] == "m" : 
-                return render_template("home_moniteur.html")
-            else : # l'utilisateur est trouvé donc c'est forcément un adherent
-                return render_template("home_adherent.html")
-        return render_template("connexion.html", form = f, error = 'Mot de passe incorrect.')
+            print(the_user.get_id())
+            return redirect(url_for("accueil",adherent_id = the_user.get_id()))
     return render_template("connexion.html", form = f)
 
 @app.route("/deconnexion")
@@ -114,15 +100,11 @@ def logout():
 @app.route("/inscription", methods = ["GET", "POST"])
 def register():
     f = RegisterForm()
-    print("test1")
     if f.validate_on_submit():
-        print("test2")
         u = f.create_user()
-        print(u)
         if Utilisateur.query.get(u.get_id()) :
             return render_template("inscription.html", form = f)
         else :
-            print("ça va enregistrer")
             db.session.add(u)
             db.session.commit()
             login_user(u)

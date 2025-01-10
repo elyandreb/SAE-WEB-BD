@@ -1,0 +1,178 @@
+{% extends 'base.html' %}
+
+{% block title %}Profil Utilisateur {% endblock %}
+
+{% block content %}
+<div>
+    Bienvenue {{ form.first_name }}
+    {% if cotisation %}
+        Votre cotisation est payée
+    {% else %}
+        Votre cotisation n'est pas payée, merci de la payée rapidement
+    {% endif %}
+</div>
+
+<div class="container-fluid d-flex mb-5">
+
+    <div class="p-5 rounded shadow w-100 main_profil">
+        <!-- Main content area -->
+        <div class="w-50">
+            <h2 class="mb-4">Profil</h2>
+            <form method="POST" action="{{ url_for('profil') }}">
+                {{ form.hidden_tag() }}
+
+                <!--Nom-->
+                <div class="mb-3">
+                    <label for="name" class="form-label">
+                        {{ form.name.label }} <span class="text-danger">*</span>
+                    </label>
+                    {{ form.name(size=50, class_="form-control w-100",
+                                 disabled=(True if not edit else False),
+                                 placeholder="Entrez votre nom") }}
+                </div>
+                {% if form.name.errors %}
+                    <ul class="list-group">
+                        {% for e in form.name.errors %}
+                            <li class="list-group-item list-group-item-danger">{{ e }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+
+                <!--Prénom-->
+                <div class="mb-3">
+                    <label for="first_name" class="form-label">
+                        {{ form.first_name.label }} <span class="text-danger">*</span>
+                    </label>
+                    {{ form.first_name(size=50, class_="form-control w-100",
+                                       disabled=(True if not edit else False),
+                                       placeholder="Entrez votre prénom") }}
+                </div>
+                {% if form.first_name.errors %}
+                    <ul class="list-group">
+                        {% for e in form.first_name.errors %}
+                            <li class="list-group-item list-group-item-danger">{{ e }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+
+                <!--Email-->
+                <div class="mb-3">
+                    <label for="email" class="form-label">
+                        {{ form.email.label }} <span class="text-danger">*</span>
+                    </label>
+                    {{ form.email(size=50, class_="form-control w-100",
+                                  disabled=(True if not edit else False),
+                                  placeholder="Entrez votre email") }}
+                </div>
+                {% if form.email.errors %}
+                    <ul class="list-group">
+                        {% for e in form.email.errors %}
+                            <li class="list-group-item list-group-item-danger">{{ e }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+
+                <!--Date d'anniversaire-->
+                <div class="mb-3">
+                    <label for="birth_date" class="form-label">
+                        {{ form.birth_date.label }} <span class="text-danger">*</span>
+                    </label>
+                    {{ form.birth_date(size=50, class_="form-control w-100",
+                                 disabled=(True if not edit else False),
+                                 placeholder="Entrez votre nom") }}
+                </div>
+                {% if form.birth_date.errors %}
+                    <ul class="list-group">
+                        {% for e in form.birth_date.errors %}
+                            <li class="list-group-item list-group-item-danger">{{ e }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+
+                <!--Poids-->
+                <div class="mb-3">
+                    <label for="poids" class="form-label">
+                        {{ form.poids.label }} <span class="text-danger">*</span>
+                    </label>
+                    {{ form.poids(size=50, class_="form-control w-100",
+                                 disabled=(True if not edit else False),
+                                 placeholder="Entrez votre nom") }}
+                </div>
+                {% if form.poids.errors %}
+                    <ul class="list-group">
+                        {% for e in form.poids.errors %}
+                            <li class="list-group-item list-group-item-danger">{{ e }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+
+
+                <div class="d-flex">
+                    <div class="mb-3 ms-auto">
+                        {% if edit %}
+                            <a href="{{ url_for('profil') }}" class="btn btn_color">Annuler</a>
+                            <input class="btn btn_color" type="submit" name="save_profile" value="Enregistrer">
+                        {% else %}
+                            <a href="{{ url_for('profil', edit=True) }}" class="btn btn_color">Modifier</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </form>
+
+            <!-- Formulaire de changement de mot de passe -->
+            <h2 class="mb-4">Changer mon mot de passe</h2>
+            <form method="POST" action="{{ url_for('profil') }}">
+                {{ mdp_f.hidden_tag() }}
+
+                <div class="mb-3">
+                    <label for="old_password" class="form-label">
+                        {{ mdp_f.old_password.label }} <span class="text-danger">*</span>
+                    </label>
+                    {{ mdp_f.old_password(class_="form-control w-100", placeholder="Entrez votre ancien mot de passe") }}
+                </div>
+                {% if mdp_f.old_password.errors %}
+                    <ul class="list-group">
+                        {% for e in mdp_f.old_password.errors %}
+                            <li class="list-group-item list-group-item-danger">{{ e }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+
+                <div class="mb-3">
+                    <label for="new_password" class="form-label">
+                        {{ mdp_f.new_password.label }} <span class="text-danger">*</span>
+                    </label>
+                    {{ mdp_f.new_password(class_="form-control w-100", placeholder="Entrez votre nouveau mot de passe") }}
+                </div>
+                {% if mdp_f.new_password.errors %}
+                    <ul class="list-group">
+                        {% for e in mdp_f.new_password.errors %}
+                            <li class="list-group-item list-group-item-danger">{{ e }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+
+                <div class="mb-3">
+                    <label for="confirm_password" class="form-label">
+                        {{ mdp_f.confirm_password.label }} <span class="text-danger">*</span>
+                    </label>
+                    {{ mdp_f.confirm_password(class_="form-control w-100", placeholder="Confirmez votre nouveau mot de passe") }}
+                </div>
+                {% if mdp_f.confirm_password.errors %}
+                    <ul class="list-group">
+                        {% for e in mdp_f.confirm_password.errors %}
+                            <li class="list-group-item list-group-item-danger">{{ e }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+
+                <div class="d-flex">
+                    <div class="mb-3 ms-auto">
+                        {{ mdp_f.change_password(class_="btn btn_color") }}
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

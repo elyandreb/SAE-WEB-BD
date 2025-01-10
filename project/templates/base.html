@@ -17,7 +17,7 @@
                 <img src="{{ url_for('static', filename='img/logo_poney.png') }}" alt="Logo Poney" style="height: 50px; margin-left: 10px;">
             </div>
             <nav>
-                <a href="/accueil" class="text-dark mx-2">Accueil</a>
+                <a href="/accueil/{{ utilisateur.id_u }}" class="text-dark mx-2">Accueil</a>
                 <a href="/emplois-du-temps" class="text-dark mx-2">Emploi du temps</a>
                 <a href="/profile" class="text-dark mx-2">{{ utilisateur.prenom_u }}</a>
             </nav>

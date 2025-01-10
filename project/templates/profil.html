@@ -4,12 +4,14 @@
 
 {% block content %}
 <div>
-    Bienvenue {{ form.first_name }}
+    Bienvenue <strong>{{ utilisateur.prenom_u }}</strong><br>
     {% if cotisation %}
         Votre cotisation est payée
     {% else %}
         Votre cotisation n'est pas payée, merci de la payée rapidement
     {% endif %}
+    <br>
+    {{ jour }}
 </div>
 
 <div class="container-fluid d-flex mb-5">
@@ -110,10 +112,10 @@
                 <div class="d-flex">
                     <div class="mb-3 ms-auto">
                         {% if edit %}
-                            <a href="{{ url_for('profil') }}" class="btn btn_color">Annuler</a>
-                            <input class="btn btn_color" type="submit" name="save_profile" value="Enregistrer">
+                            <a href="{{ url_for('profil') }}" class="btn btn-dark">Annuler</a>
+                            <input class="btn btn-dark" type="submit" name="save_profile" value="Enregistrer">
                         {% else %}
-                            <a href="{{ url_for('profil', edit=True) }}" class="btn btn_color">Modifier</a>
+                            <a href="{{ url_for('profil', edit=True) }}" class="btn btn-dark">Modifier</a>
                         {% endif %}
                     </div>
                 </div>
@@ -168,7 +170,7 @@
 
                 <div class="d-flex">
                     <div class="mb-3 ms-auto">
-                        {{ mdp_f.change_password(class_="btn btn_color") }}
+                        {{ mdp_f.change_password(class_="btn btn-dark") }}
                     </div>
                 </div>
             </form>

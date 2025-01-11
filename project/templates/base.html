@@ -20,6 +20,7 @@
                 <a href="/accueil/{{ utilisateur.id_u }}" class="text-dark mx-2">Accueil</a>
                 <a href="/emplois-du-temps" class="text-dark mx-2">Emploi du temps</a>
                 <a href="/profil" class="text-dark mx-2">{{ utilisateur.prenom_u }}</a>
+                <a href="{{ url_for('logout') }}" class="text-dark mx-2" >Se déconnecter</a>
             </nav>
         </div>
     </header>

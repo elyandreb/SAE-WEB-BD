@@ -3,11 +3,14 @@ from flask_login import login_required, current_user
 from datetime import date, timedelta
 from project.models import Cours, Reserver
 from project import app, db
+import locale
 
 @app.route('/edt')
 def emploi_du_temps():
     
-
+    # Configurer les dates en français
+    locale.setlocale(locale.LC_TIME, 'fr_FR.UTF-8')
+    
     # Récupérer la semaine à afficher
     today = date.today()
     semaine_index = int(request.args.get('week', 0))  # Décalage de la semaine
@@ -31,7 +34,7 @@ def emploi_du_temps():
         )
 
         # Générer les horaires
-        horaires = range(9, 21)  # De 9h à 21h
+        horaires = range(9, 21)  # De 9h à 20h
 
         return render_template('edt_moniteur.html', semaine_debut=semaine_debut, jours=jours, horaires=horaires, cours_semaine=cours_semaine, previous_week=semaine_index - 1, next_week=semaine_index + 1, utilisateur=current_user)
 
@@ -49,8 +52,8 @@ def emploi_du_temps():
             cours.inscrit = Reserver.query.filter_by(id_u=current_user.id_u, id_c=cours.id_c).first() is not None
 
         # Générer les horaires
-        horaires = range(9, 21)  # De 9h à 17h
-
+        horaires = range(9, 21)  # De 9h à 20h
+        print(jours)
         return render_template(
             'edt_adherent.html',
             utilisateur=current_user,

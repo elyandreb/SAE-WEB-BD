@@ -10,3 +10,13 @@
         -1px  1px 0 #000,
          1px  1px 0 #000; /* Contour noir */
 }
+
+.container-principal {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.contenu {
+    flex: 1;
+}

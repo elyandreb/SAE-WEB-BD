@@ -88,6 +88,32 @@ Pour la gestion de notre travail nous avons utilisé plusieurs outils tels que <
 #### Dan : 
 - Absent
 
+### Séance du 06/01/2025 (3h) :
+#### Loris :
+- Réfléxion structuration avec Elyandre
+- Création du model en SQLAlchemy
+- Modifications de la BD, ajout de mdp pour les adhérents et les moniteurs
+- Début de l'implémentation pour la connexion et l'inscription
+
+#### Elyandre :
+- 
+  
+#### Dan : 
+- Absent
+
+### Séance du 09/01/2025 (1h30) :
+#### Loris :
+- Réflexion avec Elyandre sur la BD
+- Restructuration de la BD : tables ADHERENT et MONITEUR supprimées au profit d'une table UTILISATEUR
+- Modification des tables, des insertions et des triggers en conséquence des changements de BD
+- Début de modification du back-end de connexion et d'inscription
+
+#### Elyandre :
+- 
+
+#### Dan : 
+- Absent
+
 ### Travail supplémentaire hors créneaux SAE :
 #### Loris :
 - Modification MCD pour ajouter la cotisation
@@ -95,6 +121,13 @@ Pour la gestion de notre travail nous avons utilisé plusieurs outils tels que <
 - Insertions pour les tables COTISER et COTISATION
 - Création de tous les fichiers pour le rendu (sauf les maquettes)
 - Triggers pour empêcher le chevauchement pour un moniteur et celui pour l'update du poney
+- Correction des insertions afin que tout fonctionne
+- Avancée sur l'authentification et l'inscription
+- Création et implémentation (sommaire) des templates de connexion et d'inscription
+- Fin de l'implémentation finale de connexion et d'inscription
+- Ajout de SHA2 pour la sécurité des mdp
+- Implémentation du back-end de la page profil
+- Implémentation du front-end (sommaire) de la page de profil 
 
 #### Elyandre :
   - création du fichier pour le rendu des maquettes

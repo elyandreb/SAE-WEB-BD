@@ -18,7 +18,7 @@
             <!--Nom-->
             <div class="form-group row justify-content-center">
                 <label for="name" class="col-sm-10 mx-auto">
-                    {{ form.name.label }} <span>*</span>
+                    {{ form.name.label }} <span class="text-danger">*</span>
                 </label>
                 <div class="col-sm-10 mx-auto">
                     {{ form.name(size=50, class_="form-control",
@@ -29,7 +29,7 @@
             <!--Prénom-->
             <div class="form-group row justify-content-center">
                 <label for="first_name" class="col-sm-10 mx-auto">
-                    {{ form.first_name.label }} <span>*</span>
+                    {{ form.first_name.label }} <span class="text-danger">*</span>
                 </label>
                 <div class="col-sm-10 mx-auto">
                     {{ form.first_name(size=50, class_="form-control",
@@ -40,7 +40,7 @@
             <!--Email-->
             <div class="form-group row justify-content-center">
                 <label for="email" class="col-sm-10 mx-auto">
-                    {{ form.email.label }} <span>*</span>
+                    {{ form.email.label }} <span class="text-danger">*</span>
                 </label>
                 <div class="col-sm-10 mx-auto">
                     {{ form.email(size=50, class_="form-control",
@@ -60,7 +60,7 @@
             <!--Date de naissance-->
             <div class="form-group row justify-content-center">
                 <label for="birth_date" class="col-sm-10 mx-auto">
-                    {{ form.birth_date.label }} <span>*</span>
+                    {{ form.birth_date.label }} <span class="text-danger">*</span>
                 </label>
                 <div class="col-sm-10 mx-auto">
                     {{ form.birth_date(size=50, class_="form-control",
@@ -71,7 +71,7 @@
             <!--Poids-->
             <div class="form-group row justify-content-center">
                 <label for="poids" class="col-sm-10 mx-auto">
-                    {{ form.poids.label }} <span>*</span> NB : le poids sert à choisir votre cheval
+                    {{ form.poids.label }} <span class="text-danger">*</span> NB : le poids sert à choisir votre cheval
                 </label>
                 <div class="col-sm-10 mx-auto">
                     {{ form.poids(size=50, class_="form-control",
@@ -82,7 +82,7 @@
             <!--Mot de passe 1-->
             <div class="form-group row justify-content-center">
                 <label for="password" class="col-sm-10 mx-auto">
-                    {{ form.password.label }} <span>*</span>
+                    {{ form.password.label }} <span class="text-danger">*</span>
                 </label>
                 <div class="col-sm-10 mx-auto">
                     {{ form.password(size=50, class_="form-control",
@@ -93,7 +93,7 @@
             <!--Mot de passe 2-->
             <div class="form-group row justify-content-center">
                 <label for="password_check" class="col-sm-10 mx-auto">
-                    {{ form.password_check.label }} <span>*</span>
+                    {{ form.password_check.label }} <span class="text-danger">*</span>
                 </label>
                 <div class="col-sm-10 mx-auto">
                     {{ form.password_check(size=50, class_="form-control",

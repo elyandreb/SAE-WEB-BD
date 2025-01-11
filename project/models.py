@@ -1,3 +1,4 @@
+from sqlalchemy import CheckConstraint
 from .app import db, login_manager
 from flask_login import UserMixin
 
@@ -38,9 +39,9 @@ class Cours(db.Model):
     __tablename__ = 'COURS'
     id_c = db.Column(db.Integer, primary_key=True)
     id_u = db.Column(db.Integer, db.ForeignKey('UTILISATEUR.id_u'))  # Moniteur
-    nb_pe = db.Column(db.Integer, check_constraint="nb_pe <= 10 AND nb_pe >= 1")
+    nb_pe = db.Column(db.Integer, CheckConstraint("nb_pe <= 10 AND nb_pe >= 1"))
     h_de_debut = db.Column(db.Integer)
-    duree = db.Column(db.Integer, check_constraint="duree = 1 OR duree = 2")
+    duree = db.Column(db.Integer, CheckConstraint("duree = 1 OR duree = 2"))
     date_c = db.Column(db.Date)
     prix = db.Column(db.Numeric(5, 2))
     reservations = db.relationship('Reserver', back_populates='cours')

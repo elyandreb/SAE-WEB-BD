@@ -6,65 +6,83 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
 </head>
 {% block content %}
-<div class="background">
-    <div class="form_container mx-auto">
-        <form class="form-horizontal" role="form" method ="POST"
-            action ="{{ url_for ('login') }}">
-            {{ form.hidden_tag() }}
+    <header class="bg-beige py-3">
+        <div class="container d-flex justify-content-between align-items-center">
+            <img src="{{ url_for('static', filename='img/logo_poney.png') }}" alt="Logo Poney" class="img-fluid" style="max-height: 50px;">
+            <h1 class="titre-grand-galop">GRAND GALOP</h1>
+            <img src="{{ url_for('static', filename='img/logo_FFE.png') }}" alt="Logo FFE" class="img-fluid" style="max-height: 50px;">
+        </div>
+    </header>
 
-            <!--Id de l'utilisateur-->
-            <div class="form-group row justify-content-center">
-                <label for="id_u" class="col-sm-10 mx-auto">
-                    {{ form.id_u.label }} <span>*</span>
-                </label>
-                <div class="col-sm-10 mx-auto">
-                    {{ form.id_u(size=50, class_="form-control",
-                                placeholder="Votre id utilisateur") }}
-                </div>
+    <main class="container my-5">
+        <div class="row">
+            <div class="col-md-6">
+                <img src="{{ url_for('static', filename='img/poney_fille.png') }}" alt="Poney Fille" class="img-fluid">
             </div>
+            <div class="col-md-6">
+                <div class="background">
+                    <div class="form_container mx-auto">
+                        <form class="form-horizontal" role="form" method="POST" action="{{ url_for('login') }}">
+                            {{ form.hidden_tag() }}
 
-            <!--Erreur si l'id est incorrect-->
-            {% if form.id_u.errors %}
-                <ul class="list-group">
-                    {% for e in form.id_u.errors %}
-                        <li class="list-group-item list-group-item-danger">{{ e }}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
+                            <!-- Id de l'utilisateur -->
+                            <div class="form-group row justify-content-center">
+                                <label for="id_u" class="col-sm-10 mx-auto">
+                                    {{ form.id_u.label }} <span>*</span>
+                                </label>
+                                <div class="col-sm-10 mx-auto">
+                                    {{ form.id_u(size=50, class_="form-control", placeholder="Votre id utilisateur") }}
+                                </div>
+                            </div>
 
-            <!--Mot de passe-->
-            <div class="form-group row justify-content-center">
-                <label for="password" class="col-sm-10 mx-auto">
-                    {{ form.password.label }} <span>*</span>
-                </label >
-                <div class="col-sm-10 mx-auto">
-                    {{ form.password(size=50, class_="form-control",
-                    placeholder ="Mot de passe") }}
-                </div>
-            </div>
+                            <!-- Erreur si l'id est incorrect -->
+                            {% if form.id_u.errors %}
+                                <ul class="list-group">
+                                    {% for e in form.id_u.errors %}
+                                        <li class="list-group-item list-group-item-danger">{{ e }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
 
-            <!--Erreur si mdp ne correspond pas-->
-            {% if error == 'incorrect_password' %}
-                    <div class="alert alert-danger" role="alert">
-                        Mot de passe incorrect.
+                            <!-- Mot de passe -->
+                            <div class="form-group row justify-content-center">
+                                <label for="password" class="col-sm-10 mx-auto">
+                                    {{ form.password.label }} <span>*</span>
+                                </label>
+                                <div class="col-sm-10 mx-auto">
+                                    {{ form.password(size=50, class_="form-control", placeholder="Mot de passe") }}
+                                </div>
+                            </div>
+
+                            <!-- Erreur si mdp ne correspond pas -->
+                            {% if error == 'incorrect_password' %}
+                                <div class="alert alert-danger" role="alert">
+                                    Mot de passe incorrect.
+                                </div>
+                            {% endif %}
+
+                            <!-- Les boutons -->
+                            <div class="form-group">
+                                <!-- Bouton Se connecter -->
+                                <div class="col-sm-offset-2 col-sm-10 mx-auto">
+                                    <button type="submit" class="btn btn-dark btn-lg btn-block w-100">Se connecter</button>
+                                </div>
+
+                                <!-- Bouton S'inscrire -->
+                                <div class="col-sm-offset-2 col-sm-10 mx-auto">
+                                    <a href="{{ url_for('register') }}" class="btn btn-light btn-lg btn-block w-100 inscrire">S'inscrire</a>
+                                </div>
+                            </div>
+                        </form>
                     </div>
-            {% endif %}
-
-            <!--Les boutons-->
-            <div class="form-group">
-
-                <!--Bouton Se connecter-->
-                <div class="col-sm-offset-2 col-sm-10 mx-auto">
-                    <button type="submit" class="btn btn-dark btn-lg btn-block w-100">Se connecter</button>
-                </div>
-
-                <!--Bouton S'inscrire-->
-                <div class="col-sm-offset-2 col-sm-10 mx-auto">
-                    <a href="{{ url_for('register') }}" 
-                    class="btn btn-light btn-lg btn-block w-100 inscrire">S'inscrire</a>
                 </div>
             </div>
-        </form >
-    </div>
-</div>
-{% endblock %}
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-beige py-3">
+        <div class="container text-center">
+        </div>
+    </footer>
+    {% endblock %}

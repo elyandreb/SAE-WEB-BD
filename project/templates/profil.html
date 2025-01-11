@@ -13,13 +13,13 @@
         <div class="col">
             <div>
                 Bienvenue <strong>{{ utilisateur.prenom_u }}</strong><br>
+                {{ jour }}
+                <br>
                 {% if cotisation %}
                     Votre cotisation est payée
                 {% else %}
                     Votre cotisation n'est pas payée, merci de la payée rapidement
                 {% endif %}
-                <br>
-                {{ jour }}
             </div>
         </div>
     </div>

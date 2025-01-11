@@ -67,7 +67,7 @@ def profil() :
     else : 
         cotisation = Cotiser.query.filter_by(id_u=utilisateur_id, annee_debut=annee-1, annee_fin=annee).first()
     
-    jour_str = f"Le {jour.day:02d} {MOIS[jour.month]} {jour.year}"
+    jour_str = f"{jour.day:02d} {MOIS[jour.month]} {jour.year}"
 
 
     if request.method == 'GET':

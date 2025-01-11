@@ -127,7 +127,8 @@ Pour la gestion de notre travail nous avons utilisé plusieurs outils tels que <
 - Fin de l'implémentation finale de connexion et d'inscription
 - Ajout de SHA2 pour la sécurité des mdp
 - Implémentation du back-end de la page profil
-- Implémentation du front-end (sommaire) de la page de profil 
+- Implémentation du front-end de la page de profil
+- Implémentation du front-end de connexion et d'inscription
 
 #### Elyandre :
   - création du fichier pour le rendu des maquettes

@@ -28,7 +28,7 @@
                             <!-- Id de l'utilisateur -->
                             <div class="form-group row justify-content-center">
                                 <label for="id_u" class="col-sm-10 mx-auto">
-                                    {{ form.id_u.label }} <span>*</span>
+                                    {{ form.id_u.label }} <span class="text-danger">*</span>
                                 </label>
                                 <div class="col-sm-10 mx-auto">
                                     {{ form.id_u(size=50, class_="form-control", placeholder="Votre id utilisateur") }}
@@ -47,7 +47,7 @@
                             <!-- Mot de passe -->
                             <div class="form-group row justify-content-center">
                                 <label for="password" class="col-sm-10 mx-auto">
-                                    {{ form.password.label }} <span>*</span>
+                                    {{ form.password.label }} <span class="text-danger">*</span>
                                 </label>
                                 <div class="col-sm-10 mx-auto">
                                     {{ form.password(size=50, class_="form-control", placeholder="Mot de passe") }}

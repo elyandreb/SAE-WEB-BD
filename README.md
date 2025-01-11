@@ -129,6 +129,7 @@ Pour la gestion de notre travail nous avons utilisé plusieurs outils tels que <
 - Implémentation du back-end de la page profil
 - Implémentation du front-end de la page de profil
 - Implémentation du front-end de connexion et d'inscription
+- Migration des triggers dans models.py et finalisation de syncdb 
 
 #### Elyandre :
   - création du fichier pour le rendu des maquettes

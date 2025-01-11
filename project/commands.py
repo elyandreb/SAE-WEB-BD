@@ -1,5 +1,6 @@
 from .app import app, db
 from sqlalchemy.sql import text
+from .models import TriggerManager
 
 def execute_sql_file(filename):
     """Exécute un fichier SQL ligne par ligne."""
@@ -20,6 +21,9 @@ def syncdb():
 
     print("Création des tables...")
     execute_sql_file('BD/creation_grand_galop.sql')
+
+    print("Mise en place des triggers...")
+    TriggerManager()
 
     print("Insertion des données...")
     execute_sql_file('BD/insertion_grand_galop.sql')

@@ -40,7 +40,7 @@
                                     <p class="m-0">Durée : {{ cours.duree }}h</p>
                                     {% if cours.inscrit %}
                                     <span class="badge bg-success">Inscrit au cours</span>
-                                    {% elif cours.nb_pe >= 10 %}
+                                    {% elif cours.nb_inscriptions >= cours.nb_pe %}
                                     <span class="badge bg-danger">Cours complet</span>
                                     {% else %}
                                     <span class="badge bg-info">Cours disponible</span>

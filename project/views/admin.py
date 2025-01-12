@@ -8,6 +8,7 @@ from wtforms.validators import DataRequired, EqualTo, Email, Length, Regexp, Val
 from wtforms_sqlalchemy.fields import QuerySelectMultipleField
 from wtforms.widgets import RadioInput, ListWidget
 from project.models import Utilisateur, Poney, Cours
+import time
 
 
 class PoneyForm(FlaskForm) :
@@ -112,6 +113,7 @@ def drop_poney(id_po) :
     poney_reserves = Poney.get_poney_reserves()
     if poney in poney_reserves() :
         flash("Suppression impossible, le poney est réservé dans au moins un cours", "danger")
+        time.sleep(1)
     else :
         db.session.delete(poney)
         db.session.commit()
@@ -129,5 +131,17 @@ def update_poney(id_po) :
         flash(message, "success")
     else :
         flash(message, "danger")
+    time.sleep(1)
+    return redirect(url_for("acceuil", adherent_id = current_user.get_id()))
+
+@app.route("/add_moniteur", methods=["POST"])
+def add_moniteur() :
+    f = MoniteurForm()
+    if f.validate_on_submit() :
+        moniteur = f.create_moniteur()
+        db.session.add(moniteur)
+        db.session.commit()
+        flash("Moniteur créé, id : " + f.id_u.data, "success")
+        time.sleep(1)
     return redirect(url_for("acceuil", adherent_id = current_user.get_id()))
     

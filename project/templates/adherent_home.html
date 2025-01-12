@@ -3,36 +3,38 @@
 {% block title %}Accueil{% endblock %}
 
 {% block content %}
-<div class="container text-center mt-5">
-    <!-- En-tête -->
-    <div class="row">
-        <div class="col">
-            <h1 class="mb-4">Bonjour {{ utilisateur.prenom_u }}</h1>
-            <p class="fs-4">Voici votre prochain cours :</p>
+<link rel="stylesheet" href="{{ url_for('static', filename='adherent_home.css')}}">
+<div class="container d-flex justify-content-center align-items-center mt-5">
+    <div class="shadow-lg p-4 rounded" style="background-color: #ffffff; max-width: 800px; width: 100%; border-radius: 20px;">
+        <!-- En-tête -->
+        <div class="text-center">
+            <h1 class="mb-4" style="color: #4A4A4A;">Bonjour, {{ utilisateur.prenom_u }} 👋</h1>
+            <p class="fs-5 text-muted">Voici votre prochain cours :</p>
         </div>
-    </div>
 
-    <!-- Carte du prochain cours -->
-    <div class="row justify-content-center">
-        <div class="col-md-4">
-            <div class="card shadow-sm mt-3" style="border: 1px solid #cccccc; border-radius: 10px;">
-                <div class="card-body text-center">
-                    {% if cours %}
-                        <h5 class="card-title fs-5">Cours du {{ cours.date_c.strftime('%d/%m/%Y') }}</h5>
-                        <p class="card-text">Avec M.{{ cours.moniteur.nom_u }}</p>
-                    {% else %}
-                        <p class="text-muted">Aucun cours prévu pour le moment.</p>
-                    {% endif %}
+        <!-- Carte du prochain cours -->
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow mt-4" style="border: none; border-radius: 15px;">
+                    <div class="card-body text-center">
+                        {% if cours %}
+                            <h5 class="card-title fs-5" style="color: #333;">Cours du {{ cours.date_c.strftime('%d/%m/%Y') }}</h5>
+                            <p class="card-text text-muted">Avec <strong>M.{{ cours.moniteur.nom_u }}</strong></p>
+                        {% else %}
+                            <p class="text-muted">Aucun cours prévu pour le moment.</p>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- Bouton d'inscription -->
-        <div class="col-md-4 d-flex align-items-center justify-content-center">
-            <a href="/edt" class="btn btn-light shadow-sm" style="background-color: #fae9d8; border-radius: 10px; padding: 20px; font-size: 18px;">
-                <span class="me-2">S'inscrire à un cours</span>
-                <i class="bi bi-calendar2-plus-fill"></i>
-            </a>
+        <div class="row justify-content-center mt-4">
+            <div class="col-md-8">
+                <a href="/edt" class="btn btn-light w-100 py-3 shadow-sm" style="background-color: #fae9d8; color: #4A4A4A; border-radius: 15px; font-size: 18px;">
+                    <i class="bi bi-calendar2-plus-fill me-2"></i> S'inscrire à un cours
+                </a>
+            </div>
         </div>
     </div>
 </div>

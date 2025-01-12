@@ -110,3 +110,7 @@ def register():
             login_user(u)
             return redirect(url_for("accueil",adherent_id = u.get_id())) 
     return render_template("inscription.html", form = f)
+
+@app.route("/")
+def racine ():
+    return redirect(url_for("login"))

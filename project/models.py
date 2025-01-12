@@ -11,10 +11,26 @@ class Poney(db.Model):
 
     @classmethod
     def get_poney_reserves(cls) :
+        """Permet de récupérer les poneys réservés au moins une fois
+
+        Returns:
+            list(Poney): La liste des poneys réservés au moins une fois
+        """        
         return cls.join(Reserver).all()
     
     @classmethod
     def verifier_charge(cls, poney_id, nouvelle_charge):
+        """Permet de vérifier si la nouvelle charge 
+        est compatible avec le poney
+
+        Args:
+            poney_id (str): l'id du poney
+            nouvelle_charge (str): la nouvelle charge a tester
+
+        Returns:
+            (boolean, str): True si la charge est valide, False sinon 
+            + un message indiquant plus précisément le pourquoi du comment
+        """        
         poney = cls.query.get(poney_id)
         if not poney:
             return False, "Poney non trouvé."
@@ -45,10 +61,21 @@ class Utilisateur(db.Model, UserMixin):
     
     @classmethod
     def get_moniteurs(cls) :
+        """Permet de récupérer les moniteurs
+
+        Returns:
+            list(Utilisateur): la liste des moniteurs
+        """        
         return cls.query.filter_by(le_role="moniteur").all()
     
     @classmethod
     def get_moniteurs_attribues(cls) :
+        """Permet de récupérer les moniteurs 
+        attribués à au moins un cours
+
+        Returns:
+            list(Utilisateur): la liste des moniteurs attribués à au moins un cours
+        """        
         return cls.query.join(Cours, cls.id_u == Cours.id_u).filter_by(le_role="moniteur").all()
 
 class Reserver(db.Model):
@@ -71,6 +98,16 @@ class Cours(db.Model):
     prix = db.Column(db.Numeric(5, 2))
     reservations = db.relationship('Reserver', back_populates='cours')
     moniteur = db.relationship('Utilisateur', back_populates='cours')
+
+    @classmethod
+    def get_cours_remplis(cls) :
+        """permet de récupérer les cours 
+        ayant au moins une réservation
+
+        Returns:
+            list(Cours): les cours ayant au moins une réservation
+        """        
+        return cls.query.join(Reserver).distinct.all()
 
 
 class Cotiser(db.Model):

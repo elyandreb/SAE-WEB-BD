@@ -108,7 +108,29 @@ class Cours(db.Model):
             list(Cours): les cours ayant au moins une réservation
         """        
         return cls.query.join(Reserver).distinct().all()
+    
+    @classmethod
+    def verifier_nb_pe(cls, id_c, nouv_nb_pe) :
+        """Fonction permettant de vérifier que 
+        le nb max de personnes ne soit pas inférieur 
+        au nombre de personnes ayant déjà réservées
 
+        Args:
+            id_c (str): l'id du cours
+            nouv_nb_pe (str): le nouveau nb de personnes max
+
+        Returns:
+            (boolean, str): True si le nombre est valide, False sinon 
+            + un message indiquant plus précisément le pourquoi du comment
+        """        
+        cours = cls.query.get(id_c)
+        if not cours:
+            return False, "Cours non trouvé."
+        nb_reservations = len(cours.reservations)
+        if nouv_nb_pe < nb_reservations:
+            return False, f"Le nombre de participants ne peut pas être inférieur au nombre de réservations existantes ({nb_reservations})."
+
+        return True, "Le nombre de participants est valide."
 
 class Cotiser(db.Model):
     __tablename__ = 'COTISER'

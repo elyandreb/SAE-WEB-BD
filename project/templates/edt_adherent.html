@@ -40,14 +40,36 @@
                                     <p class="m-0">Durée : {{ cours.duree }}h</p>
                                     {% if cours.inscrit %}
                                     <span class="badge bg-success">Inscrit au cours</span>
-                                    {% elif cours.nb_pe >= 10 %}
+                                    {% elif cours.nb_inscriptions >= cours.nb_pe %}
                                     <span class="badge bg-danger">Cours complet</span>
                                     {% else %}
                                     <span class="badge bg-info">Cours disponible</span>
+                                    <button class="btn btn-sm btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#modalInscription{{ cours.id_c }}">
+                                        S'inscrire
+                                    </button>
                                     {% endif %}
-                                    {% if not cours.inscrit and cours.nb_pe < 10 %}
-                                    <a href="/inscription/{{ cours.id_c }}" class="btn btn-sm btn-primary mt-2">S'inscrire</a>
-                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <!-- Modal pour s'inscrire -->
+                            <div class="modal fade" id="modalInscription{{ cours.id_c }}" tabindex="-1" aria-labelledby="modalLabel{{ cours.id_c }}" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="modalLabel{{ cours.id_c }}">Confirmer l'inscription</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>Voulez-vous vous inscrire à ce cours ?</p>
+                                            <p><strong>Date :</strong> {{ cours.date_c.strftime('%d/%m/%Y') }}</p>
+                                            <p><strong>Heure :</strong> {{ cours.h_de_debut }}:00</p>
+                                            <p><strong>Durée :</strong> {{ cours.duree }} heure(s)</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                                            <a href="/inscription/{{ cours.id_c }}" class="btn btn-primary">Confirmer</a>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             {% endif %}

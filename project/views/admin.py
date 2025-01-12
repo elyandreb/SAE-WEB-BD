@@ -197,3 +197,16 @@ def add_cours() :
             flash(f"Erreur lors de l'ajout du cours : {str(e)}", "danger")
         time.sleep(1)
     return redirect(url_for("acceuil", adherent_id = current_user.get_id()))
+
+@app.route("/delete_cours/<int:id>", methods=["POST"])
+def drop_cours(id_c) :
+    cours = Cours.query.get(id_c)
+    cours_remplis = Cours.get_cours_remplis()
+    if cours in cours_remplis() :
+        flash("Suppression impossible, le cours a au moins une réservation", "danger")
+        time.sleep(1)
+    else :
+        db.session.delete(cours)
+        db.session.commit()
+    return redirect(url_for("acceuil", adherent_id = current_user.get_id()))
+

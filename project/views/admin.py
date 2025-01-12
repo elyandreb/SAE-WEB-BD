@@ -116,3 +116,18 @@ def drop_poney(id_po) :
         db.session.delete(poney)
         db.session.commit()
     return redirect(url_for("acceuil", adherent_id = current_user.get_id()))
+
+@app.route("/update_poney/<int:id>", methods=["POST"])
+def update_poney(id_po) :
+    poney = Poney.query.get(id_po)
+    f = PoneyForm()
+    verif, message = Poney.verifier_charge(id_po, f.charge.data)
+    if verif : 
+        poney.nom_po = f.nom_po.data
+        poney.charge_max = f.charge.data
+        db.session.commit()
+        flash(message, "success")
+    else :
+        flash(message, "danger")
+    return redirect(url_for("acceuil", adherent_id = current_user.get_id()))
+    

@@ -144,4 +144,16 @@ def add_moniteur() :
         flash("Moniteur créé, id : " + f.id_u.data, "success")
         time.sleep(1)
     return redirect(url_for("acceuil", adherent_id = current_user.get_id()))
+
+@app.route("/delete_moniteur/<int:id>", methods=["POST"])
+def drop_moniteur(id_po) :
+    moniteur = Utilisateur.query.get(id_po)
+    moniteur_attribues = Utilisateur.get_moniteurs_attribues()
+    if moniteur in moniteur_attribues() :
+        flash("Suppression impossible, le moniteur est attribué dans au moins un cours", "danger")
+        time.sleep(1)
+    else :
+        db.session.delete(moniteur)
+        db.session.commit()
+    return redirect(url_for("acceuil", adherent_id = current_user.get_id()))
     

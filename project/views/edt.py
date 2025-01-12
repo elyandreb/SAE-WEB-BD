@@ -1,7 +1,8 @@
-from flask import render_template, request
+import random
+from flask import flash, redirect, render_template, request, url_for
 from flask_login import login_required, current_user
 from datetime import date, timedelta
-from project.models import Cours, Reserver
+from project.models import Cours, Poney, Reserver
 from project import app, db
 import locale
 
@@ -10,7 +11,7 @@ def emploi_du_temps():
     
     # Configurer les dates en français
     locale.setlocale(locale.LC_TIME, 'fr_FR.UTF-8')
-    
+
     # Récupérer la semaine à afficher
     today = date.today()
     semaine_index = int(request.args.get('week', 0))  # Décalage de la semaine
@@ -65,4 +66,23 @@ def emploi_du_temps():
             next_week=semaine_index + 1,
         )
 
+@app.route('/inscription/<int:cours_id>')
+@login_required
+def inscrire_au_cours(cours_id):
+    
+    # Trouver les poneys déjà réservés pour ce cours
+    poneys_reserves = [reservation.id_po for reservation in Reserver.query.filter_by(id_c=cours_id).all()]
 
+    # Sélectionner un poney aléatoire non réservé
+    poneys_disponibles = Poney.query.filter(Poney.id_po.notin_(poneys_reserves)).all()
+
+    # Choisir un poney aléatoire
+    poney_choisi = random.choice(poneys_disponibles)
+
+    # Créez une nouvelle réservation
+    nouvelle_reservation = Reserver(id_u=current_user.id_u, id_c=cours_id, id_po=poney_choisi.id_po)
+    db.session.add(nouvelle_reservation)
+    db.session.commit()
+
+    flash("Inscription réussie !", "success")
+    return redirect(url_for('emploi_du_temps'))

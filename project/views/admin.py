@@ -1,5 +1,5 @@
 from project import app, db
-from flask import render_template, url_for, redirect, request
+from flask import render_template, url_for, redirect, request, flash
 from flask_wtf import FlaskForm
 from flask_login import login_user , current_user, logout_user, login_required
 from hashlib import sha256
@@ -100,8 +100,19 @@ class CoursForm(FlaskForm) :
 def add_poney() :
     f = PoneyForm()
     if f.validate_on_submit() :
-        poney = Poney(nom_po = f.nom_po,
-                      charge_max = f.charge)
+        poney = Poney(nom_po = f.nom_po.data,
+                      charge_max = f.charge.data)
         db.session.add(poney)
+        db.session.commit()
+    return redirect(url_for("acceuil", adherent_id = current_user.get_id()))
+
+@app.route("/delete_poney/<int:id>", methods=["POST"])
+def drop_poney(id_po) :
+    poney = Poney.query.get(id_po)
+    poney_reserves = Poney.get_poney_reserves()
+    if poney in poney_reserves() :
+        flash("Suppression impossible, le poney est réservé dans au moins un cours", "danger")
+    else :
+        db.session.delete(poney)
         db.session.commit()
     return redirect(url_for("acceuil", adherent_id = current_user.get_id()))

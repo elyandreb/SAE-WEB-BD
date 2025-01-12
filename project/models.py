@@ -16,7 +16,7 @@ class Poney(db.Model):
         Returns:
             list(Poney): La liste des poneys réservés au moins une fois
         """        
-        return cls.join(Reserver).all()
+        return cls.query.join(Reserver).distinct().all()
     
     @classmethod
     def verifier_charge(cls, poney_id, nouvelle_charge):
@@ -76,7 +76,7 @@ class Utilisateur(db.Model, UserMixin):
         Returns:
             list(Utilisateur): la liste des moniteurs attribués à au moins un cours
         """        
-        return cls.query.join(Cours, cls.id_u == Cours.id_u).filter_by(le_role="moniteur").all()
+        return cls.query.join(Cours, cls.id_u == Cours.id_u).filter(cls.le_role == "moniteur").distinct().all()
 
 class Reserver(db.Model):
     __tablename__ = 'RESERVER'
@@ -107,7 +107,7 @@ class Cours(db.Model):
         Returns:
             list(Cours): les cours ayant au moins une réservation
         """        
-        return cls.query.join(Reserver).distinct.all()
+        return cls.query.join(Reserver).distinct().all()
 
 
 class Cotiser(db.Model):

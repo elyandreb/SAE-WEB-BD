@@ -46,6 +46,10 @@ class Utilisateur(db.Model, UserMixin):
     @classmethod
     def get_moniteurs(cls) :
         return cls.query.filter_by(le_role="moniteur").all()
+    
+    @classmethod
+    def get_moniteurs_attribues(cls) :
+        return cls.query.join(Cours, cls.id_u == Cours.id_u).filter_by(le_role="moniteur").all()
 
 class Reserver(db.Model):
     __tablename__ = 'RESERVER'

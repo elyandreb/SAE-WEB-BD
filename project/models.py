@@ -4,7 +4,7 @@ from flask_login import UserMixin
 
 class Poney(db.Model):
     __tablename__ = 'PONEY'
-    id_po = db.Column(db.Integer, primary_key=True)
+    id_po = db.Column(db.Integer, primary_key=True, autoincrement=True)
     nom_po = db.Column(db.String(42))
     charge_max = db.Column(db.Numeric(4, 2))
     reservations = db.relationship('Reserver', back_populates='poney')

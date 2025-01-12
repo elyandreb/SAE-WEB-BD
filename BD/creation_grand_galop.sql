@@ -1,5 +1,5 @@
 CREATE TABLE PONEY (
-    id_po INT,
+    id_po INT AUTO_INCREMENT,
     nom_po VARCHAR(42),
     charge_max DECIMAL(4,2),
     PRIMARY KEY(id_po)

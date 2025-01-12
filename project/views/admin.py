@@ -7,13 +7,18 @@ from wtforms import IntegerField, StringField, PasswordField, EmailField, DateFi
 from wtforms.validators import DataRequired, EqualTo, Email, Length, Regexp, ValidationError, NumberRange, AnyOf
 from wtforms_sqlalchemy.fields import QuerySelectMultipleField
 from wtforms.widgets import RadioInput, ListWidget
-from project.models import Utilisateur, get_moniteurs
+from project.models import Utilisateur, Poney, get_moniteurs
 
 
 class PoneyForm(FlaskForm) :
     id_po = HiddenField("Id du poney", validators=[DataRequired()])
-    nom_po = StringField("Nom du poney", validators=[DataRequired(), Length(max=64)])
-    charge = DecimalField("Charge maximal du poney", validators=[DataRequired(),  NumberRange(min=0, message='La charge doit être un nombre positif.')])
+
+    nom_po = StringField("Nom du poney", validators=[DataRequired(), 
+                                                     Length(max=64)])
+    charge = DecimalField("Charge maximal du poney", 
+                          validators=[DataRequired(), 
+                                      NumberRange(min=0, 
+                                                  message='La charge doit être un nombre positif.')])
 
 class MoniteurForm(FlaskForm) :
     id_u = HiddenField()
@@ -56,7 +61,7 @@ class MoniteurForm(FlaskForm) :
         passwd = m.hexdigest()
         return user if passwd == user.mdp else None
     
-    def create_user(self) :
+    def create_moniteur(self) :
         passwd = self.password.data
         m = sha256()
         m.update(passwd.encode())
@@ -90,3 +95,13 @@ class CoursForm(FlaskForm) :
 
     prix = DecimalField('Le prix du cours', places=2, validators=[DataRequired(), 
                                                       NumberRange(min=0, max=999.99)])
+    
+@app.route("/add_poney", methods=["POST"])
+def add_poney() :
+    f = PoneyForm()
+    if f.validate_on_submit() :
+        poney = Poney(nom_po = f.nom_po,
+                      charge_max = f.charge)
+        db.session.add(poney)
+        db.session.commit()
+    return redirect(url_for("acceuil", adherent_id = current_user.get_id()))

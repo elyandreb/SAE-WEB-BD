@@ -7,7 +7,7 @@ from wtforms import IntegerField, StringField, PasswordField, EmailField, DateFi
 from wtforms.validators import DataRequired, EqualTo, Email, Length, Regexp, ValidationError, NumberRange, AnyOf
 from wtforms_sqlalchemy.fields import QuerySelectMultipleField
 from wtforms.widgets import RadioInput, ListWidget
-from project.models import Utilisateur, Poney, get_moniteurs
+from project.models import Utilisateur, Poney, Cours
 
 
 class PoneyForm(FlaskForm) :
@@ -79,7 +79,7 @@ class CoursForm(FlaskForm) :
 
     moniteur = QuerySelectMultipleField(
         "Les moniteurs",
-        query_factory=lambda: get_moniteurs(),
+        query_factory=lambda: Utilisateur.get_moniteurs(),
         get_label="id moniteur",
         widget=ListWidget(prefix_label=False),
         option_widget=RadioInput()

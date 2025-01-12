@@ -9,6 +9,10 @@ class Poney(db.Model):
     charge_max = db.Column(db.Numeric(4, 2))
     reservations = db.relationship('Reserver', back_populates='poney')
 
+    @classmethod
+    def get_poney_reserves(cls) :
+        return cls.join(Reserver).all()
+
 class Utilisateur(db.Model, UserMixin):
     __tablename__ = 'UTILISATEUR'
     id_u = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -25,6 +29,10 @@ class Utilisateur(db.Model, UserMixin):
 
     def get_id(self):
         return str(self.id_u)
+    
+    @classmethod
+    def get_moniteurs(cls) :
+        return cls.query.filter_by(le_role="moniteur").all()
 
 class Reserver(db.Model):
     __tablename__ = 'RESERVER'
@@ -352,6 +360,3 @@ class TriggerManager:
             END IF;
         END;
         """
-    
-def get_moniteurs() :
-    return Utilisateur.query.filter_by(le_role="moniteur").all()

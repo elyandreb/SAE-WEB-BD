@@ -86,7 +86,7 @@ class CoursForm(FlaskForm) :
         widget=ListWidget(prefix_label=False),
         option_widget=RadioInput()
     )
-    nb_personne = IntegerField("Le nombre de personne max",validators=[DataRequired()])
+    nb_personne = IntegerField("Le nombre de personne max",validators=[DataRequired(), NumberRange(min=1, max=10)])
 
     h_debut = IntegerField("L'heure de début",validators=[DataRequired()])
 
@@ -133,7 +133,7 @@ def update_poney(id_po) :
             flash(message, "success")
         else :
             flash(message, "danger")
-    time.sleep(1)
+        time.sleep(1)
     return redirect(url_for("acceuil", adherent_id = current_user.get_id()))
 
 @app.route("/add_moniteur", methods=["POST"])
@@ -210,3 +210,26 @@ def drop_cours(id_c) :
         db.session.commit()
     return redirect(url_for("acceuil", adherent_id = current_user.get_id()))
 
+@app.route("/update_cours/<int:id>", methods=["POST"])
+def update_cours(id_c) :
+    cours = Cours.query.get(id_c)
+    f = CoursForm()
+    if f.validate_on_submit() :
+        try :
+            verif, message = Cours.verifier_nb_pe(id_c, f.nb_personne.data)
+            if verif :
+                cours.id_u = f.moniteur.get_id(),
+                cours.nb_pe = f.nb_personne.data,
+                cours.h_de_debut = f.h_debut.data,
+                cours.duree = f.duree.data,
+                cours.date_c = f.date.data,
+                cours.prix = f.prix.data
+                db.session.commit()
+                flash(message, "success")
+            else :
+                flash(message, "danger")
+        except sql.SQLAlchemyError as e: # Les triggers se mettent en action s'il y a un soucis
+            db.session.rollback()
+            flash(f"Erreur lors de l'ajout du cours : {str(e)}", "danger")
+        time.sleep(1)
+    return redirect(url_for("acceuil", adherent_id = current_user.get_id()))

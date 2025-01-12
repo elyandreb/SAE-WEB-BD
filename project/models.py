@@ -352,3 +352,6 @@ class TriggerManager:
             END IF;
         END;
         """
+    
+def get_moniteurs() :
+    return Utilisateur.query.filter_by(le_role="moniteur").all()

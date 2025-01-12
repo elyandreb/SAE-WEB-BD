@@ -4,8 +4,10 @@ from flask_wtf import FlaskForm
 from flask_login import login_user , current_user, logout_user, login_required
 from hashlib import sha256
 from wtforms import IntegerField, StringField, PasswordField, EmailField, DateField, HiddenField, DecimalField
-from wtforms.validators import DataRequired, EqualTo, Email, Length, Regexp, ValidationError, NumberRange
-from project.models import Utilisateur
+from wtforms.validators import DataRequired, EqualTo, Email, Length, Regexp, ValidationError, NumberRange, AnyOf
+from wtforms_sqlalchemy.fields import QuerySelectMultipleField
+from wtforms.widgets import RadioInput, ListWidget
+from project.models import Utilisateur, get_moniteurs
 
 
 class PoneyForm(FlaskForm) :
@@ -66,3 +68,25 @@ class MoniteurForm(FlaskForm) :
                  poids = self.poids.data,
                  mdp=m.hexdigest(),
                  le_role="moniteur")
+    
+class CoursForm(FlaskForm) :
+    id_c = HiddenField(validators=[DataRequired()])
+
+    moniteur = QuerySelectMultipleField(
+        "Les moniteurs",
+        query_factory=lambda: get_moniteurs(),
+        get_label="id moniteur",
+        widget=ListWidget(prefix_label=False),
+        option_widget=RadioInput()
+    )
+    nb_personne = IntegerField("Le nombre de personne max",validators=[DataRequired()])
+
+    h_debut = IntegerField("L'heure de début",validators=[DataRequired()])
+
+    duree = IntegerField("La durée du cours",validators=[DataRequired(), 
+                                     AnyOf([1, 2])])
+    
+    date = DateField("La date du cours",validators=[DataRequired()])
+
+    prix = DecimalField('Le prix du cours', places=2, validators=[DataRequired(), 
+                                                      NumberRange(min=0, max=999.99)])

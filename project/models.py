@@ -12,6 +12,19 @@ class Poney(db.Model):
     @classmethod
     def get_poney_reserves(cls) :
         return cls.join(Reserver).all()
+    
+    @classmethod
+    def verifier_charge(cls, poney_id, nouvelle_charge):
+        poney = cls.query.get(poney_id)
+        if not poney:
+            return False, "Poney non trouvé."
+
+        for reservation in poney.reservations:
+            utilisateur = reservation.user
+            if utilisateur.poids > nouvelle_charge:
+                return False, f"L'utilisateur {utilisateur.nom_u} {utilisateur.prenom_u} dépasse la nouvelle charge maximale."
+
+        return True, "La nouvelle charge est suffisante pour tous les utilisateurs."
 
 class Utilisateur(db.Model, UserMixin):
     __tablename__ = 'UTILISATEUR'

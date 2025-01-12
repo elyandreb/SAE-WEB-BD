@@ -1,4 +1,4 @@
-from sqlalchemy import CheckConstraint
+from sqlalchemy import CheckConstraint, text
 from .app import db, login_manager
 from flask_login import UserMixin
 
@@ -81,7 +81,274 @@ class Cotisation(db.Model):
         foreign_keys="[Cotiser.annee_debut, Cotiser.annee_fin]"
     )
 
-
 @login_manager.user_loader
 def load_user(user_id):
     return Utilisateur.query.get(int(user_id))
+
+class TriggerManager:
+    def __init__(self):
+        self.execute_triggers()
+
+    def execute_triggers(self) -> None:
+        """
+        Execute all trigger methods in the class.
+
+        Trigger methods are methods that start with "trigger_".
+        """
+        for attr_name in dir(self):
+            if attr_name.startswith("trigger_"):
+                method = getattr(self, attr_name)
+                if callable(method):
+                    trigger_str = method()
+                    db.session.execute(text(trigger_str))
+                    db.session.commit()
+
+    def trigger_cavalierMoinsChargePoneyInsert(self) -> str:
+        return """
+        CREATE TRIGGER cavalierMoinsChargePoneyInsert 
+        BEFORE INSERT ON RESERVER 
+        FOR EACH ROW
+        BEGIN
+            DECLARE poidCavalier INT;
+            DECLARE chargePoney INT;
+            DECLARE mes VARCHAR(100) DEFAULT '';
+            SELECT poids INTO poidCavalier FROM UTILISATEUR WHERE id_u = NEW.id_u;
+            SELECT charge_max INTO chargePoney FROM PONEY WHERE id_po = NEW.id_po;
+            IF poidCavalier > chargePoney THEN
+                SET mes = CONCAT(mes, "Ajout impossible car le cavalier ", NEW.id_u, " pèse ", poidCavalier, "kg et le poney ", NEW.id_po, " supporte une charge max de ", chargePoney, "kg.");
+                SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = mes;
+            END IF;
+        END;
+        """
+
+    def trigger_cavalierMoinsChargePoneyUpdate(self) -> str:
+        return """
+        CREATE TRIGGER cavalierMoinsChargePoneyUpdate 
+        BEFORE UPDATE ON RESERVER 
+        FOR EACH ROW
+        BEGIN
+            DECLARE poidCavalier INT;
+            DECLARE chargePoney INT;
+            DECLARE mes VARCHAR(100) DEFAULT '';
+            SELECT poids INTO poidCavalier FROM UTILISATEUR WHERE id_u = NEW.id_u;
+            SELECT charge_max INTO chargePoney FROM PONEY WHERE id_po = NEW.id_po;
+            IF poidCavalier > chargePoney THEN
+                SET mes = CONCAT(mes, "Ajout impossible car le cavalier ", NEW.id_u, " pèse ", poidCavalier, "kg et le poney ", NEW.id_po, " supporte une charge max de ", chargePoney, "kg.");
+                SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = mes;
+            END IF;
+        END;
+        """
+
+    def trigger_nbInscritInferieurMaxInscriptionInsert(self) -> str:
+        return """
+        CREATE TRIGGER nbInscritInferieurMaxInscriptionInsert 
+        BEFORE INSERT ON RESERVER 
+        FOR EACH ROW
+        BEGIN
+            DECLARE nbInscrit INT;
+            DECLARE maxInscription INT;
+            DECLARE mes VARCHAR(100) DEFAULT '';
+            SELECT COUNT(*) INTO nbInscrit FROM RESERVER WHERE id_c=NEW.id_c GROUP BY id_c;
+            SELECT nb_pe INTO maxInscription FROM COURS WHERE id_c=NEW.id_c;
+            IF nbInscrit >= maxInscription THEN
+                SET mes = CONCAT(mes, "Ajout impossible car le cours à déjà le nombre max d'inscrit (", maxInscription, ")");
+                SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = mes;
+            END IF;
+        END;
+        """
+
+    def trigger_nbInscritInferieurMaxInscriptionUpdate(self) -> str:
+        return """
+        CREATE TRIGGER nbInscritInferieurMaxInscriptionUpdate 
+        BEFORE UPDATE ON RESERVER 
+        FOR EACH ROW
+        BEGIN
+            DECLARE nbInscrit INT;
+            DECLARE maxInscription INT;
+            DECLARE mes VARCHAR(100) DEFAULT '';
+            SELECT COUNT(*) INTO nbInscrit FROM RESERVER WHERE id_c=NEW.id_c GROUP BY id_c;
+            SELECT nb_pe INTO maxInscription FROM COURS WHERE id_c=NEW.id_c;
+            IF nbInscrit >= maxInscription THEN
+                SET mes = CONCAT(mes, "Ajout impossible car le cours à déjà le nombre max d'inscrit (", maxInscription, ")");
+                SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = mes;
+            END IF;
+        END;
+        """
+
+    def trigger_pasDeCheuvauchementAdherantInsert(self) -> str:
+        return """
+        CREATE TRIGGER pasDeCheuvauchementAdherantInsert 
+        BEFORE INSERT ON RESERVER 
+        FOR EACH ROW
+        BEGIN
+            DECLARE heureAvant INT;
+            DECLARE heureApres INT;
+            DECLARE mes VARCHAR(100) DEFAULT '';
+            DECLARE dureeAvant INT;
+            DECLARE heureCours INT;
+            DECLARE dureeCours INT;
+            DECLARE dateCours DATE;
+            SELECT h_de_debut, duree, date_c INTO heureCours, dureeCours, dateCours FROM COURS WHERE id_c = NEW.id_c;
+            SELECT h_de_debut, duree INTO heureAvant, dureeAvant FROM RESERVER NATURAL JOIN COURS 
+            WHERE date_c = dateCours AND h_de_debut < heureCours AND id_u = NEW.id_u
+            ORDER BY h_de_debut DESC LIMIT 1;
+            SELECT h_de_debut INTO heureApres FROM RESERVER NATURAL JOIN COURS 
+            WHERE date_c = dateCours AND h_de_debut > heureCours AND id_u = NEW.id_u
+            ORDER BY h_de_debut LIMIT 1;
+            IF heureAvant IS NOT NULL AND dureeAvant IS NOT NULL AND heureCours < heureAvant + dureeAvant THEN
+                SET mes = CONCAT(mes, "Ajout impossible car il existe déjà un cours précédent sur le créneau ", heureCours, "-", heureCours+dureeCours, ". Pour l'adhérant", NEW.id_u);
+                SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = mes;
+            END IF;
+            IF heureApres IS NOT NULL AND heureCours + dureeCours > heureApres THEN
+                SET mes = CONCAT(mes, "Ajout impossible car il existe déjà un cours suivant sur le créneau ", heureCours, "-", heureCours+dureeCours, ". Pour l'adhérant", NEW.id_u);
+                SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = mes;
+            END IF;
+        END;
+        """
+
+    def trigger_pasDeCheuvauchementAdherantUpdate(self) -> str:
+        return """
+        CREATE TRIGGER pasDeCheuvauchementAdherantUpdate 
+        BEFORE UPDATE ON RESERVER 
+        FOR EACH ROW
+        BEGIN
+            DECLARE heureAvant INT;
+            DECLARE heureApres INT;
+            DECLARE mes VARCHAR(100) DEFAULT '';
+            DECLARE dureeAvant INT;
+            DECLARE heureCours INT;
+            DECLARE dureeCours INT;
+            DECLARE dateCours DATE;
+            SELECT h_de_debut, duree, date_c INTO heureCours, dureeCours, dateCours FROM COURS WHERE id_c = NEW.id_c;
+            SELECT h_de_debut, duree INTO heureAvant, dureeAvant FROM RESERVER NATURAL JOIN COURS 
+            WHERE date_c = dateCours AND h_de_debut < heureCours AND id_u = NEW.id_u
+            ORDER BY h_de_debut DESC LIMIT 1;
+            SELECT h_de_debut INTO heureApres FROM RESERVER NATURAL JOIN COURS 
+            WHERE date_c = dateCours AND h_de_debut > heureCours AND id_u = NEW.id_u
+            ORDER BY h_de_debut LIMIT 1;
+            IF heureAvant IS NOT NULL AND dureeAvant IS NOT NULL AND heureCours < heureAvant + dureeAvant THEN
+                SET mes = CONCAT(mes, "Ajout impossible car il existe déjà un cours précédent sur le créneau ", heureCours, "-", heureCours+dureeCours, ". Pour l'adhérant", NEW.id_u);
+                SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = mes;
+            END IF;
+            IF heureApres IS NOT NULL AND heureCours + dureeCours > heureApres THEN
+                SET mes = CONCAT(mes, "Ajout impossible car il existe déjà un cours suivant sur le créneau ", heureCours, "-", heureCours+dureeCours, ". Pour l'adhérant", NEW.id_u);
+                SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = mes;
+            END IF;
+        END;
+        """
+    
+    def trigger_pasDeCheuvauchementPoneyInsert(self) -> str:
+        return """
+        CREATE TRIGGER pasDeCheuvauchementPoneyInsert 
+        BEFORE INSERT ON RESERVER 
+        FOR EACH ROW
+        BEGIN
+            DECLARE heureAvant INT;
+            DECLARE heureApres INT;
+            DECLARE mes VARCHAR(100) DEFAULT '';
+            DECLARE dureeAvant INT;
+            DECLARE heureCours INT;
+            DECLARE dureeCours INT;
+            DECLARE dateCours DATE;
+            SELECT h_de_debut, duree, date_c INTO heureCours, dureeCours, dateCours FROM COURS WHERE id_c = NEW.id_c;
+            SELECT h_de_debut, duree INTO heureAvant, dureeAvant FROM RESERVER NATURAL JOIN COURS 
+            WHERE date_c = dateCours AND h_de_debut < heureCours AND id_po = NEW.id_po
+            ORDER BY h_de_debut DESC LIMIT 1;
+            SELECT h_de_debut INTO heureApres FROM RESERVER NATURAL JOIN COURS 
+            WHERE date_c = dateCours AND h_de_debut > heureCours AND id_po = NEW.id_po
+            ORDER BY h_de_debut LIMIT 1;
+            IF heureAvant IS NOT NULL AND dureeAvant IS NOT NULL AND heureCours < heureAvant + dureeAvant THEN
+                SET mes = CONCAT(mes, "Ajout impossible car il existe déjà un cours précédent sur le créneau ", heureCours, "-", heureCours+dureeCours, ". pour le poney ", NEW.id_po);
+                SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = mes;
+            END IF;
+            IF heureApres IS NOT NULL AND heureCours + dureeCours > heureApres THEN
+                SET mes = CONCAT(mes, "Ajout impossible car il existe déjà un cours suivant sur le créneau ", heureCours, "-", heureCours+dureeCours, ". pour le poney ", NEW.id_po);
+                SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = mes;
+            END IF;
+        END;
+        """
+
+    def trigger_pasDeCheuvauchementPoneyUpdate(self) -> str:
+        return """
+        CREATE TRIGGER pasDeCheuvauchementPoneyUpdate 
+        BEFORE UPDATE ON RESERVER 
+        FOR EACH ROW
+        BEGIN
+            DECLARE heureAvant INT;
+            DECLARE heureApres INT;
+            DECLARE mes VARCHAR(100) DEFAULT '';
+            DECLARE dureeAvant INT;
+            DECLARE heureCours INT;
+            DECLARE dureeCours INT;
+            DECLARE dateCours DATE;
+            SELECT h_de_debut, duree, date_c INTO heureCours, dureeCours, dateCours FROM COURS WHERE id_c = NEW.id_c;
+            SELECT h_de_debut, duree INTO heureAvant, dureeAvant FROM RESERVER NATURAL JOIN COURS 
+            WHERE date_c = dateCours AND h_de_debut < heureCours AND id_po = NEW.id_po
+            ORDER BY h_de_debut DESC LIMIT 1;
+            SELECT h_de_debut INTO heureApres FROM RESERVER NATURAL JOIN COURS 
+            WHERE date_c = dateCours AND h_de_debut > heureCours AND id_po = NEW.id_po
+            ORDER BY h_de_debut LIMIT 1;
+            IF heureAvant IS NOT NULL AND dureeAvant IS NOT NULL AND heureCours < heureAvant + dureeAvant THEN
+                SET mes = CONCAT(mes, "Ajout impossible car il existe déjà un cours précédent sur le créneau ", heureCours, "-", heureCours+dureeCours, ". pour le poney ", NEW.id_po);
+                SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = mes;
+            END IF;
+            IF heureApres IS NOT NULL AND heureCours + dureeCours > heureApres THEN
+                SET mes = CONCAT(mes, "Ajout impossible car il existe déjà un cours suivant sur le créneau ", heureCours, "-", heureCours+dureeCours, ". pour le poney ", NEW.id_po);
+                SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = mes;
+            END IF;
+        END;
+        """
+
+    def trigger_pasDeCheuvauchementMoniteurInsert(self) -> str:
+        return """
+        CREATE TRIGGER pasDeCheuvauchementMoniteurInsert 
+        BEFORE INSERT ON COURS 
+        FOR EACH ROW
+        BEGIN
+            DECLARE heureAvant INT;
+            DECLARE heureApres INT;
+            DECLARE mes VARCHAR(100) DEFAULT '';
+            DECLARE dureeAvant INT;
+            SELECT h_de_debut, duree INTO heureAvant, dureeAvant FROM COURS 
+            WHERE date_c = NEW.date_c AND h_de_debut < NEW.h_de_debut AND id_u = NEW.id_u
+            ORDER BY h_de_debut DESC LIMIT 1;
+            SELECT h_de_debut INTO heureApres FROM COURS 
+            WHERE date_c = NEW.date_c AND h_de_debut > NEW.h_de_debut AND id_u = NEW.id_u
+            ORDER BY h_de_debut LIMIT 1;
+            IF heureAvant IS NOT NULL AND dureeAvant IS NOT NULL AND NEW.h_de_debut < heureAvant + dureeAvant THEN
+                SET mes = CONCAT(mes, "Ajout impossible car il existe déjà un cours précédent sur le créneau ", NEW.h_de_debut, "-", NEW.h_de_debut+NEW.duree, ". Pour le moniteur", NEW.id_u);
+                SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = mes;
+            END IF;
+            IF heureApres IS NOT NULL AND NEW.h_de_debut + NEW.duree > heureApres THEN
+                SET mes = CONCAT(mes, "Ajout impossible car il existe déjà un cours suivant sur le créneau ", NEW.h_de_debut, "-", NEW.h_de_debut+NEW.duree, ". Pour le moniteur", NEW.id_u);
+                SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = mes;
+            END IF;
+        END;
+        """
+
+    def trigger_pasDeCheuvauchementMoniteurUpdate(self) -> str:
+        return """
+        CREATE TRIGGER pasDeCheuvauchementMoniteurUpdate 
+        BEFORE UPDATE ON COURS 
+        FOR EACH ROW
+        BEGIN
+            DECLARE heureAvant INT;
+            DECLARE heureApres INT;
+            DECLARE mes VARCHAR(100) DEFAULT '';
+            DECLARE dureeAvant INT;
+            SELECT h_de_debut, duree INTO heureAvant, dureeAvant FROM COURS 
+            WHERE date_c = NEW.date_c AND h_de_debut < NEW.h_de_debut AND id_u = NEW.id_u
+            ORDER BY h_de_debut DESC LIMIT 1;
+            SELECT h_de_debut INTO heureApres FROM COURS 
+            WHERE date_c = NEW.date_c AND h_de_debut > NEW.h_de_debut AND id_u = NEW.id_u
+            ORDER BY h_de_debut LIMIT 1;
+            IF heureAvant IS NOT NULL AND dureeAvant IS NOT NULL AND NEW.h_de_debut < heureAvant + dureeAvant THEN
+                SET mes = CONCAT(mes, "Ajout impossible car il existe déjà un cours précédent sur le créneau ", NEW.h_de_debut, "-", NEW.h_de_debut+NEW.duree, ". Pour le moniteur", NEW.id_u);
+                SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = mes;
+            END IF;
+            IF heureApres IS NOT NULL AND NEW.h_de_debut + NEW.duree > heureApres THEN
+                SET mes = CONCAT(mes, "Ajout impossible car il existe déjà un cours suivant sur le créneau ", NEW.h_de_debut, "-", NEW.h_de_debut+NEW.duree, ". Pour le moniteur", NEW.id_u);
+                SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = mes;
+            END IF;
+        END;
+        """

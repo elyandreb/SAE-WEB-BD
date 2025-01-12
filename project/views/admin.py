@@ -123,14 +123,15 @@ def drop_poney(id_po) :
 def update_poney(id_po) :
     poney = Poney.query.get(id_po)
     f = PoneyForm()
-    verif, message = Poney.verifier_charge(id_po, f.charge.data)
-    if verif : 
-        poney.nom_po = f.nom_po.data
-        poney.charge_max = f.charge.data
-        db.session.commit()
-        flash(message, "success")
-    else :
-        flash(message, "danger")
+    if f.validate_on_submit() :
+        verif, message = Poney.verifier_charge(id_po, f.charge.data)
+        if verif : 
+            poney.nom_po = f.nom_po.data
+            poney.charge_max = f.charge.data
+            db.session.commit()
+            flash(message, "success")
+        else :
+            flash(message, "danger")
     time.sleep(1)
     return redirect(url_for("acceuil", adherent_id = current_user.get_id()))
 
@@ -146,8 +147,8 @@ def add_moniteur() :
     return redirect(url_for("acceuil", adherent_id = current_user.get_id()))
 
 @app.route("/delete_moniteur/<int:id>", methods=["POST"])
-def drop_moniteur(id_po) :
-    moniteur = Utilisateur.query.get(id_po)
+def drop_moniteur(id_u) :
+    moniteur = Utilisateur.query.get(id_u)
     moniteur_attribues = Utilisateur.get_moniteurs_attribues()
     if moniteur in moniteur_attribues() :
         flash("Suppression impossible, le moniteur est attribué dans au moins un cours", "danger")
@@ -157,3 +158,19 @@ def drop_moniteur(id_po) :
         db.session.commit()
     return redirect(url_for("acceuil", adherent_id = current_user.get_id()))
     
+@app.route("/update_moniteur/<int:id>", methods=["POST"])
+def update_moniteur(id_u) :
+    moniteur = Utilisateur.query.get(id_u)
+    f = MoniteurForm()
+    if f.validate_on_submit() :
+        passwd = f.password.data
+        m = sha256()
+        m.update(passwd.encode())
+        moniteur.nom_u = f.name.data,
+        moniteur.prenom_u = f.first_name.data,
+        moniteur.date_de_naissance=f.birth_date.data,
+        moniteur.email = f.email.data,
+        moniteur.poids = f.poids.data,
+        moniteur.mdp=m.hexdigest(),
+        db.session.commit()
+    return redirect(url_for("acceuil", adherent_id = current_user.get_id()))

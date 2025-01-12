@@ -90,3 +90,18 @@ def inscrire_au_cours(cours_id):
 
     flash("Inscription réussie !", "success")
     return redirect(url_for('emploi_du_temps'))
+
+@app.route('/desinscription/<int:cours_id>')
+@login_required
+def desinscrire_du_cours(cours_id):
+
+    # Vérifiez si l'utilisateur est inscrit au cours
+    inscription = Reserver.query.filter_by(id_u=current_user.id_u, id_c=cours_id).first()
+
+    # Supprimer l'inscription
+    db.session.delete(inscription)
+    db.session.commit()
+
+    flash("Vous avez été désinscrit du cours avec succès", "success")
+
+    return redirect(url_for('emploi_du_temps'))

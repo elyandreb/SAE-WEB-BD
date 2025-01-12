@@ -9,6 +9,7 @@ from wtforms_sqlalchemy.fields import QuerySelectMultipleField
 from wtforms.widgets import RadioInput, ListWidget
 from project.models import Utilisateur, Poney, Cours
 import time
+import sqlalchemy.exc as sql
 
 
 class PoneyForm(FlaskForm) :
@@ -173,4 +174,26 @@ def update_moniteur(id_u) :
         moniteur.poids = f.poids.data,
         moniteur.mdp=m.hexdigest(),
         db.session.commit()
+    return redirect(url_for("acceuil", adherent_id = current_user.get_id()))
+
+@app.route("/add_cours", methods=["POST"])
+def add_cours() :
+    f = CoursForm()
+    if f.validate_on_submit() :
+        try :
+            cours = Cours(
+                id_u = f.moniteur.get_id(),
+                nb_pe = f.nb_personne.data,
+                h_de_debut = f.h_debut.data,
+                duree = f.duree.data,
+                date_c = f.date.data,
+                prix = f.prix.data
+            )
+            db.session.add(cours)
+            db.session.commit()
+            flash("Cours ajouté avec succès.", "success")
+        except sql.SQLAlchemyError as e: # Les triggers se mettent en action s'il y a un soucis
+            db.session.rollback()
+            flash(f"Erreur lors de l'ajout du cours : {str(e)}", "danger")
+        time.sleep(1)
     return redirect(url_for("acceuil", adherent_id = current_user.get_id()))

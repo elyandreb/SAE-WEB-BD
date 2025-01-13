@@ -76,7 +76,7 @@ class CoursForm(FlaskForm) :
     moniteur = QuerySelectMultipleField(
         "Les moniteurs",
         query_factory=lambda: Utilisateur.get_moniteurs(),
-        get_label="id moniteur",
+        get_label="nom_u",
         widget=ListWidget(prefix_label=False),
         option_widget=RadioInput()
     )
@@ -91,6 +91,25 @@ class CoursForm(FlaskForm) :
 
     prix = DecimalField('Le prix du cours', places=2, validators=[DataRequired(), 
                                                       NumberRange(min=0, max=999.99)])
+
+@app.route("/test_p")
+def test_p() :
+    f = PoneyForm()
+    utilisateur = current_user
+    return render_template("test_p.html", form = f, utilisateur = utilisateur)
+
+@app.route("/test_m")
+def test_m() :
+    f = MoniteurForm()
+    utilisateur = current_user
+    return render_template("test_m.html", form = f, utilisateur = utilisateur)
+
+@app.route("/test_c")
+def test_c() :
+    f = CoursForm()
+    utilisateur = current_user
+    return render_template("test_c.html", form = f, utilisateur = utilisateur)
+
 
 @app.route("/add_poney", methods=["POST"])
 def add_poney() :
@@ -137,7 +156,7 @@ def add_moniteur() :
         moniteur = f.create_moniteur()
         db.session.add(moniteur)
         db.session.commit()
-        flash("Moniteur créé, id : " + f.id_u.data, "success")
+        flash("Moniteur créé, id : " + moniteur.get_id(), "success")
         time.sleep(1)
     return redirect(url_for("accueil", adherent_id = current_user.get_id()))
 
@@ -175,8 +194,10 @@ def add_cours() :
     f = CoursForm()
     if f.validate_on_submit() :
         try :
+            print(f.moniteur)
+            print(f.moniteur.get_id())
             cours = Cours(
-                id_u = f.moniteur.get_id(),
+                id_u = f.moniteur.data.get_id(),
                 nb_pe = f.nb_personne.data,
                 h_de_debut = f.h_debut.data,
                 duree = f.duree.data,

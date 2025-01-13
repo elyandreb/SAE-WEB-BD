@@ -15,10 +15,12 @@
                 Bienvenue <strong>{{ utilisateur.prenom_u }}</strong><br>
                 {{ jour }}
                 <br>
-                {% if cotisation %}
-                    Votre cotisation est payée
-                {% else %}
-                    Votre cotisation n'est pas payée, merci de la payée rapidement
+                {% if utilisateur.le_role == "adherent" %}
+                    {% if cotisation.paye %}
+                        Votre cotisation est payée
+                    {% else %}
+                        Votre cotisation n'est pas payée, merci de la payée rapidement
+                    {% endif %}
                 {% endif %}
             </div>
         </div>

@@ -25,6 +25,10 @@ class Utilisateur(db.Model, UserMixin):
 
     def get_id(self):
         return str(self.id_u)
+    
+    @classmethod
+    def get_by_email(cls, email) :
+        return cls.query.filter_by(email = email).first()
 
 class Reserver(db.Model):
     __tablename__ = 'RESERVER'

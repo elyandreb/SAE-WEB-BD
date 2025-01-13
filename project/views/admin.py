@@ -13,8 +13,6 @@ import sqlalchemy.exc as sql
 
 
 class PoneyForm(FlaskForm) :
-    id_po = HiddenField("Id du poney", validators=[DataRequired()])
-
     nom_po = StringField("Nom du poney", validators=[DataRequired(), 
                                                      Length(max=64)])
     charge = DecimalField("Charge maximal du poney", 
@@ -23,8 +21,6 @@ class PoneyForm(FlaskForm) :
                                                   message='La charge doit être un nombre positif.')])
 
 class MoniteurForm(FlaskForm) :
-    id_u = HiddenField()
-
     name = StringField("Nom", validators=[DataRequired(), 
                                           Length(max=42)])
                                           
@@ -77,8 +73,6 @@ class MoniteurForm(FlaskForm) :
                  le_role="moniteur")
     
 class CoursForm(FlaskForm) :
-    id_c = HiddenField(validators=[DataRequired()])
-
     moniteur = QuerySelectMultipleField(
         "Les moniteurs",
         query_factory=lambda: Utilisateur.get_moniteurs(),
@@ -106,7 +100,7 @@ def add_poney() :
                       charge_max = f.charge.data)
         db.session.add(poney)
         db.session.commit()
-    return redirect(url_for("acceuil", adherent_id = current_user.get_id()))
+    return redirect(url_for("accueil", adherent_id = current_user.get_id()))
 
 @app.route("/delete_poney/<int:id>", methods=["POST"])
 def drop_poney(id_po) :
@@ -118,7 +112,7 @@ def drop_poney(id_po) :
     else :
         db.session.delete(poney)
         db.session.commit()
-    return redirect(url_for("acceuil", adherent_id = current_user.get_id()))
+    return redirect(url_for("accueil", adherent_id = current_user.get_id()))
 
 @app.route("/update_poney/<int:id>", methods=["POST"])
 def update_poney(id_po) :
@@ -134,7 +128,7 @@ def update_poney(id_po) :
         else :
             flash(message, "danger")
         time.sleep(1)
-    return redirect(url_for("acceuil", adherent_id = current_user.get_id()))
+    return redirect(url_for("accueil", adherent_id = current_user.get_id()))
 
 @app.route("/add_moniteur", methods=["POST"])
 def add_moniteur() :
@@ -145,7 +139,7 @@ def add_moniteur() :
         db.session.commit()
         flash("Moniteur créé, id : " + f.id_u.data, "success")
         time.sleep(1)
-    return redirect(url_for("acceuil", adherent_id = current_user.get_id()))
+    return redirect(url_for("accueil", adherent_id = current_user.get_id()))
 
 @app.route("/delete_moniteur/<int:id>", methods=["POST"])
 def drop_moniteur(id_u) :
@@ -157,7 +151,7 @@ def drop_moniteur(id_u) :
     else :
         db.session.delete(moniteur)
         db.session.commit()
-    return redirect(url_for("acceuil", adherent_id = current_user.get_id()))
+    return redirect(url_for("accueil", adherent_id = current_user.get_id()))
     
 @app.route("/update_moniteur/<int:id>", methods=["POST"])
 def update_moniteur(id_u) :
@@ -174,7 +168,7 @@ def update_moniteur(id_u) :
         moniteur.poids = f.poids.data,
         moniteur.mdp=m.hexdigest(),
         db.session.commit()
-    return redirect(url_for("acceuil", adherent_id = current_user.get_id()))
+    return redirect(url_for("accueil", adherent_id = current_user.get_id()))
 
 @app.route("/add_cours", methods=["POST"])
 def add_cours() :
@@ -196,7 +190,7 @@ def add_cours() :
             db.session.rollback()
             flash(f"Erreur lors de l'ajout du cours : {str(e)}", "danger")
         time.sleep(1)
-    return redirect(url_for("acceuil", adherent_id = current_user.get_id()))
+    return redirect(url_for("accueil", adherent_id = current_user.get_id()))
 
 @app.route("/delete_cours/<int:id>", methods=["POST"])
 def drop_cours(id_c) :
@@ -208,7 +202,7 @@ def drop_cours(id_c) :
     else :
         db.session.delete(cours)
         db.session.commit()
-    return redirect(url_for("acceuil", adherent_id = current_user.get_id()))
+    return redirect(url_for("accueil", adherent_id = current_user.get_id()))
 
 @app.route("/update_cours/<int:id>", methods=["POST"])
 def update_cours(id_c) :
@@ -232,4 +226,4 @@ def update_cours(id_c) :
             db.session.rollback()
             flash(f"Erreur lors de l'ajout du cours : {str(e)}", "danger")
         time.sleep(1)
-    return redirect(url_for("acceuil", adherent_id = current_user.get_id()))
+    return redirect(url_for("accueil", adherent_id = current_user.get_id()))

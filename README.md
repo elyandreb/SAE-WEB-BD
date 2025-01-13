@@ -96,7 +96,10 @@ Pour la gestion de notre travail nous avons utilisé plusieurs outils tels que <
 - Début de l'implémentation pour la connexion et l'inscription
 
 #### Elyandre :
-- 
+- Réfléxion structuration avec Loris
+- Configuration et structuration de l'architecture du projet 
+- Création de l'accueil pour les adhérents
+- Création du header et du footer 
   
 #### Dan : 
 - Absent
@@ -109,8 +112,8 @@ Pour la gestion de notre travail nous avons utilisé plusieurs outils tels que <
 - Début de modification du back-end de connexion et d'inscription
 
 #### Elyandre :
-- 
-
+- Création de l'accueil pour les moniteurs et les administrateurs
+- Mise à jour du model (ajout du loginManager)
 #### Dan : 
 - Absent
 
@@ -132,7 +135,14 @@ Pour la gestion de notre travail nous avons utilisé plusieurs outils tels que <
 - Migration des triggers dans models.py et finalisation de syncdb 
 
 #### Elyandre :
-  - création du fichier pour le rendu des maquettes
+  - Création du fichier pour le rendu des maquettes
   - Assemblage des différents travaux pour le rendu intermédiaire avec Loris
+  - Mise à jour du header avec intégration des logos (logo du club, logo FFE)
+  - Mise à jour du model
+  - Création du back-end et front-end de l'emploi du temps des adhérents
+  - Création du back-end et front-end de l'emploi du temps des moniteurs
+  - Ajouts des redirections pour simplifier la navigation
+  - Création d'un modal pour s'inscrire à un cours pour les adhérents
+  - Création d'un modal pour se désinscrire à un cours pour les adhérents
 
 #### Dan : 

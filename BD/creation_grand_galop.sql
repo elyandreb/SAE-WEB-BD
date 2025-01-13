@@ -25,7 +25,7 @@ CREATE TABLE COTISATION (
 
 
 CREATE TABLE COURS (
-    id_c INT,
+    id_c INT AUTO_INCREMENT,
     id_u INT,
     nb_pe INT CHECK (nb_pe <= 10 AND nb_pe >= 1),
     h_de_debut INT,

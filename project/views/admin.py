@@ -5,7 +5,7 @@ from flask_login import login_user , current_user, logout_user, login_required
 from hashlib import sha256
 from wtforms import IntegerField, StringField, PasswordField, EmailField, DateField, HiddenField, DecimalField
 from wtforms.validators import DataRequired, EqualTo, Email, Length, Regexp, ValidationError, NumberRange, AnyOf
-from wtforms_sqlalchemy.fields import QuerySelectMultipleField
+from wtforms_sqlalchemy.fields import QuerySelectField
 from wtforms.widgets import RadioInput, ListWidget
 from project.models import Utilisateur, Poney, Cours
 import time
@@ -73,7 +73,7 @@ class MoniteurForm(FlaskForm) :
                  le_role="moniteur")
     
 class CoursForm(FlaskForm) :
-    moniteur = QuerySelectMultipleField(
+    moniteur = QuerySelectField(
         "Les moniteurs",
         query_factory=lambda: Utilisateur.get_moniteurs(),
         get_label="nom_u",
@@ -194,8 +194,6 @@ def add_cours() :
     f = CoursForm()
     if f.validate_on_submit() :
         try :
-            print(f.moniteur)
-            print(f.moniteur.get_id())
             cours = Cours(
                 id_u = f.moniteur.data.get_id(),
                 nb_pe = f.nb_personne.data,

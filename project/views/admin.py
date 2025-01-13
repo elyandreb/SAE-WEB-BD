@@ -51,7 +51,7 @@ class MoniteurForm(FlaskForm) :
         Returns:
             Utilisateur: L'utilisateur si le mot de passe est correct, None sinon
         """
-        user = Utilisateur.query.get(self.id_u.data)
+        user = Utilisateur.get_by_email(self.email.data)
         if user is None:
             return None
         m = sha256()
@@ -91,7 +91,7 @@ class CoursForm(FlaskForm) :
 
     prix = DecimalField('Le prix du cours', places=2, validators=[DataRequired(), 
                                                       NumberRange(min=0, max=999.99)])
-    
+
 @app.route("/add_poney", methods=["POST"])
 def add_poney() :
     f = PoneyForm()

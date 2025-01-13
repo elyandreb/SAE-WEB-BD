@@ -36,10 +36,11 @@
                             {% if cours.date_c == jour and cours.h_de_debut == heure %}
                             <div class="card shadow-sm">
                                 <div class="card-body p-2">
-                                    <p class="m-0 fw-bold">COURS</p>
+                                    <p class="m-0 fw-bold">COURS <button class="bi bi-info-circle" data-bs-toggle="modal" data-bs-target="#modalInfo{{ cours.id_c }}"></button></p>
                                     <p class="m-0">Durée : {{ cours.duree }}h</p>
                                     {% if cours.inscrit %}
                                     <span class="badge bg-success">Inscrit au cours</span>
+                                    <button class="btn btn-danger mt-2" data-bs-toggle="modal" data-bs-target="#modalDesinscription{{ cours.id_c }}">Se désinscrire</button>
                                     {% elif cours.nb_inscriptions >= cours.nb_pe %}
                                     <span class="badge bg-danger">Cours complet</span>
                                     {% else %}
@@ -51,12 +52,37 @@
                                 </div>
                             </div>
 
-                            <!-- Modal pour s'inscrire -->
-                            <div class="modal fade" id="modalInscription{{ cours.id_c }}" tabindex="-1" aria-labelledby="modalLabel{{ cours.id_c }}" aria-hidden="true">
+                            <!-- Modal pour la désinscription -->
+                            {% if cours.inscrit %}
+                            <div class="modal fade" id="modalDesinscription{{ cours.id_c }}" tabindex="-1" aria-labelledby="modalLabelDesinscription{{ cours.id_c }}" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="modalLabel{{ cours.id_c }}">Confirmer l'inscription</h5>
+                                            <h5 class="modal-title" id="modalLabelDesinscription{{ cours.id_c }}">Confirmer la désinscription</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>Voulez-vous vraiment vous désinscrire de ce cours ?</p>
+                                            <p><strong>Date :</strong> {{ cours.date_c.strftime('%d/%m/%Y') }}</p>
+                                            <p><strong>Heure :</strong> {{ cours.h_de_debut }}:00</p>
+                                            <p><strong>Durée :</strong> {{ cours.duree }} heure(s)</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                                            <a href="/desinscription/{{ cours.id_c }}" class="btn btn-danger">Confirmer</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+
+                            <!-- Modal pour l'inscription -->
+                            {% if not cours.inscrit %}
+                            <div class="modal fade" id="modalInscription{{ cours.id_c }}" tabindex="-1" aria-labelledby="modalLabelInscription{{ cours.id_c }}" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="modalLabelInscription{{ cours.id_c }}">Confirmer l'inscription</h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
@@ -67,11 +93,31 @@
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                                            <a href="/inscription/{{ cours.id_c }}" class="btn btn-primary">Confirmer</a>
+                                            <a href="/inscription/{{ cours.id_c }}?week={{ current_week }}" class="btn btn-primary">Confirmer</a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            {% endif %}
+
+                             <!-- Modal d'information -->
+                            <div class="modal fade" id="modalInfo{{ cours.id_c }}" tabindex="-1" aria-labelledby="modalLabelInfo{{ cours.id_c }}" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="modalLabelInfo{{ cours.id_c }}">Détails du Cours</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p><strong>Date :</strong> {{ cours.date_c.strftime('%d/%m/%Y') }}</p>
+                                            <p><strong>Heure :</strong> {{ cours.h_de_debut }}:00</p>
+                                            <p><strong>Durée :</strong> {{ cours.duree }} heure(s)</p>
+                                            <p><strong>Participants :</strong> {{ cours.nb_inscriptions }} / {{ cours.nb_pe }}</p>
+                                            <p><strong>Moniteur :</strong> {{ cours.moniteur.prenom_u }} {{ cours.moniteur.nom_u }}</p>
+                                    </div>
+                                </div>
+                            </div>
+
                             {% endif %}
                         {% endfor %}
                     </td>

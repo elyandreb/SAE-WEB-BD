@@ -2,7 +2,7 @@ import random
 from flask import flash, redirect, render_template, request, url_for
 from flask_login import login_required, current_user
 from datetime import date, timedelta
-from project.models import Cours, Poney, Reserver
+from project.models import Cotiser, Cours, Poney, Reserver
 from project import app, db
 import locale
 
@@ -74,19 +74,49 @@ def emploi_du_temps():
 @login_required
 def inscrire_au_cours(cours_id):
     
-    # Trouver les poneys déjà réservés pour ce cours
-    poneys_reserves = [reservation.id_po for reservation in Reserver.query.filter_by(id_c=cours_id).all()]
+    jour = date.today() # date actuelle
+    annee = jour.year
 
-    # Sélectionner un poney aléatoire non réservé
-    poneys_disponibles = Poney.query.filter(Poney.id_po.notin_(poneys_reserves)).all()
+    # Vérifier si l'adhérent a une cotisation valide pour ce cours (dans la période de cotisation)
+    if date(annee, 9, 1) < jour < date(annee, 12, 31) :
+        cotisation = Cotiser.query.filter_by(id_u=current_user.get_id(), annee_debut=annee, annee_fin=annee+1).first()
+    else : 
+        cotisation = Cotiser.query.filter_by(id_u=current_user.get_id(), annee_debut=annee-1, annee_fin=annee).first()
+    print(cotisation.paye)
 
-    # Choisir un poney aléatoire
-    poney_choisi = random.choice(poneys_disponibles)
+    if cotisation.paye : 
+        # Trouver les poneys déjà réservés pour ce cours
+        poneys_reserves = [reservation.id_po for reservation in Reserver.query.filter_by(id_c=cours_id).all()]
 
-    # Créez une nouvelle réservation
-    nouvelle_reservation = Reserver(id_u=current_user.id_u, id_c=cours_id, id_po=poney_choisi.id_po)
-    db.session.add(nouvelle_reservation)
+        # Sélectionner un poney aléatoire non réservé
+        poneys_disponibles = Poney.query.filter(Poney.id_po.notin_(poneys_reserves)).all()
+
+        # Choisir un poney aléatoire
+        poney_choisi = random.choice(poneys_disponibles)
+
+        # Créez une nouvelle réservation
+        nouvelle_reservation = Reserver(id_u=current_user.id_u, id_c=cours_id, id_po=poney_choisi.id_po)
+        db.session.add(nouvelle_reservation)
+        db.session.commit()
+
+        flash("Inscription réussie !", "success")
+        return redirect(url_for('emploi_du_temps'))
+    
+    else : 
+        flash("Inscription impossible !", "danger")
+        return redirect(url_for('emploi_du_temps'))
+
+@app.route('/desinscription/<int:cours_id>')
+@login_required
+def desinscrire_du_cours(cours_id):
+
+    # Vérifiez si l'utilisateur est inscrit au cours
+    inscription = Reserver.query.filter_by(id_u=current_user.id_u, id_c=cours_id).first()
+
+    # Supprimer l'inscription
+    db.session.delete(inscription)
     db.session.commit()
 
-    flash("Inscription réussie !", "success")
+    flash("Vous avez été désinscrit du cours avec succès", "success")
+
     return redirect(url_for('emploi_du_temps'))

@@ -38,17 +38,17 @@
                                     </svg>
                                 </div>
                                 <div class="col-sm-10">
-                                    <label for="id_u" class="form-label mb-0">
-                                        {{ form.id_u.label }} <span class="text-danger">*</span>
+                                    <label for="email" class="form-label mb-0">
+                                        {{ form.email.label }} <span class="text-danger">*</span>
                                     </label>
-                                    {{ form.id_u(size=50, class_="form-control", placeholder="Votre id utilisateur") }}
+                                    {{ form.email(size=50, class_="form-control", placeholder="Votre adresse email") }}
                                 </div>
                             </div>
 
                             <!-- Erreur si l'id est incorrect -->
-                            {% if form.id_u.errors %}
+                            {% if form.email.errors %}
                                 <ul class="list-group">
-                                    {% for e in form.id_u.errors %}
+                                    {% for e in form.email.errors %}
                                         <li class="list-group-item list-group-item-danger">{{ e }}</li>
                                     {% endfor %}
                                 </ul>

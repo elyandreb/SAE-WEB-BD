@@ -58,7 +58,7 @@ class Utilisateur(db.Model, UserMixin):
 
     def get_id(self):
         return str(self.id_u)
-    
+        
     @classmethod
     def get_moniteurs(cls) :
         """Permet de récupérer les moniteurs
@@ -77,6 +77,10 @@ class Utilisateur(db.Model, UserMixin):
             list(Utilisateur): la liste des moniteurs attribués à au moins un cours
         """        
         return cls.query.join(Cours, cls.id_u == Cours.id_u).filter(cls.le_role == "moniteur").distinct().all()
+
+    @classmethod
+    def get_by_email(cls, email) :
+        return cls.query.filter_by(email = email).first()
 
 class Reserver(db.Model):
     __tablename__ = 'RESERVER'

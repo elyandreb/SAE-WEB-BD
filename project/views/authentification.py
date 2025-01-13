@@ -8,8 +8,9 @@ from wtforms.validators import DataRequired, EqualTo, Email, Length, Regexp, Val
 from project.models import Utilisateur
 
 class LoginForm (FlaskForm):
-    id_u = StringField("Id de l'utilisateur", validators=[DataRequired()
-                                                        ])
+    email = EmailField("Email de l'utilisateur", validators=[DataRequired(), Email(message='Adresse mail invalide.'), 
+                                            Length(max=64)])
+    
     password = PasswordField("Mot de passe", validators=[DataRequired(), Length(max=64)])
 
     def get_authentificated_user(self):
@@ -19,7 +20,7 @@ class LoginForm (FlaskForm):
         Returns:
             Utilisateur: L'utilisateur si le mot de passe est correct, None sinon
         """
-        user = Utilisateur.query.get(self.id_u.data)
+        user = Utilisateur.get_by_email(self.email.data)
         if user is None:
             return None
         m = sha256()

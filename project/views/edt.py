@@ -103,7 +103,7 @@ def inscrire_au_cours(cours_id):
         return redirect(url_for('emploi_du_temps'))
     
     else : 
-        flash("Inscription impossible !", "danger")
+        flash("Inscription impossible ! Veuillez régler votre cotisation ", "danger")
         return redirect(url_for('emploi_du_temps'))
 
 @app.route('/desinscription/<int:cours_id>')

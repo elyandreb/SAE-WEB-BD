@@ -38,9 +38,26 @@
                                 <div class="card-body p-2">
                                     <p class="m-0 fw-bold">COURS</p>
                                     <p class="m-0">Durée : {{ cours.duree }}h</p>
-                                    <a href="/cours/{{ cours.id_c }}" class="btn btn-sm btn-info mt-2">
+                                    <a class="btn btn-sm btn-info mt-2" data-bs-toggle="modal" data-bs-target="#modalInfo{{ cours.id_c }}">
                                         <i class="bi bi-info-circle"></i>
                                     </a>
+                                </div>
+                            </div>
+
+                            <!-- Modal d'information -->
+                            <div class="modal fade" id="modalInfo{{ cours.id_c }}" tabindex="-1" aria-labelledby="modalLabelInfo{{ cours.id_c }}" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="modalLabelInfo{{ cours.id_c }}">Détails du Cours</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p><strong>Date :</strong> {{ cours.date_c.strftime('%d/%m/%Y') }}</p>
+                                            <p><strong>Heure :</strong> {{ cours.h_de_debut }}:00</p>
+                                            <p><strong>Durée :</strong> {{ cours.duree }} heure(s)</p>
+                                            <p><strong>Participants :</strong> {{ cours.nb_inscriptions }} / {{ cours.nb_pe }}</p>
+                                    </div>
                                 </div>
                             </div>
                             {% endif %}

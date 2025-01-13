@@ -7,6 +7,7 @@ from project import app, db
 import locale
 
 @app.route('/edt')
+@login_required
 def emploi_du_temps():
     
     # Configurer les dates en français

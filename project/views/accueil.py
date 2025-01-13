@@ -7,6 +7,7 @@ from project.models import  Cours, Reserver, Utilisateur
 
 
 @app.route('/accueil/<int:adherent_id>')
+@login_required
 def accueil(adherent_id):
     
     # Récupérer l'adhérent

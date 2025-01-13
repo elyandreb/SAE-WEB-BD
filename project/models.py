@@ -89,7 +89,7 @@ class Reserver(db.Model):
 
 class Cours(db.Model):
     __tablename__ = 'COURS'
-    id_c = db.Column(db.Integer, primary_key=True)
+    id_c = db.Column(db.Integer, primary_key=True, autoincrement=True)
     id_u = db.Column(db.Integer, db.ForeignKey('UTILISATEUR.id_u'))  # Moniteur
     nb_pe = db.Column(db.Integer, CheckConstraint("nb_pe <= 10 AND nb_pe >= 1"))
     h_de_debut = db.Column(db.Integer)

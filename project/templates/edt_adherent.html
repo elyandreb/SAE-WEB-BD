@@ -36,7 +36,8 @@
                             {% if cours.date_c == jour and cours.h_de_debut == heure %}
                             <div class="card shadow-sm">
                                 <div class="card-body p-2">
-                                    <p class="m-0 fw-bold">COURS <button class="bi bi-info-circle" data-bs-toggle="modal" data-bs-target="#modalInfo{{ cours.id_c }}"></button></p>
+                                    <p class="m-0 fw-bold">COURS 
+                                        <i class="bi bi-info-circle" data-bs-toggle="modal" data-bs-target="#modalInfo{{ cours.id_c }}"></i></p>
                                     <p class="m-0">Durée : {{ cours.duree }}h</p>
                                     {% if cours.inscrit %}
                                     <span class="badge bg-success">Inscrit au cours</span>

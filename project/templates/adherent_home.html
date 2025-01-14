@@ -18,7 +18,7 @@
                 <div class="card shadow mt-4" style="border: none; border-radius: 15px;">
                     <div class="card-body text-center">
                         {% if cours %}
-                            <h5 class="card-title fs-5" style="color: #333;">Cours du {{ cours.date_c.strftime('%d/%m/%Y') }}</h5>
+                            <h5 class="card-title fs-5" style="color: #333;">Cours du {{ cours.date_c.strftime('%d/%m/%Y') }} à {{ cours.h_de_debut}} h <br> Durée : {{ cours.duree }}h</h5>
                             <p class="card-text text-muted">Avec <strong>M.{{ cours.moniteur.nom_u }}</strong></p>
                         {% else %}
                             <p class="text-muted">Aucun cours prévu pour le moment.</p>

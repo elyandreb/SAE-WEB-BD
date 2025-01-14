@@ -38,8 +38,21 @@ def accueil(adherent_id):
         )
         for cours in prochains_cours:
             cours.nb_inscriptions = Reserver.query.filter_by(id_c=cours.id_c).count()
-            
+
+            reservations = Reserver.query.filter_by(id_c=cours.id_c).all()
+            participants = []
+
+            for reservation in reservations:
+                participant = {
+                    "nom": reservation.user.nom_u,
+                    "prenom": reservation.user.prenom_u,
+                    "poney": reservation.poney.nom_po if reservation.poney else None
+                }
+                participants.append(participant)
+
+            cours.participants = participants
         return render_template("moniteur_home.html", utilisateur=utilisateur, prochains_cours=prochains_cours)
+    
     else:
         reservation = Reserver.query.filter_by(id_u=current_user.id_u, id_c=prochain_cours.id_c).first()
         if reservation:

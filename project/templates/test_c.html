@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block styles %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="top-info">
+    <h1 class="text-center my-3">Création des cours</h1>
+    <hr class="w-25 mx-auto bg-dark bar"/>
+</div>
+
+<div class="container-fluid w-75 bg-light justify-content-center align-items-center">
+    <form method="POST" novalidate class="form-horizontal" enctype="multipart/form-data" role="form" action="{{ url_for('add_cours') }}">
+        {{ form.hidden_tag() }} <!-- CSRF Token -->
+        <div class="form-group">
+            <label for="moniteur">Nom moniteur :</label>
+            {{ form.moniteur(class="form-control", id="moniteur", placeholder="Entrez le nom du moniteur") }}
+        </div>
+
+        <div class="form-group">
+            <label for="nb_personne">nb_personne :</label>
+            {{ form.nb_personne(class="form-control", id="nb_personne", placeholder="Entrez le nb_personne") }}
+        </div>
+
+        <div class="form-group">
+            <label for="h_debut">h_debut :</label>
+            {{ form.h_debut(class="form-control", id="h_debut", placeholder="Entrez le h_debut") }}
+        </div>
+
+        <div class="form-group">
+            <label for="duree">duree :</label>
+            {{ form.duree(class="form-control", id="duree", placeholder="Entrez la duree") }}
+        </div>
+
+        <div class="form-group">
+            <label for="date">date :</label>
+            {{ form.date(class="form-control", id="date", placeholder="Entrez la date") }}
+        </div>
+
+        <div class="form-group">
+            <label for="prix">prix :</label>
+            {{ form.prix(class="form-control", id="prix", placeholder="Entrez le prix") }}
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-3">Ajouter le cours</button>
+    </form>
+</div>
+{% endblock %}

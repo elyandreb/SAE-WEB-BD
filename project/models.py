@@ -4,10 +4,43 @@ from flask_login import UserMixin
 
 class Poney(db.Model):
     __tablename__ = 'PONEY'
-    id_po = db.Column(db.Integer, primary_key=True)
+    id_po = db.Column(db.Integer, primary_key=True, autoincrement=True)
     nom_po = db.Column(db.String(42))
     charge_max = db.Column(db.Numeric(4, 2))
     reservations = db.relationship('Reserver', back_populates='poney')
+
+    @classmethod
+    def get_poney_reserves(cls) :
+        """Permet de récupérer les poneys réservés au moins une fois
+
+        Returns:
+            list(Poney): La liste des poneys réservés au moins une fois
+        """        
+        return cls.query.join(Reserver).distinct().all()
+    
+    @classmethod
+    def verifier_charge(cls, poney_id, nouvelle_charge):
+        """Permet de vérifier si la nouvelle charge 
+        est compatible avec le poney
+
+        Args:
+            poney_id (str): l'id du poney
+            nouvelle_charge (str): la nouvelle charge a tester
+
+        Returns:
+            (boolean, str): True si la charge est valide, False sinon 
+            + un message indiquant plus précisément le pourquoi du comment
+        """        
+        poney = cls.query.get(poney_id)
+        if not poney:
+            return False, "Poney non trouvé."
+
+        for reservation in poney.reservations:
+            utilisateur = reservation.user
+            if utilisateur.poids > nouvelle_charge:
+                return False, f"L'utilisateur {utilisateur.nom_u} {utilisateur.prenom_u} dépasse la nouvelle charge maximale."
+
+        return True, "La nouvelle charge est suffisante pour tous les utilisateurs."
 
 class Utilisateur(db.Model, UserMixin):
     __tablename__ = 'UTILISATEUR'
@@ -25,7 +58,26 @@ class Utilisateur(db.Model, UserMixin):
 
     def get_id(self):
         return str(self.id_u)
+        
+    @classmethod
+    def get_moniteurs(cls) :
+        """Permet de récupérer les moniteurs
+
+        Returns:
+            list(Utilisateur): la liste des moniteurs
+        """        
+        return cls.query.filter_by(le_role="moniteur").all()
     
+    @classmethod
+    def get_moniteurs_attribues(cls) :
+        """Permet de récupérer les moniteurs 
+        attribués à au moins un cours
+
+        Returns:
+            list(Utilisateur): la liste des moniteurs attribués à au moins un cours
+        """        
+        return cls.query.join(Cours, cls.id_u == Cours.id_u).filter(cls.le_role == "moniteur").distinct().all()
+
     @classmethod
     def get_by_email(cls, email) :
         return cls.query.filter_by(email = email).first()
@@ -41,7 +93,7 @@ class Reserver(db.Model):
 
 class Cours(db.Model):
     __tablename__ = 'COURS'
-    id_c = db.Column(db.Integer, primary_key=True)
+    id_c = db.Column(db.Integer, primary_key=True, autoincrement=True)
     id_u = db.Column(db.Integer, db.ForeignKey('UTILISATEUR.id_u'))  # Moniteur
     nb_pe = db.Column(db.Integer, CheckConstraint("nb_pe <= 10 AND nb_pe >= 1"))
     h_de_debut = db.Column(db.Integer)
@@ -51,6 +103,38 @@ class Cours(db.Model):
     reservations = db.relationship('Reserver', back_populates='cours')
     moniteur = db.relationship('Utilisateur', back_populates='cours')
 
+    @classmethod
+    def get_cours_remplis(cls) :
+        """permet de récupérer les cours 
+        ayant au moins une réservation
+
+        Returns:
+            list(Cours): les cours ayant au moins une réservation
+        """        
+        return cls.query.join(Reserver).distinct().all()
+    
+    @classmethod
+    def verifier_nb_pe(cls, id_c, nouv_nb_pe) :
+        """Fonction permettant de vérifier que 
+        le nb max de personnes ne soit pas inférieur 
+        au nombre de personnes ayant déjà réservées
+
+        Args:
+            id_c (str): l'id du cours
+            nouv_nb_pe (str): le nouveau nb de personnes max
+
+        Returns:
+            (boolean, str): True si le nombre est valide, False sinon 
+            + un message indiquant plus précisément le pourquoi du comment
+        """        
+        cours = cls.query.get(id_c)
+        if not cours:
+            return False, "Cours non trouvé."
+        nb_reservations = len(cours.reservations)
+        if nouv_nb_pe < nb_reservations:
+            return False, f"Le nombre de participants ne peut pas être inférieur au nombre de réservations existantes ({nb_reservations})."
+
+        return True, "Le nombre de participants est valide."
 
 class Cotiser(db.Model):
     __tablename__ = 'COTISER'

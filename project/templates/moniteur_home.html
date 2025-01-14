@@ -5,24 +5,23 @@
 {% block content %}
 <div class="container mt-5">
     <!-- Message de bienvenue -->
-    <h1 class="mb-4 text-center">Bonjour, {{ utilisateur.prenom_u }}</h1>
-    <p class="text-center fs-5">Voici vos trois prochains cours :</p>
+    <div class="text-center">
+        <h1 class="mb-4">Bonjour, {{ utilisateur.prenom_u }} 👋</h1>
+        <p class="fs-5 text-muted">Voici vos trois prochains cours :</p>
+    </div>
 
     <!-- Section des cours -->
     {% if prochains_cours %}
-    <div class="row justify-content-center mt-4">
+    <div class="row justify-content-center mt-4 g-4">
         {% for cours in prochains_cours %}
-        <div class="col-md-4 mb-4">
-            <div class="card shadow-sm">
+        <div class="col-lg-4 col-md-6">
+            <div class="card shadow-lg" style="border-radius: 15px; background-color: #f8f9fa;">
                 <div class="card-body">
-                    <h5 class="card-title">Cours le {{ cours.date_c.strftime('%d/%m/%Y') }} à {{ cours.h_de_debut }}h</h5>
-                    <p class="card-text">
-                        <strong>Durée :</strong> {{ cours.duree }} heure(s)<br>
-                        <strong>Participants :</strong> {{ cours.nb_pe }}<br>
-                    </p>
-                </div>
-                <div class="card-footer text-center">
-                    <a href="/cours/{{ cours.id_c }}" class="btn btn-primary btn-sm">Voir détails</a>
+                    <h5 class="card-title fs-4" style="color: #333;">Cours le {{ cours.date_c.strftime('%d/%m/%Y') }} à {{ cours.h_de_debut }}h</h5>
+                    <div class="mt-3">
+                        <p class="mb-2"><strong>Durée :</strong> {{ cours.duree }} heure(s)</p>
+                        <p class="mb-2"><strong>Participants :</strong> {{ cours.nb_inscriptions }} / {{ cours.nb_pe }}</p>
+                    </div>
                 </div>
             </div>
         </div>

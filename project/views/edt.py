@@ -35,6 +35,11 @@ def emploi_du_temps():
             .all()
         )
 
+        # Ajouter les informations des participants pour chaque cours
+        for cours in cours_semaine:
+            
+            cours.nb_inscriptions = Reserver.query.filter_by(id_c=cours.id_c).count()
+
         # Générer les horaires
         horaires = range(9, 21)  # De 9h à 20h
 
@@ -92,7 +97,6 @@ def inscrire_au_cours(cours_id):
         cotisation = Cotiser.query.filter_by(id_u=current_user.get_id(), annee_debut=annee, annee_fin=annee+1).first()
     else : 
         cotisation = Cotiser.query.filter_by(id_u=current_user.get_id(), annee_debut=annee-1, annee_fin=annee).first()
-    print(cotisation.paye)
 
     if cotisation.paye : 
         # Trouver les poneys déjà réservés pour ce cours

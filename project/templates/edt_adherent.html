@@ -41,6 +41,8 @@
                                     {% if cours.inscrit %}
                                     <span class="badge bg-success">Inscrit au cours</span>
                                     <button class="btn btn-danger mt-2" data-bs-toggle="modal" data-bs-target="#modalDesinscription{{ cours.id_c }}">Se désinscrire</button>
+                                    {% elif cours.est_passe %}
+                                     <span class="badge bg-secondary">Cours passé</span>
                                     {% elif cours.nb_inscriptions >= cours.nb_pe %}
                                     <span class="badge bg-danger">Cours complet</span>
                                     {% else %}

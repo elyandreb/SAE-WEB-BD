@@ -5,6 +5,7 @@ from datetime import date, timedelta
 from project.models import Cotiser, Cours, Poney, Reserver
 from project import app, db
 import locale
+from datetime import datetime
 
 @app.route('/edt')
 def emploi_du_temps():
@@ -54,6 +55,9 @@ def emploi_du_temps():
             
             # Nombre de personnes inscrites à ce cours
             cours.nb_inscriptions = Reserver.query.filter_by(id_c=cours.id_c).count()
+
+            # Ajoutez une information pour savoir si le cours est passé
+            cours.est_passe = datetime.combine(cours.date_c, datetime.min.time()) < datetime.now()
 
 
         # Générer les horaires

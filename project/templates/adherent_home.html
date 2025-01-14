@@ -15,11 +15,18 @@
         <!-- Carte du prochain cours -->
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <div class="card shadow mt-4" style="border: none; border-radius: 15px;">
+                <div class="card shadow mt-4" style="border: none; border-radius: 15px; background-color: #f9f7f4">
                     <div class="card-body text-center">
                         {% if cours %}
-                            <h5 class="card-title fs-5" style="color: #333;">Cours du {{ cours.date_c.strftime('%d/%m/%Y') }} à {{ cours.h_de_debut}} h <br> Durée : {{ cours.duree }}h</h5>
+                            <h5 class="card-title fs-5" style="color: #333;">Cours du {{ cours.date_c.strftime('%d/%m/%Y') }}</h5>
                             <p class="card-text text-muted">Avec <strong>M.{{ cours.moniteur.nom_u }}</strong></p>
+                            <div class="text-start mt-4">
+                                <p><strong>Heure :</strong> {{ cours.h_de_debut }}:00</p>
+                                <p><strong>Durée :</strong> {{ cours.duree }} heure(s)</p>
+                                {% if cours.poney_attribue %}
+                                <p><strong>Poney attribué :</strong> {{ cours.poney_attribue }}</p>
+                                {% endif %}
+                            </div>
                         {% else %}
                             <p class="text-muted">Aucun cours prévu pour le moment.</p>
                         {% endif %}

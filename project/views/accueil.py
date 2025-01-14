@@ -1,7 +1,7 @@
 from flask import Flask, render_template
 from datetime import date
 
-from flask_login import login_required
+from flask_login import current_user, login_required
 from project.app import db, app
 from project.models import  Cours, Reserver, Utilisateur
 
@@ -38,4 +38,8 @@ def accueil(adherent_id):
         )
         return render_template("moniteur_home.html", utilisateur=utilisateur, prochains_cours=prochains_cours)
     else:
+        reservation = Reserver.query.filter_by(id_u=current_user.id_u, id_c=prochain_cours.id_c).first()
+        if reservation:
+            prochain_cours.poney_attribue = reservation.poney.nom_po
+
         return render_template('adherent_home.html', utilisateur=utilisateur, cours=prochain_cours)

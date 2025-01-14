@@ -33,7 +33,7 @@ class Utilisateur(db.Model, UserMixin):
 class Reserver(db.Model):
     __tablename__ = 'RESERVER'
     id_u = db.Column(db.Integer, db.ForeignKey('UTILISATEUR.id_u'), primary_key=True)
-    id_po = db.Column(db.Integer, db.ForeignKey('PONEY.id_po'), primary_key=True)
+    id_po = db.Column(db.Integer, db.ForeignKey('PONEY.id_po'))
     id_c = db.Column(db.Integer, db.ForeignKey('COURS.id_c'), primary_key=True)
     user = db.relationship('Utilisateur', back_populates='reservations')
     poney = db.relationship('Poney', back_populates='reservations')

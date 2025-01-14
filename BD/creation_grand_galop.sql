@@ -39,7 +39,7 @@ CREATE TABLE RESERVER(
     id_u INT,
     id_po INT,
     id_c INT,
-    PRIMARY KEY (id_u,id_po,id_c)
+    PRIMARY KEY (id_u,id_c)
 );
 
 CREATE TABLE COTISER (

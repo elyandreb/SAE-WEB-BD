@@ -116,6 +116,9 @@
                                             <p><strong>Durée :</strong> {{ cours.duree }} heure(s)</p>
                                             <p><strong>Participants :</strong> {{ cours.nb_inscriptions }} / {{ cours.nb_pe }}</p>
                                             <p><strong>Moniteur :</strong> {{ cours.moniteur.prenom_u }} {{ cours.moniteur.nom_u }}</p>
+                                            {% if cours.inscrit %}
+                                            <p><strong>Poney attribué :</strong> {{ cours.poney_attribue }}</p>
+                                            {% endif %}
                                     </div>
                                 </div>
                             </div>

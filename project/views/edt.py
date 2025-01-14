@@ -59,6 +59,12 @@ def emploi_du_temps():
             # Ajoutez une information pour savoir si le cours est passé
             cours.est_passe = datetime.combine(cours.date_c, datetime.min.time()) < datetime.now()
 
+            # Récupérez le poney associé si l'utilisateur est inscrit
+            reservation = Reserver.query.filter_by(id_u=current_user.id_u, id_c=cours.id_c).first()
+            if reservation:
+                cours.poney_attribue = reservation.poney.nom_po
+
+
 
         # Générer les horaires
         horaires = range(9, 21)  # De 9h à 20h

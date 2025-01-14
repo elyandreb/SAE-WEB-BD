@@ -37,8 +37,21 @@ def emploi_du_temps():
 
         # Ajouter les informations des participants pour chaque cours
         for cours in cours_semaine:
-            
             cours.nb_inscriptions = Reserver.query.filter_by(id_c=cours.id_c).count()
+            
+            reservations = Reserver.query.filter_by(id_c=cours.id_c).all()
+            participants = []
+
+            for reservation in reservations:
+                participant = {
+                    "nom": reservation.user.nom_u,
+                    "prenom": reservation.user.prenom_u,
+                    "poney": reservation.poney.nom_po if reservation.poney else None
+                }
+                participants.append(participant)
+
+            cours.participants = participants
+            
 
         # Générer les horaires
         horaires = range(9, 21)  # De 9h à 20h

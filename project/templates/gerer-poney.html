@@ -49,5 +49,34 @@
                 </div>
             </div>
         </div>
+
+        <!-- Modal de modification -->
+        <div class="modal fade" id="updatePoneyModal{{ poney.id_po }}" tabindex="-1" aria-labelledby="updatePoneyLabel{{ poney.id_po }}" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="updatePoneyLabel{{ poney.id_po }}">Modifier le poney</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="{{ url_for('update_poney', id_po=poney.id_po) }}" method="POST">
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="nom_po" class="form-label">Nom</label>
+                                <input type="text" class="form-control" id="nom_po" name="nom_po" value="{{ poney.nom_po }}" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="charge" class="form-label">Charge maximale</label>
+                                <input type="number" class="form-control" id="charge" name="charge" value="{{ poney.charge_max }}" required>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                            <button type="submit" class="btn btn-primary">Enregistrer</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
         {% endfor %}
+    </div>
 {% endblock %}

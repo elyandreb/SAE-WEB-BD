@@ -94,7 +94,7 @@ class CoursForm(FlaskForm) :
 
 @app.route("/gerer-poney")
 @login_required
-def test_p() :
+def gerer_poney() :
     f = PoneyForm()
     utilisateur = current_user
     poneys = Poney.query.all()
@@ -140,17 +140,18 @@ def drop_poney(id_po) :
 def update_poney(id_po) :
     poney = Poney.query.get(id_po)
     f = PoneyForm()
-    if f.validate_on_submit() :
-        verif, message = Poney.verifier_charge(id_po, f.charge.data)
-        if verif : 
-            poney.nom_po = f.nom_po.data
-            poney.charge_max = f.charge.data
-            db.session.commit()
-            flash(message, "success")
-        else :
-            flash(message, "danger")
+    print(f.validate_on_submit())
+    print(f.nom_po.data)
+    verif, message = Poney.verifier_charge(id_po, f.charge.data)
+    if verif : 
+        poney.nom_po = f.nom_po.data
+        poney.charge_max = f.charge.data
+        db.session.commit()
+        flash(message, "success")
+    else :
+        flash(message, "danger")
         time.sleep(1)
-    return redirect(url_for("accueil", adherent_id = current_user.get_id()))
+    return redirect(url_for("gerer_poney", adherent_id = current_user.get_id()))
 
 @app.route("/add_moniteur", methods=["POST"])
 def add_moniteur() :

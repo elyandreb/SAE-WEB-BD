@@ -21,10 +21,10 @@ class PoneyForm(FlaskForm) :
                                                   message='La charge doit être un nombre positif.')])
 
 class MoniteurForm(FlaskForm) :
-    name = StringField("Nom", validators=[DataRequired(), 
+    nom_u = StringField("Nom", validators=[DataRequired(), 
                                           Length(max=42)])
                                           
-    first_name = StringField("Prénom", validators=[DataRequired(), 
+    prenom_u = StringField("Prénom", validators=[DataRequired(), 
                                                    Length(max=42)])
 
     email = EmailField("Email", validators=[DataRequired(), Email(message='Adresse mail invalide.'), 
@@ -36,9 +36,6 @@ class MoniteurForm(FlaskForm) :
 
     password = PasswordField("Mot de passe", validators=[DataRequired(), 
                                                          Length(max=64)])
-
-    password_check = PasswordField("Confirmez son mot de passe", validators=[DataRequired(), 
-                                                                               EqualTo('password', message='Les mots de passe doivent correspondre.'),])
 
     def validate_email(self, field):
         if Utilisateur.query.filter_by(email=field.data).first():
@@ -64,8 +61,8 @@ class MoniteurForm(FlaskForm) :
         m = sha256()
         m.update(passwd.encode())
         return Utilisateur(
-                 nom_u = self.name.data,
-                 prenom_u = self.first_name.data,
+                 nom_u = self.nom_u.data,
+                 prenom_u = self.prenom_u.data,
                  date_de_naissance=self.birth_date.data,
                  email = self.email.data,
                  poids = self.poids.data,
@@ -178,17 +175,12 @@ def drop_moniteur(id_u) :
 def update_moniteur(id_u) :
     moniteur = Utilisateur.query.get(id_u)
     f = MoniteurForm()
-    if f.validate_on_submit() :
-        passwd = f.password.data
-        m = sha256()
-        m.update(passwd.encode())
-        moniteur.nom_u = f.name.data,
-        moniteur.prenom_u = f.first_name.data,
-        moniteur.date_de_naissance=f.birth_date.data,
-        moniteur.email = f.email.data,
-        moniteur.poids = f.poids.data,
-        moniteur.mdp=m.hexdigest(),
-        db.session.commit()
+    moniteur.nom_u = f.nom_u.data,
+    moniteur.prenom_u = f.prenom_u.data,
+    moniteur.date_de_naissance=f.birth_date.data,
+    moniteur.email = f.email.data,
+    moniteur.poids = f.poids.data,
+    db.session.commit()
     return redirect(url_for("gerer_moniteur", adherent_id = current_user.get_id()))
 
 @app.route("/add_cours", methods=["POST"])

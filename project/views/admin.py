@@ -20,7 +20,7 @@ class PoneyForm(FlaskForm) :
                                       NumberRange(min=0, 
                                                   message='La charge doit être un nombre positif.')])
 
-class MoniteurForm(FlaskForm) :
+class UtilisateurForm(FlaskForm) :
     nom_u = StringField("Nom", validators=[DataRequired(), 
                                           Length(max=42)])
                                           
@@ -69,6 +69,19 @@ class MoniteurForm(FlaskForm) :
                  mdp=m.hexdigest(),
                  le_role="moniteur")
     
+    def create_adherent(self) :
+        passwd = self.password.data
+        m = sha256()
+        m.update(passwd.encode())
+        return Utilisateur(
+                 nom_u = self.nom_u.data,
+                 prenom_u = self.prenom_u.data,
+                 date_de_naissance=self.birth_date.data,
+                 email = self.email.data,
+                 poids = self.poids.data,
+                 mdp=m.hexdigest(),
+                 le_role="adherent")
+    
 class CoursForm(FlaskForm) :
     moniteur = QuerySelectField(
         "Les moniteurs",
@@ -100,10 +113,19 @@ def gerer_poney() :
 
 @app.route("/gerer-moniteur")
 def gerer_moniteur() :
-    f = MoniteurForm()
+    f = UtilisateurForm()
     utilisateur = current_user
     moniteurs = Utilisateur.get_moniteurs()
     return render_template("gerer-moniteur.html", form = f, utilisateur = utilisateur, moniteurs = moniteurs)
+
+@app.route("/gerer-adherent")
+@login_required
+def gerer_adherent():
+    adherents = Utilisateur.query.filter_by(le_role="adherent").all()
+    f = UtilisateurForm()
+
+    return render_template("gerer-adherent.html", adherents=adherents, form=f, utilisateur=current_user)
+
 
 @app.route("/test_c")
 def test_c() :
@@ -150,7 +172,7 @@ def update_poney(id_po) :
 
 @app.route("/add_moniteur", methods=["POST"])
 def add_moniteur() :
-    f = MoniteurForm()
+    f = UtilisateurForm()
     moniteur = f.create_moniteur()
     db.session.add(moniteur)
     db.session.commit()
@@ -176,7 +198,7 @@ def drop_moniteur(id_u) :
 @app.route("/update_moniteur/<int:id_u>", methods=["POST"])
 def update_moniteur(id_u) :
     moniteur = Utilisateur.query.get(id_u)
-    f = MoniteurForm()
+    f = UtilisateurForm()
     moniteur.nom_u = f.nom_u.data,
     moniteur.prenom_u = f.prenom_u.data,
     moniteur.date_de_naissance=f.birth_date.data,
@@ -242,3 +264,40 @@ def update_cours(id_c) :
             flash(f"Erreur lors de l'ajout du cours : {str(e)}", "danger")
         time.sleep(1)
     return redirect(url_for("accueil", adherent_id = current_user.get_id()))
+
+@app.route("/add_adherent", methods=["POST"])
+@login_required
+def add_adherent():
+    f = UtilisateurForm()
+    adherent = f.create_adherent()
+    db.session.add(adherent)
+    db.session.commit()
+    flash("Adhérent ajouté avec succès.", "success")
+
+    return redirect(url_for("gerer_adherent", adherent_id = current_user.get_id()))
+
+@app.route("/delete_adherent/<int:id_u>", methods=["POST"])
+@login_required
+def drop_adherent(id_u) :
+    adherent = Utilisateur.query.get(id_u)
+    cours_adherent = Reserver.query.filter_by(id_u = id_u).all()
+
+    for res in cours_adherent :
+        db.session.delete(res)
+
+    db.session.delete(adherent)
+    db.session.commit()
+    return redirect(url_for("gerer_adherent", adherent_id = current_user.get_id()))
+
+@app.route("/update_adherent/<int:id_u>", methods=["POST"])
+@login_required
+def update_adherent(id_u) :
+    adherent = Utilisateur.query.get(id_u)
+    f = UtilisateurForm()
+    adherent.nom_u = f.nom_u.data,
+    adherent.prenom_u = f.prenom_u.data,
+    adherent.date_de_naissance=f.birth_date.data,
+    adherent.email = f.email.data,
+    adherent.poids = f.poids.data,
+    db.session.commit()
+    return redirect(url_for("gerer_adherent", adherent_id = current_user.get_id()))

@@ -58,6 +58,15 @@ class Utilisateur(db.Model, UserMixin):
 
     def get_id(self):
         return str(self.id_u)
+    
+    @classmethod
+    def get_adherents(cls) :
+        """Permet de récupérer les adherents
+
+        Returns:
+            list(Utilisateur): la liste des adherents
+        """        
+        return cls.query.filter_by(le_role="adherent").all()
         
     @classmethod
     def get_moniteurs(cls) :

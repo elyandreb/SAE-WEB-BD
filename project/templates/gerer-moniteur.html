@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block title %}Gestion des Moniteurs{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="text-center mb-4">
+        <h1>Gestion des moniteurs</h1>
+    </div>
+
+    <!-- Barre de recherche -->
+    <div class="input-group mb-4">
+        <input type="text" class="form-control" placeholder="Rechercher votre moniteur" id="search-bar">
+        <button class="btn btn-primary">
+            <i class="bi bi-search"></i>
+        </button>
+    </div>
+
+    <!-- Bouton ajouter-->
+    <div class="position-fixed top-2 end-0 m-1" style="left: 1600px;top: 183px;">
+        <button class="btn btn-light shadow-lg rounded-circle" style="background-color: #fae9d8; width: 60px; height: 60px;" data-bs-toggle="modal" data-bs-target="#addMoniteurModal">
+            <i class="bi bi-plus" style="font-size: 24px;"></i>
+        </button>
+    </div>
+
+    <!-- Cards de moniteurs -->
+    <div class="row" id="moniteur-container">
+        {% for moniteur in moniteurs %}
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm" style="border-radius: 15px; background-color: #fae9d8;">
+                <div class="card-body text-center">
+                    <h5 class="card-title">{{ moniteur.prenom_u }} {{ moniteur.nom_u }}</h5>
+                    <i class="bi bi-person-fill"></i>
+                </div>
+                <div class="card-footer d-flex justify-content-between">
+                    <!-- Bouton Modifier -->
+                    <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#updateMoniteurModal{{ moniteur.id_u }}">
+                        <i class="bi bi-pencil"></i>
+                    </button>
+                    <!-- Bouton Supprimer -->
+                    <form action="{{ url_for('drop_moniteur', id_u=moniteur.id_u) }}" method="POST">
+                        <button type="submit" class="btn btn-sm btn-danger">
+                            <i class="bi bi-x"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de modification -->
+        <div class="modal fade" id="updateMoniteurModal{{ moniteur.id_u }}" tabindex="-1" aria-labelledby="updateMoniteurLabel{{ moniteur.id_u }}" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="updateMoniteurLabel{{ moniteur.id_u }}">Modifier le moniteur</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="{{ url_for('update_moniteur', id_u=moniteur.id_u) }}" method="POST">
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="prenom_u" class="form-label">Prenom</label>
+                                <input type="text" class="form-control" id="prenom_u" name="prenom_u" value="{{ moniteur.prenom_u }}" required>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                            <button type="submit" class="btn btn-primary">Enregistrer</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+<!-- Modal d'ajout -->
+<div class="modal fade" id="addMoniteurModal" tabindex="-1" aria-labelledby="addMoniteurLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addMoniteurLabel">Ajouter un moniteur</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ url_for('add_moniteur') }}" method="POST">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="prenom_u" class="form-label">Prenom</label>
+                        <input type="text" class="form-control" id="prenom_u" name="prenom_u" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-primary">Ajouter</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -101,11 +101,12 @@ def gerer_poney() :
     print(poneys)
     return render_template("gerer-poney.html", form = f, utilisateur = utilisateur, poneys = poneys)
 
-@app.route("/test_m")
-def test_m() :
+@app.route("/gerer-moniteur")
+def gerer_moniteur() :
     f = MoniteurForm()
     utilisateur = current_user
-    return render_template("test_m.html", form = f, utilisateur = utilisateur)
+    moniteurs = Utilisateur.get_moniteurs()
+    return render_template("gerer-moniteur.html", form = f, utilisateur = utilisateur, moniteurs = moniteurs)
 
 @app.route("/test_c")
 def test_c() :
@@ -159,9 +160,9 @@ def add_moniteur() :
         db.session.commit()
         flash("Moniteur créé, id : " + moniteur.get_id(), "success")
         time.sleep(1)
-    return redirect(url_for("accueil", adherent_id = current_user.get_id()))
+    return redirect(url_for("gerer_moniteur", adherent_id = current_user.get_id()))
 
-@app.route("/delete_moniteur/<int:id>", methods=["POST"])
+@app.route("/delete_moniteur/<int:id_u>", methods=["POST"])
 def drop_moniteur(id_u) :
     moniteur = Utilisateur.query.get(id_u)
     moniteur_attribues = Utilisateur.get_moniteurs_attribues()
@@ -171,9 +172,9 @@ def drop_moniteur(id_u) :
     else :
         db.session.delete(moniteur)
         db.session.commit()
-    return redirect(url_for("accueil", adherent_id = current_user.get_id()))
+    return redirect(url_for("gerer_moniteur", adherent_id = current_user.get_id()))
     
-@app.route("/update_moniteur/<int:id>", methods=["POST"])
+@app.route("/update_moniteur/<int:id_u>", methods=["POST"])
 def update_moniteur(id_u) :
     moniteur = Utilisateur.query.get(id_u)
     f = MoniteurForm()
@@ -188,7 +189,7 @@ def update_moniteur(id_u) :
         moniteur.poids = f.poids.data,
         moniteur.mdp=m.hexdigest(),
         db.session.commit()
-    return redirect(url_for("accueil", adherent_id = current_user.get_id()))
+    return redirect(url_for("gerer_moniteur", adherent_id = current_user.get_id()))
 
 @app.route("/add_cours", methods=["POST"])
 def add_cours() :

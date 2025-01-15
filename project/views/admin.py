@@ -160,14 +160,17 @@ def add_moniteur() :
 
 @app.route("/delete_moniteur/<int:id_u>", methods=["POST"])
 def drop_moniteur(id_u) :
+    print(id_u)
     moniteur = Utilisateur.query.get(id_u)
-    moniteur_attribues = Utilisateur.get_moniteurs_attribues()
-    if moniteur in moniteur_attribues() :
-        flash("Suppression impossible, le moniteur est attribué dans au moins un cours", "danger")
-        time.sleep(1)
-    else :
-        db.session.delete(moniteur)
-        db.session.commit()
+    cours_moniteur = Cours.query.filter_by(id_u = id_u).all()
+
+    for cours in cours_moniteur :
+        for res in Reserver.query.filter_by(id_c = cours.id_c).all() :
+            db.session.delete(res)
+        db.session.delete(cours)
+
+    db.session.delete(moniteur)
+    db.session.commit()
     return redirect(url_for("gerer_moniteur", adherent_id = current_user.get_id()))
     
 @app.route("/update_moniteur/<int:id_u>", methods=["POST"])

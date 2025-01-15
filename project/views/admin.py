@@ -141,6 +141,7 @@ def add_poney() :
                     charge_max = f.charge.data)
     db.session.add(poney)
     db.session.commit()
+    flash("Poney ajouté avec succès.", "success")
     return redirect(url_for("gerer_poney", adherent_id = current_user.get_id()))
 
 @app.route("/delete_poney/<int:id_po>", methods=["POST"])
@@ -151,14 +152,13 @@ def drop_poney(id_po) :
         db.session.delete(res)
     db.session.delete(poney)
     db.session.commit()
+    flash("Poney supprimé avec succès.", "success")
     return redirect(url_for("gerer_poney", adherent_id = current_user.get_id()))
 
 @app.route("/update_poney/<int:id_po>", methods=["POST"])
 def update_poney(id_po) :
     poney = Poney.query.get(id_po)
     f = PoneyForm()
-    print(f.validate_on_submit())
-    print(f.nom_po.data)
     verif, message = Poney.verifier_charge(id_po, f.charge.data)
     if verif : 
         poney.nom_po = f.nom_po.data
@@ -193,6 +193,7 @@ def drop_moniteur(id_u) :
 
     db.session.delete(moniteur)
     db.session.commit()
+    flash("Moniteur supprimé avec succès.", "success")
     return redirect(url_for("gerer_moniteur", adherent_id = current_user.get_id()))
     
 @app.route("/update_moniteur/<int:id_u>", methods=["POST"])
@@ -205,6 +206,7 @@ def update_moniteur(id_u) :
     moniteur.email = f.email.data,
     moniteur.poids = f.poids.data,
     db.session.commit()
+    flash("Moniteur modifié avec succès.", "success")
     return redirect(url_for("gerer_moniteur", adherent_id = current_user.get_id()))
 
 @app.route("/add_cours", methods=["POST"])
@@ -239,6 +241,7 @@ def drop_cours(id_c) :
     else :
         db.session.delete(cours)
         db.session.commit()
+        flash("Cours supprimé avec succès.", "success")
     return redirect(url_for("accueil", adherent_id = current_user.get_id()))
 
 @app.route("/update_cours/<int:id>", methods=["POST"])
@@ -287,6 +290,7 @@ def drop_adherent(id_u) :
 
     db.session.delete(adherent)
     db.session.commit()
+    flash("Adhérent supprimé avec succès.", "success")
     return redirect(url_for("gerer_adherent", adherent_id = current_user.get_id()))
 
 @app.route("/update_adherent/<int:id_u>", methods=["POST"])
@@ -300,4 +304,5 @@ def update_adherent(id_u) :
     adherent.email = f.email.data,
     adherent.poids = f.poids.data,
     db.session.commit()
+    flash("Adhérent modifié avec succès.", "success")
     return redirect(url_for("gerer_adherent", adherent_id = current_user.get_id()))

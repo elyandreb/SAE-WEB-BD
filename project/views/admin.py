@@ -117,12 +117,11 @@ def test_c() :
 @app.route("/add_poney", methods=["POST"])
 def add_poney() :
     f = PoneyForm()
-    if f.validate_on_submit() :
-        poney = Poney(nom_po = f.nom_po.data,
-                      charge_max = f.charge.data)
-        db.session.add(poney)
-        db.session.commit()
-    return redirect(url_for("accueil", adherent_id = current_user.get_id()))
+    poney = Poney(nom_po = f.nom_po.data,
+                    charge_max = f.charge.data)
+    db.session.add(poney)
+    db.session.commit()
+    return redirect(url_for("gerer_poney", adherent_id = current_user.get_id()))
 
 @app.route("/delete_poney/<int:id_po>", methods=["POST"])
 def drop_poney(id_po) :
@@ -134,7 +133,7 @@ def drop_poney(id_po) :
     else :
         db.session.delete(poney)
         db.session.commit()
-    return redirect(url_for("accueil", adherent_id = current_user.get_id()))
+    return redirect(url_for("gerer_poney", adherent_id = current_user.get_id()))
 
 @app.route("/update_poney/<int:id_po>", methods=["POST"])
 def update_poney(id_po) :

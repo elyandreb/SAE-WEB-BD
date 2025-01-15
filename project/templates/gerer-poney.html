@@ -79,4 +79,32 @@
         </div>
         {% endfor %}
     </div>
+
+<!-- Modal d'ajout -->
+<div class="modal fade" id="addPoneyModal" tabindex="-1" aria-labelledby="addPoneyLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addPoneyLabel">Ajouter un poney</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ url_for('add_poney') }}" method="POST">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="nom_po" class="form-label">Nom</label>
+                        <input type="text" class="form-control" id="nom_po" name="nom_po" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="charge" class="form-label">Charge maximale</label>
+                        <input type="number" class="form-control" id="charge" name="charge" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-primary">Ajouter</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}

@@ -47,11 +47,14 @@
                             {% if cours.date_c == jour and cours.h_de_debut == heure %}
                             <div class="card shadow-sm">
                                 <div class="card-body p-2">
-                                    <p class="m-0 fw-bold">COURS <button class="bi bi-info-circle" data-bs-toggle="modal" data-bs-target="#modalInfo{{ cours.id_c }}"></button></p>
+                                    <p class="m-0 fw-bold">COURS 
+                                        <i class="bi bi-info-circle" data-bs-toggle="modal" data-bs-target="#modalInfo{{ cours.id_c }}"></i></p>
                                     <p class="m-0">Durée : {{ cours.duree }}h</p>
                                     {% if cours.inscrit %}
                                     <span class="badge bg-success">Inscrit au cours</span>
                                     <button class="btn btn-danger mt-2" data-bs-toggle="modal" data-bs-target="#modalDesinscription{{ cours.id_c }}">Se désinscrire</button>
+                                    {% elif cours.est_passe %}
+                                     <span class="badge bg-secondary">Cours passé</span>
                                     {% elif cours.nb_inscriptions >= cours.nb_pe %}
                                     <span class="badge bg-danger">Cours complet</span>
                                     {% else %}
@@ -125,6 +128,9 @@
                                             <p><strong>Durée :</strong> {{ cours.duree }} heure(s)</p>
                                             <p><strong>Participants :</strong> {{ cours.nb_inscriptions }} / {{ cours.nb_pe }}</p>
                                             <p><strong>Moniteur :</strong> {{ cours.moniteur.prenom_u }} {{ cours.moniteur.nom_u }}</p>
+                                            {% if cours.inscrit %}
+                                            <p><strong>Poney attribué :</strong> {{ cours.poney_attribue }}</p>
+                                            {% endif %}
                                     </div>
                                 </div>
                             </div>

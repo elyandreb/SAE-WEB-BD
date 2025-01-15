@@ -5,6 +5,7 @@ from datetime import date, timedelta
 from project.models import Cotiser, Cours, Poney, Reserver
 from project import app, db
 import locale
+from datetime import datetime
 
 @app.route('/edt')
 @login_required
@@ -35,6 +36,24 @@ def emploi_du_temps():
             .all()
         )
 
+        # Ajouter les informations des participants pour chaque cours
+        for cours in cours_semaine:
+            cours.nb_inscriptions = Reserver.query.filter_by(id_c=cours.id_c).count()
+            
+            reservations = Reserver.query.filter_by(id_c=cours.id_c).all()
+            participants = []
+
+            for reservation in reservations:
+                participant = {
+                    "nom": reservation.user.nom_u,
+                    "prenom": reservation.user.prenom_u,
+                    "poney": reservation.poney.nom_po if reservation.poney else None
+                }
+                participants.append(participant)
+
+            cours.participants = participants
+            
+
         # Générer les horaires
         horaires = range(9, 21)  # De 9h à 20h
 
@@ -55,6 +74,15 @@ def emploi_du_temps():
             
             # Nombre de personnes inscrites à ce cours
             cours.nb_inscriptions = Reserver.query.filter_by(id_c=cours.id_c).count()
+
+            # Ajoutez une information pour savoir si le cours est passé
+            cours.est_passe = datetime.combine(cours.date_c, datetime.min.time()) < datetime.now()
+
+            # Récupérez le poney associé si l'utilisateur est inscrit
+            reservation = Reserver.query.filter_by(id_u=current_user.id_u, id_c=cours.id_c).first()
+            if reservation:
+                cours.poney_attribue = reservation.poney.nom_po
+
 
 
         # Générer les horaires
@@ -83,7 +111,6 @@ def inscrire_au_cours(cours_id):
         cotisation = Cotiser.query.filter_by(id_u=current_user.get_id(), annee_debut=annee, annee_fin=annee+1).first()
     else : 
         cotisation = Cotiser.query.filter_by(id_u=current_user.get_id(), annee_debut=annee-1, annee_fin=annee).first()
-    print(cotisation.paye)
 
     if cotisation.paye : 
         # Trouver les poneys déjà réservés pour ce cours

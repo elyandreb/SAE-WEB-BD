@@ -57,6 +57,21 @@
                                             <p><strong>Heure :</strong> {{ cours.h_de_debut }}:00</p>
                                             <p><strong>Durée :</strong> {{ cours.duree }} heure(s)</p>
                                             <p><strong>Participants :</strong> {{ cours.nb_inscriptions }} / {{ cours.nb_pe }}</p>
+                                            <!-- Liste des participants -->
+                                            {% if cours.participants %}
+                                            <ul class="list-group mt-3">
+                                                {% for participant in cours.participants %}
+                                                <li class="list-group-item">
+                                                    <strong>{{ participant.prenom }} {{ participant.nom }}</strong>
+                                                    {% if participant.poney %}
+                                                    <span class="badge bg-primary ms-2">Poney : {{ participant.poney }}</span>
+                                                    {% endif %}
+                                                </li>
+                                                {% endfor %}
+                                            </ul>
+                                            {% else %}
+                                            <p class="text-muted">Aucun participant pour ce cours.</p>
+                                            {% endif %}
                                     </div>
                                 </div>
                             </div>

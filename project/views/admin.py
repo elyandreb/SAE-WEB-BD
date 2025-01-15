@@ -151,12 +151,11 @@ def update_poney(id_po) :
 @app.route("/add_moniteur", methods=["POST"])
 def add_moniteur() :
     f = MoniteurForm()
-    if f.validate_on_submit() :
-        moniteur = f.create_moniteur()
-        db.session.add(moniteur)
-        db.session.commit()
-        flash("Moniteur créé, id : " + moniteur.get_id(), "success")
-        time.sleep(1)
+    moniteur = f.create_moniteur()
+    db.session.add(moniteur)
+    db.session.commit()
+    flash("Moniteur créé, id : " + moniteur.get_id(), "success")
+    time.sleep(1)
     return redirect(url_for("gerer_moniteur", adherent_id = current_user.get_id()))
 
 @app.route("/delete_moniteur/<int:id_u>", methods=["POST"])

@@ -99,9 +99,30 @@
             </div>
             <form action="{{ url_for('add_moniteur') }}" method="POST">
                 <div class="modal-body">
+    
+                    <div class="mb-3">
+                        <label for="nom_u" class="form-label">Nom</label>
+                        <input type="text" class="form-control" id="nom_u" name="nom_u" required>
+                    </div>
                     <div class="mb-3">
                         <label for="prenom_u" class="form-label">Prenom</label>
                         <input type="text" class="form-control" id="prenom_u" name="prenom_u" required>
+                    </div>  
+                    <div class="mb-3">
+                        <label for="birth_date" class="form-label">Date de naissance</label>
+                        <input type="date" class="form-control" id="birth_date" name="birth_date" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="poids" class="form-label">Poids</label>
+                        <input type="number" step="0.1" class="form-control" id="poids" name="poids" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Mot de passe</label>
+                        <input type="password" class="form-control" id="password" name="password" required>
                     </div>
                 </div>
                 <div class="modal-footer">

@@ -7,7 +7,7 @@ from wtforms import IntegerField, StringField, PasswordField, EmailField, DateFi
 from wtforms.validators import DataRequired, EqualTo, Email, Length, Regexp, ValidationError, NumberRange, AnyOf
 from wtforms_sqlalchemy.fields import QuerySelectField
 from wtforms.widgets import RadioInput, ListWidget
-from project.models import Utilisateur, Poney, Cours
+from project.models import Reserver, Utilisateur, Poney, Cours
 import time
 import sqlalchemy.exc as sql
 
@@ -126,13 +126,11 @@ def add_poney() :
 @app.route("/delete_poney/<int:id_po>", methods=["POST"])
 def drop_poney(id_po) :
     poney = Poney.query.get(id_po)
-    poney_reserves = Poney.get_poney_reserves()
-    if poney in poney_reserves() :
-        flash("Suppression impossible, le poney est réservé dans au moins un cours", "danger")
-        time.sleep(1)
-    else :
-        db.session.delete(poney)
-        db.session.commit()
+    res_poney = Reserver.query.filter_by(id_po = id_po).all()
+    for res in res_poney :
+        db.session.delete(res)
+    db.session.delete(poney)
+    db.session.commit()
     return redirect(url_for("gerer_poney", adherent_id = current_user.get_id()))
 
 @app.route("/update_poney/<int:id_po>", methods=["POST"])

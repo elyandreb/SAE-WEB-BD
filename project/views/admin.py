@@ -7,7 +7,7 @@ from wtforms import IntegerField, StringField, PasswordField, EmailField, DateFi
 from wtforms.validators import DataRequired, EqualTo, Email, Length, Regexp, ValidationError, NumberRange, AnyOf
 from wtforms_sqlalchemy.fields import QuerySelectField
 from wtforms.widgets import RadioInput, ListWidget
-from project.models import Utilisateur, Poney, Cours
+from project.models import Reserver, Utilisateur, Poney, Cours
 import time
 import sqlalchemy.exc as sql
 
@@ -21,10 +21,10 @@ class PoneyForm(FlaskForm) :
                                                   message='La charge doit être un nombre positif.')])
 
 class MoniteurForm(FlaskForm) :
-    name = StringField("Nom", validators=[DataRequired(), 
+    nom_u = StringField("Nom", validators=[DataRequired(), 
                                           Length(max=42)])
                                           
-    first_name = StringField("Prénom", validators=[DataRequired(), 
+    prenom_u = StringField("Prénom", validators=[DataRequired(), 
                                                    Length(max=42)])
 
     email = EmailField("Email", validators=[DataRequired(), Email(message='Adresse mail invalide.'), 
@@ -36,9 +36,6 @@ class MoniteurForm(FlaskForm) :
 
     password = PasswordField("Mot de passe", validators=[DataRequired(), 
                                                          Length(max=64)])
-
-    password_check = PasswordField("Confirmez son mot de passe", validators=[DataRequired(), 
-                                                                               EqualTo('password', message='Les mots de passe doivent correspondre.'),])
 
     def validate_email(self, field):
         if Utilisateur.query.filter_by(email=field.data).first():
@@ -64,8 +61,8 @@ class MoniteurForm(FlaskForm) :
         m = sha256()
         m.update(passwd.encode())
         return Utilisateur(
-                 nom_u = self.name.data,
-                 prenom_u = self.first_name.data,
+                 nom_u = self.nom_u.data,
+                 prenom_u = self.prenom_u.data,
                  date_de_naissance=self.birth_date.data,
                  email = self.email.data,
                  poids = self.poids.data,
@@ -92,17 +89,21 @@ class CoursForm(FlaskForm) :
     prix = DecimalField('Le prix du cours', places=2, validators=[DataRequired(), 
                                                       NumberRange(min=0, max=999.99)])
 
-@app.route("/test_p")
-def test_p() :
+@app.route("/gerer-poney")
+@login_required
+def gerer_poney() :
     f = PoneyForm()
     utilisateur = current_user
-    return render_template("test_p.html", form = f, utilisateur = utilisateur)
+    poneys = Poney.query.all()
+    print(poneys)
+    return render_template("gerer-poney.html", form = f, utilisateur = utilisateur, poneys = poneys)
 
-@app.route("/test_m")
-def test_m() :
+@app.route("/gerer-moniteur")
+def gerer_moniteur() :
     f = MoniteurForm()
     utilisateur = current_user
-    return render_template("test_m.html", form = f, utilisateur = utilisateur)
+    moniteurs = Utilisateur.get_moniteurs()
+    return render_template("gerer-moniteur.html", form = f, utilisateur = utilisateur, moniteurs = moniteurs)
 
 @app.route("/test_c")
 def test_c() :
@@ -114,80 +115,75 @@ def test_c() :
 @app.route("/add_poney", methods=["POST"])
 def add_poney() :
     f = PoneyForm()
-    if f.validate_on_submit() :
-        poney = Poney(nom_po = f.nom_po.data,
-                      charge_max = f.charge.data)
-        db.session.add(poney)
-        db.session.commit()
-    return redirect(url_for("accueil", adherent_id = current_user.get_id()))
+    poney = Poney(nom_po = f.nom_po.data,
+                    charge_max = f.charge.data)
+    db.session.add(poney)
+    db.session.commit()
+    return redirect(url_for("gerer_poney", adherent_id = current_user.get_id()))
 
-@app.route("/delete_poney/<int:id>", methods=["POST"])
+@app.route("/delete_poney/<int:id_po>", methods=["POST"])
 def drop_poney(id_po) :
     poney = Poney.query.get(id_po)
-    poney_reserves = Poney.get_poney_reserves()
-    if poney in poney_reserves() :
-        flash("Suppression impossible, le poney est réservé dans au moins un cours", "danger")
-        time.sleep(1)
-    else :
-        db.session.delete(poney)
-        db.session.commit()
-    return redirect(url_for("accueil", adherent_id = current_user.get_id()))
+    res_poney = Reserver.query.filter_by(id_po = id_po).all()
+    for res in res_poney :
+        db.session.delete(res)
+    db.session.delete(poney)
+    db.session.commit()
+    return redirect(url_for("gerer_poney", adherent_id = current_user.get_id()))
 
-@app.route("/update_poney/<int:id>", methods=["POST"])
+@app.route("/update_poney/<int:id_po>", methods=["POST"])
 def update_poney(id_po) :
     poney = Poney.query.get(id_po)
     f = PoneyForm()
-    if f.validate_on_submit() :
-        verif, message = Poney.verifier_charge(id_po, f.charge.data)
-        if verif : 
-            poney.nom_po = f.nom_po.data
-            poney.charge_max = f.charge.data
-            db.session.commit()
-            flash(message, "success")
-        else :
-            flash(message, "danger")
+    print(f.validate_on_submit())
+    print(f.nom_po.data)
+    verif, message = Poney.verifier_charge(id_po, f.charge.data)
+    if verif : 
+        poney.nom_po = f.nom_po.data
+        poney.charge_max = f.charge.data
+        db.session.commit()
+        flash(message, "success")
+    else :
+        flash(message, "danger")
         time.sleep(1)
-    return redirect(url_for("accueil", adherent_id = current_user.get_id()))
+    return redirect(url_for("gerer_poney", adherent_id = current_user.get_id()))
 
 @app.route("/add_moniteur", methods=["POST"])
 def add_moniteur() :
     f = MoniteurForm()
-    if f.validate_on_submit() :
-        moniteur = f.create_moniteur()
-        db.session.add(moniteur)
-        db.session.commit()
-        flash("Moniteur créé, id : " + moniteur.get_id(), "success")
-        time.sleep(1)
-    return redirect(url_for("accueil", adherent_id = current_user.get_id()))
+    moniteur = f.create_moniteur()
+    db.session.add(moniteur)
+    db.session.commit()
+    flash("Moniteur créé, id : " + moniteur.get_id(), "success")
+    time.sleep(1)
+    return redirect(url_for("gerer_moniteur", adherent_id = current_user.get_id()))
 
-@app.route("/delete_moniteur/<int:id>", methods=["POST"])
+@app.route("/delete_moniteur/<int:id_u>", methods=["POST"])
 def drop_moniteur(id_u) :
+    print(id_u)
     moniteur = Utilisateur.query.get(id_u)
-    moniteur_attribues = Utilisateur.get_moniteurs_attribues()
-    if moniteur in moniteur_attribues() :
-        flash("Suppression impossible, le moniteur est attribué dans au moins un cours", "danger")
-        time.sleep(1)
-    else :
-        db.session.delete(moniteur)
-        db.session.commit()
-    return redirect(url_for("accueil", adherent_id = current_user.get_id()))
+    cours_moniteur = Cours.query.filter_by(id_u = id_u).all()
+
+    for cours in cours_moniteur :
+        for res in Reserver.query.filter_by(id_c = cours.id_c).all() :
+            db.session.delete(res)
+        db.session.delete(cours)
+
+    db.session.delete(moniteur)
+    db.session.commit()
+    return redirect(url_for("gerer_moniteur", adherent_id = current_user.get_id()))
     
-@app.route("/update_moniteur/<int:id>", methods=["POST"])
+@app.route("/update_moniteur/<int:id_u>", methods=["POST"])
 def update_moniteur(id_u) :
     moniteur = Utilisateur.query.get(id_u)
     f = MoniteurForm()
-    if f.validate_on_submit() :
-        passwd = f.password.data
-        m = sha256()
-        m.update(passwd.encode())
-        moniteur.nom_u = f.name.data,
-        moniteur.prenom_u = f.first_name.data,
-        moniteur.date_de_naissance=f.birth_date.data,
-        moniteur.email = f.email.data,
-        moniteur.poids = f.poids.data,
-        moniteur.mdp=m.hexdigest(),
-        db.session.commit()
-    return redirect(url_for("accueil", adherent_id = current_user.get_id()))
+    moniteur.nom_u = f.nom_u.data,
+    moniteur.prenom_u = f.prenom_u.data,
+    moniteur.date_de_naissance=f.birth_date.data,
+    moniteur.email = f.email.data,
+    moniteur.poids = f.poids.data,
+    db.session.commit()
+    return redirect(url_for("gerer_moniteur", adherent_id = current_user.get_id()))
 
 @app.route("/add_cours", methods=["POST"])
 def add_cours() :

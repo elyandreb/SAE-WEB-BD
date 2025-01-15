@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+{% block title %}Gestion des Poneys{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="text-center mb-4">
+        <h1>Gestion des poneys</h1>
+    </div>
+
+    <!-- Barre de recherche -->
+    <div class="input-group mb-4">
+        <input type="text" class="form-control" placeholder="Rechercher votre poney" id="search-bar">
+        <button class="btn btn-primary">
+            <i class="bi bi-search"></i>
+        </button>
+    </div>
+
+    <!-- Bouton ajouter-->
+    <div class="position-fixed top-2 end-0 m-1" style="left: 1600px;top: 183px;">
+        <button class="btn btn-light shadow-lg rounded-circle" style="background-color: #fae9d8; width: 60px; height: 60px;" data-bs-toggle="modal" data-bs-target="#addPoneyModal">
+            <i class="bi bi-plus" style="font-size: 24px;"></i>
+        </button>
+    </div>
+
+    <!-- Cards de poneys -->
+    <div class="row" id="poney-container">
+        {% for poney in poneys %}
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm" style="border-radius: 15px; background-color: #fae9d8;">
+                <div class="card-body text-center">
+                    <h5 class="card-title">{{ poney.nom_po }}</h5>
+                    <img src="{{ url_for('static', filename='img/horse.png') }}" alt="Poney" class="img-fluid mb-3" style="width: 50px;">
+                    <p class="card-text">
+                        <strong>Charge max :</strong> {{ poney.charge_max }} kg
+                    </p>
+                </div>
+                <div class="card-footer d-flex justify-content-between">
+                    <!-- Bouton Modifier -->
+                    <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#updatePoneyModal{{ poney.id_po }}">
+                        <i class="bi bi-pencil"></i>
+                    </button>
+                    <!-- Bouton Supprimer -->
+                    <form action="{{ url_for('drop_poney', id_po=poney.id_po) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce poney ?');">
+                        <button type="submit" class="btn btn-sm btn-danger">
+                            <i class="bi bi-x"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de modification -->
+        <div class="modal fade" id="updatePoneyModal{{ poney.id_po }}" tabindex="-1" aria-labelledby="updatePoneyLabel{{ poney.id_po }}" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="updatePoneyLabel{{ poney.id_po }}">Modifier le poney</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="{{ url_for('update_poney', id_po=poney.id_po) }}" method="POST">
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="nom_po" class="form-label">Nom</label>
+                                <input type="text" class="form-control" id="nom_po" name="nom_po" value="{{ poney.nom_po }}" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="charge" class="form-label">Charge maximale</label>
+                                <input type="number" class="form-control" id="charge" name="charge" value="{{ poney.charge_max }}" required>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                            <button type="submit" class="btn btn-primary">Enregistrer</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+<!-- Modal d'ajout -->
+<div class="modal fade" id="addPoneyModal" tabindex="-1" aria-labelledby="addPoneyLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addPoneyLabel">Ajouter un poney</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ url_for('add_poney') }}" method="POST">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="nom_po" class="form-label">Nom</label>
+                        <input type="text" class="form-control" id="nom_po" name="nom_po" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="charge" class="form-label">Charge maximale</label>
+                        <input type="number" class="form-control" id="charge" name="charge" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-primary">Ajouter</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

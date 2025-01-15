@@ -92,11 +92,14 @@ class CoursForm(FlaskForm) :
     prix = DecimalField('Le prix du cours', places=2, validators=[DataRequired(), 
                                                       NumberRange(min=0, max=999.99)])
 
-@app.route("/test_p")
+@app.route("/gerer-poney")
+@login_required
 def test_p() :
     f = PoneyForm()
     utilisateur = current_user
-    return render_template("test_p.html", form = f, utilisateur = utilisateur)
+    poneys = Poney.query.all()
+    print(poneys)
+    return render_template("gerer-poney.html", form = f, utilisateur = utilisateur, poneys = poneys)
 
 @app.route("/test_m")
 def test_m() :
@@ -121,7 +124,7 @@ def add_poney() :
         db.session.commit()
     return redirect(url_for("accueil", adherent_id = current_user.get_id()))
 
-@app.route("/delete_poney/<int:id>", methods=["POST"])
+@app.route("/delete_poney/<int:id_po>", methods=["POST"])
 def drop_poney(id_po) :
     poney = Poney.query.get(id_po)
     poney_reserves = Poney.get_poney_reserves()
@@ -133,7 +136,7 @@ def drop_poney(id_po) :
         db.session.commit()
     return redirect(url_for("accueil", adherent_id = current_user.get_id()))
 
-@app.route("/update_poney/<int:id>", methods=["POST"])
+@app.route("/update_poney/<int:id_po>", methods=["POST"])
 def update_poney(id_po) :
     poney = Poney.query.get(id_po)
     f = PoneyForm()

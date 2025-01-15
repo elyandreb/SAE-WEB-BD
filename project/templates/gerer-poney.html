@@ -16,6 +16,13 @@
         </button>
     </div>
 
+    <!-- Bouton ajouter-->
+    <div class="position-fixed top-2 end-0 m-1" style="left: 1600px;top: 183px;">
+        <button class="btn btn-light shadow-lg rounded-circle" style="background-color: #fae9d8; width: 60px; height: 60px;" data-bs-toggle="modal" data-bs-target="#addPoneyModal">
+            <i class="bi bi-plus" style="font-size: 24px;"></i>
+        </button>
+    </div>
+
     <!-- Cards de poneys -->
     <div class="row" id="poney-container">
         {% for poney in poneys %}

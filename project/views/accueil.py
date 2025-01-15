@@ -1,7 +1,7 @@
 from flask import Flask, render_template
 from datetime import date
 
-from flask_login import login_required
+from flask_login import current_user, login_required
 from project.app import db, app
 from project.models import  Cours, Reserver, Utilisateur
 
@@ -36,6 +36,26 @@ def accueil(adherent_id):
             .limit(3)
             .all()
         )
+        for cours in prochains_cours:
+            cours.nb_inscriptions = Reserver.query.filter_by(id_c=cours.id_c).count()
+
+            reservations = Reserver.query.filter_by(id_c=cours.id_c).all()
+            participants = []
+
+            for reservation in reservations:
+                participant = {
+                    "nom": reservation.user.nom_u,
+                    "prenom": reservation.user.prenom_u,
+                    "poney": reservation.poney.nom_po if reservation.poney else None
+                }
+                participants.append(participant)
+
+            cours.participants = participants
         return render_template("moniteur_home.html", utilisateur=utilisateur, prochains_cours=prochains_cours)
+    
     else:
+        reservation = Reserver.query.filter_by(id_u=current_user.id_u, id_c=prochain_cours.id_c).first()
+        if reservation:
+            prochain_cours.poney_attribue = reservation.poney.nom_po
+
         return render_template('adherent_home.html', utilisateur=utilisateur, cours=prochain_cours)

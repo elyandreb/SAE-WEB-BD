@@ -38,7 +38,7 @@
                         <i class="bi bi-pencil"></i>
                     </button>
                     <!-- Bouton Supprimer -->
-                    <form action="{{ url_for('drop_moniteur', id_u=moniteur.id_u) }}" method="POST">
+                    <form action="{{ url_for('drop_moniteur', id_u=moniteur.id_u) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce moniteur ?');">
                         <button type="submit" class="btn btn-sm btn-danger">
                             <i class="bi bi-x"></i>
                         </button>

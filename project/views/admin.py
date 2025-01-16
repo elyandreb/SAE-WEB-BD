@@ -1,3 +1,5 @@
+from datetime import date, timedelta
+import locale
 from project import app, db
 from flask import render_template, url_for, redirect, request, flash
 from flask_wtf import FlaskForm
@@ -20,7 +22,7 @@ class PoneyForm(FlaskForm) :
                                       NumberRange(min=0, 
                                                   message='La charge doit être un nombre positif.')])
 
-class MoniteurForm(FlaskForm) :
+class UtilisateurForm(FlaskForm) :
     nom_u = StringField("Nom", validators=[DataRequired(), 
                                           Length(max=42)])
                                           
@@ -69,6 +71,19 @@ class MoniteurForm(FlaskForm) :
                  mdp=m.hexdigest(),
                  le_role="moniteur")
     
+    def create_adherent(self) :
+        passwd = self.password.data
+        m = sha256()
+        m.update(passwd.encode())
+        return Utilisateur(
+                 nom_u = self.nom_u.data,
+                 prenom_u = self.prenom_u.data,
+                 date_de_naissance=self.birth_date.data,
+                 email = self.email.data,
+                 poids = self.poids.data,
+                 mdp=m.hexdigest(),
+                 le_role="adherent")
+    
 class CoursForm(FlaskForm) :
     moniteur = QuerySelectField(
         "Les moniteurs",
@@ -79,7 +94,7 @@ class CoursForm(FlaskForm) :
     )
     nb_personne = IntegerField("Le nombre de personne max",validators=[DataRequired(), NumberRange(min=1, max=10)])
 
-    h_debut = IntegerField("L'heure de début",validators=[DataRequired()])
+    h_de_debut = IntegerField("L'heure de début",validators=[DataRequired()])
 
     duree = IntegerField("La durée du cours",validators=[DataRequired(), 
                                      AnyOf([1, 2])])
@@ -100,16 +115,46 @@ def gerer_poney() :
 
 @app.route("/gerer-moniteur")
 def gerer_moniteur() :
-    f = MoniteurForm()
+    f = UtilisateurForm()
     utilisateur = current_user
     moniteurs = Utilisateur.get_moniteurs()
     return render_template("gerer-moniteur.html", form = f, utilisateur = utilisateur, moniteurs = moniteurs)
 
-@app.route("/test_c")
-def test_c() :
+@app.route("/gerer-adherent")
+@login_required
+def gerer_adherent():
+    adherents = Utilisateur.query.filter_by(le_role="adherent").all()
+    f = UtilisateurForm()
+
+    return render_template("gerer-adherent.html", adherents=adherents, form=f, utilisateur=current_user)
+
+
+@app.route("/gerer-cours")
+def gerer_cours() :
     f = CoursForm()
-    utilisateur = current_user
-    return render_template("test_c.html", form = f, utilisateur = utilisateur)
+    # Configurer les dates en français
+    locale.setlocale(locale.LC_TIME, 'fr_FR.UTF-8')
+
+    # Récupérer la semaine à afficher
+    today = date.today()
+    semaine_index = int(request.args.get('week', 0))  # Décalage de la semaine
+    semaine_debut = today + timedelta(weeks=semaine_index, days=-today.weekday())
+    semaine_fin = semaine_debut + timedelta(days=6)
+
+    # Générer les jours de la semaine
+    jours = [semaine_debut + timedelta(days=i) for i in range(7)]
+
+    # Générer les horaires
+    horaires = range(9, 21)  # De 9h à 20h
+    
+    # Récupération des cours pour la semaine
+    cours_semaine = Cours.query.filter(Cours.date_c.between(semaine_debut, semaine_fin)).all()
+
+    moniteurs = Utilisateur.get_moniteurs()
+
+    return render_template('gerer-cours.html', semaine_debut=semaine_debut, jours=jours, horaires=horaires, cours_semaine=cours_semaine, previous_week=semaine_index - 1, next_week=semaine_index + 1, utilisateur=current_user, moniteurs=moniteurs)
+
+
 
 
 @app.route("/add_poney", methods=["POST"])
@@ -119,6 +164,7 @@ def add_poney() :
                     charge_max = f.charge.data)
     db.session.add(poney)
     db.session.commit()
+    flash("Poney ajouté avec succès.", "success")
     return redirect(url_for("gerer_poney", adherent_id = current_user.get_id()))
 
 @app.route("/delete_poney/<int:id_po>", methods=["POST"])
@@ -129,14 +175,13 @@ def drop_poney(id_po) :
         db.session.delete(res)
     db.session.delete(poney)
     db.session.commit()
+    flash("Poney supprimé avec succès.", "success")
     return redirect(url_for("gerer_poney", adherent_id = current_user.get_id()))
 
 @app.route("/update_poney/<int:id_po>", methods=["POST"])
 def update_poney(id_po) :
     poney = Poney.query.get(id_po)
     f = PoneyForm()
-    print(f.validate_on_submit())
-    print(f.nom_po.data)
     verif, message = Poney.verifier_charge(id_po, f.charge.data)
     if verif : 
         poney.nom_po = f.nom_po.data
@@ -150,7 +195,7 @@ def update_poney(id_po) :
 
 @app.route("/add_moniteur", methods=["POST"])
 def add_moniteur() :
-    f = MoniteurForm()
+    f = UtilisateurForm()
     moniteur = f.create_moniteur()
     db.session.add(moniteur)
     db.session.commit()
@@ -171,74 +216,111 @@ def drop_moniteur(id_u) :
 
     db.session.delete(moniteur)
     db.session.commit()
+    flash("Moniteur supprimé avec succès.", "success")
     return redirect(url_for("gerer_moniteur", adherent_id = current_user.get_id()))
     
 @app.route("/update_moniteur/<int:id_u>", methods=["POST"])
 def update_moniteur(id_u) :
     moniteur = Utilisateur.query.get(id_u)
-    f = MoniteurForm()
+    f = UtilisateurForm()
     moniteur.nom_u = f.nom_u.data,
     moniteur.prenom_u = f.prenom_u.data,
     moniteur.date_de_naissance=f.birth_date.data,
     moniteur.email = f.email.data,
     moniteur.poids = f.poids.data,
     db.session.commit()
+    flash("Moniteur modifié avec succès.", "success")
     return redirect(url_for("gerer_moniteur", adherent_id = current_user.get_id()))
 
 @app.route("/add_cours", methods=["POST"])
 def add_cours() :
     f = CoursForm()
-    if f.validate_on_submit() :
-        try :
-            cours = Cours(
-                id_u = f.moniteur.data.get_id(),
-                nb_pe = f.nb_personne.data,
-                h_de_debut = f.h_debut.data,
-                duree = f.duree.data,
-                date_c = f.date.data,
-                prix = f.prix.data
-            )
-            db.session.add(cours)
-            db.session.commit()
-            flash("Cours ajouté avec succès.", "success")
-        except sql.SQLAlchemyError as e: # Les triggers se mettent en action s'il y a un soucis
-            db.session.rollback()
-            flash(f"Erreur lors de l'ajout du cours : {str(e)}", "danger")
-        time.sleep(1)
-    return redirect(url_for("accueil", adherent_id = current_user.get_id()))
+    try :
+        cours = Cours(
+            id_u = f.moniteur.data.get_id(),
+            nb_pe = f.nb_personne.data,
+            h_de_debut = f.h_de_debut.data,
+            duree = f.duree.data,
+            date_c = f.date.data,
+            prix = f.prix.data
+        )
+        print(f.data)
+        db.session.add(cours)
+        db.session.commit()
+        flash("Cours ajouté avec succès.", "success")
+    except sql.SQLAlchemyError as e: # Les triggers se mettent en action s'il y a un soucis
+        db.session.rollback()
+        flash(f"Erreur lors de l'ajout du cours : {str(e)}", "danger")
+    time.sleep(1)
+    return redirect(url_for("gerer_cours", adherent_id = current_user.get_id()))
 
-@app.route("/delete_cours/<int:id>", methods=["POST"])
+@app.route("/delete_cours/<int:id_c>", methods=["POST"])
 def drop_cours(id_c) :
     cours = Cours.query.get(id_c)
-    cours_remplis = Cours.get_cours_remplis()
-    if cours in cours_remplis() :
-        flash("Suppression impossible, le cours a au moins une réservation", "danger")
-        time.sleep(1)
-    else :
-        db.session.delete(cours)
-        db.session.commit()
-    return redirect(url_for("accueil", adherent_id = current_user.get_id()))
+    res_cours = Reserver.query.filter_by(id_c = id_c).all()
+    for res in res_cours :
+        db.session.delete(res)
+    db.session.delete(cours)
+    db.session.commit()
+    flash("Cours supprimé avec succès.", "success")
+    return redirect(url_for("gerer_cours", adherent_id = current_user.get_id()))
 
-@app.route("/update_cours/<int:id>", methods=["POST"])
+@app.route("/update_cours/<int:id_c>", methods=["POST"])
 def update_cours(id_c) :
     cours = Cours.query.get(id_c)
     f = CoursForm()
-    if f.validate_on_submit() :
-        try :
-            verif, message = Cours.verifier_nb_pe(id_c, f.nb_personne.data)
-            if verif :
-                cours.id_u = f.moniteur.get_id(),
-                cours.nb_pe = f.nb_personne.data,
-                cours.h_de_debut = f.h_debut.data,
-                cours.duree = f.duree.data,
-                cours.date_c = f.date.data,
-                cours.prix = f.prix.data
-                db.session.commit()
-                flash(message, "success")
-            else :
-                flash(message, "danger")
-        except sql.SQLAlchemyError as e: # Les triggers se mettent en action s'il y a un soucis
-            db.session.rollback()
-            flash(f"Erreur lors de l'ajout du cours : {str(e)}", "danger")
-        time.sleep(1)
-    return redirect(url_for("accueil", adherent_id = current_user.get_id()))
+    try :
+        verif = Cours.verifier_nb_pe(id_c, f.nb_personne.data)
+        if verif :
+            cours.id_u = f.moniteur.data.get_id(),
+            cours.nb_pe = f.nb_personne.data,
+            cours.h_de_debut = f.h_de_debut.data,
+            cours.duree = f.duree.data,
+            cours.date_c = f.date.data,
+            cours.prix = f.prix.data
+            db.session.commit()
+            flash("Le cours a été mit à jour ", "success")
+    except sql.SQLAlchemyError as e: # Les triggers se mettent en action s'il y a un soucis
+        db.session.rollback()
+        flash(f"Erreur lors de l'ajout du cours : {str(e)}", "danger")
+    time.sleep(1)
+    return redirect(url_for("gerer_cours", adherent_id = current_user.get_id()))
+
+@app.route("/add_adherent", methods=["POST"])
+@login_required
+def add_adherent():
+    f = UtilisateurForm()
+    adherent = f.create_adherent()
+    db.session.add(adherent)
+    db.session.commit()
+    flash("Adhérent ajouté avec succès.", "success")
+
+    return redirect(url_for("gerer_adherent", adherent_id = current_user.get_id()))
+
+@app.route("/delete_adherent/<int:id_u>", methods=["POST"])
+@login_required
+def drop_adherent(id_u) :
+    adherent = Utilisateur.query.get(id_u)
+    cours_adherent = Reserver.query.filter_by(id_u = id_u).all()
+
+    for res in cours_adherent :
+        db.session.delete(res)
+
+    db.session.delete(adherent)
+    db.session.commit()
+    flash("Adhérent supprimé avec succès.", "success")
+    return redirect(url_for("gerer_adherent", adherent_id = current_user.get_id()))
+
+@app.route("/update_adherent/<int:id_u>", methods=["POST"])
+@login_required
+def update_adherent(id_u) :
+    adherent = Utilisateur.query.get(id_u)
+    f = UtilisateurForm()
+    adherent.nom_u = f.nom_u.data,
+    adherent.prenom_u = f.prenom_u.data,
+    adherent.date_de_naissance=f.birth_date.data,
+    adherent.email = f.email.data,
+    adherent.poids = f.poids.data,
+    db.session.commit()
+    flash("Adhérent modifié avec succès.", "success")
+    return redirect(url_for("gerer_adherent", adherent_id = current_user.get_id()))

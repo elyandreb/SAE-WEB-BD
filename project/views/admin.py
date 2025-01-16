@@ -257,14 +257,12 @@ def add_cours() :
 @app.route("/delete_cours/<int:id_c>", methods=["POST"])
 def drop_cours(id_c) :
     cours = Cours.query.get(id_c)
-    cours_remplis = Cours.get_cours_remplis()
-    if cours in cours_remplis() :
-        flash("Suppression impossible, le cours a au moins une réservation", "danger")
-        time.sleep(1)
-    else :
-        db.session.delete(cours)
-        db.session.commit()
-        flash("Cours supprimé avec succès.", "success")
+    res_cours = Reserver.query.filter_by(id_c = id_c).all()
+    for res in res_cours :
+        db.session.delete(res)
+    db.session.delete(cours)
+    db.session.commit()
+    flash("Cours supprimé avec succès.", "success")
     return redirect(url_for("gerer_cours", adherent_id = current_user.get_id()))
 
 @app.route("/update_cours/<int:id_c>", methods=["POST"])

@@ -9,7 +9,7 @@ from wtforms import IntegerField, StringField, PasswordField, EmailField, DateFi
 from wtforms.validators import DataRequired, EqualTo, Email, Length, Regexp, ValidationError, NumberRange, AnyOf
 from wtforms_sqlalchemy.fields import QuerySelectField
 from wtforms.widgets import RadioInput, ListWidget
-from project.models import Reserver, Utilisateur, Poney, Cours
+from project.models import Cotiser, Reserver, Utilisateur, Poney, Cours
 import time
 import sqlalchemy.exc as sql
 
@@ -302,9 +302,13 @@ def add_adherent():
 def drop_adherent(id_u) :
     adherent = Utilisateur.query.get(id_u)
     cours_adherent = Reserver.query.filter_by(id_u = id_u).all()
+    cotisation_adherent = Cotiser.query.filter_by(id_u = id_u).all()
 
     for res in cours_adherent :
         db.session.delete(res)
+
+    for cot in cotisation_adherent :
+        db.session.delete(cot)
 
     db.session.delete(adherent)
     db.session.commit()

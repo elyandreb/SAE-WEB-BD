@@ -235,23 +235,23 @@ def update_moniteur(id_u) :
 @app.route("/add_cours", methods=["POST"])
 def add_cours() :
     f = CoursForm()
-    if f.validate_on_submit() :
-        try :
-            cours = Cours(
-                id_u = f.moniteur.data.get_id(),
-                nb_pe = f.nb_personne.data,
-                h_de_debut = f.h_de_debut.data,
-                duree = f.duree.data,
-                date_c = f.date.data,
-                prix = f.prix.data
-            )
-            db.session.add(cours)
-            db.session.commit()
-            flash("Cours ajouté avec succès.", "success")
-        except sql.SQLAlchemyError as e: # Les triggers se mettent en action s'il y a un soucis
-            db.session.rollback()
-            flash(f"Erreur lors de l'ajout du cours : {str(e)}", "danger")
-        time.sleep(1)
+    try :
+        cours = Cours(
+            id_u = f.moniteur.data.get_id(),
+            nb_pe = f.nb_personne.data,
+            h_de_debut = f.h_de_debut.data,
+            duree = f.duree.data,
+            date_c = f.date.data,
+            prix = f.prix.data
+        )
+        print(f.data)
+        db.session.add(cours)
+        db.session.commit()
+        flash("Cours ajouté avec succès.", "success")
+    except sql.SQLAlchemyError as e: # Les triggers se mettent en action s'il y a un soucis
+        db.session.rollback()
+        flash(f"Erreur lors de l'ajout du cours : {str(e)}", "danger")
+    time.sleep(1)
     return redirect(url_for("gerer_cours", adherent_id = current_user.get_id()))
 
 @app.route("/delete_cours/<int:id_c>", methods=["POST"])
@@ -272,7 +272,7 @@ def update_cours(id_c) :
     cours = Cours.query.get(id_c)
     f = CoursForm()
     try :
-        verif, message = Cours.verifier_nb_pe(id_c, f.nb_personne.data)
+        verif = Cours.verifier_nb_pe(id_c, f.nb_personne.data)
         if verif :
             cours.id_u = f.moniteur.data.get_id(),
             cours.nb_pe = f.nb_personne.data,

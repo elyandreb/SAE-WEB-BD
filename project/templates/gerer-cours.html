@@ -154,10 +154,21 @@
                                     <form action="{{ url_for('add_cours') }}" method="POST">
                                         <div class="modal-body">
                                             <input type="hidden" name="date" value="{{ jour.strftime('%Y-%m-%d') }}">
-                                            <input type="hidden" name="heure" value="{{ heure }}">
+                                            <input type="hidden" name="h_de_debut" value="{{ heure }}">
+                                            
                                             <div class="mb-3">
-                                                <label for="nb_personne" class="form-label">Nombre de personnes</label>
-                                                <input type="number" class="form-control" name="nb_personne" min="1" required>
+                                                <label for="moniteur" class="form-label">Moniteur</label>
+                                                <select class="form-select" name="moniteur" required>
+                                                    <option value="" disabled selected>Choisir un moniteur</option>
+                                                    {% for moniteur in moniteurs %}
+                                                    <option value="{{ moniteur.id_u }}">{{ moniteur.prenom_u }} {{ moniteur.nom_u }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <label for="nb_personne" class="form-label">Nombre de participants (max)</label>
+                                                <input type="number" class="form-control" name="nb_personne" min="1" max="10" required>
                                             </div>
                                             <div class="mb-3">
                                                 <label for="duree" class="form-label">Durée (h)</label>

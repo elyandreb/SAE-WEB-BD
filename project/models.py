@@ -59,6 +59,11 @@ class Poney(db.Model):
                                "dépasse la nouvelle charge maximale.")
 
         return True, "La nouvelle charge est suffisante pour tous les utilisateurs."
+    
+    @classmethod
+    def get_other_poneys(cls, poneys_reserves) :
+        return cls.query.filter(
+            cls.id_po.notin_(poneys_reserves)).all()
 
 
 class Utilisateur(db.Model, UserMixin):
@@ -179,7 +184,7 @@ class Reserver(db.Model):
             id_cours (int): l'id du cours
 
         Returns:
-            list(Reserver): la liste de réservation du cours
+            Reserver: la réservation du cours
         """        
         return cls.query.filter_by(
             id_u=id_utilisateur, id_c=id_cours).first()
@@ -288,14 +293,15 @@ class Cours(db.Model):
             entre semaine_debut et semaine_fin
         """        
         return cls.query.filter(
-        cls.date_c.between(semaine_debut, semaine_fin)).all()
+        cls.date_c.between(semaine_debut, semaine_fin)).order_by(cls.date_c,
+                                                  cls.h_de_debut).all()
     
     @classmethod
     def get_cours_by_utilisateur(cls, id_u) :
         return cls.query.filter_by(id_u=id_u).all()
     
     @classmethod
-    def get_cours_semaine(cls, id_u, semaine_debut, semaine_fin) :
+    def get_cours_semaine_utilisateur(cls, id_u, semaine_debut, semaine_fin) :
         """Getter des cours compris entre semaine_debut
         et semaine_fin
 
@@ -308,8 +314,8 @@ class Cours(db.Model):
             entre semaine_debut et semaine_fin
         """        
         return cls.query.filter( cls.id_u == id_u,
-        cls.date_c.between(semaine_debut, semaine_fin)).order_by(Cours.date_c,
-                                                  Cours.h_de_debut).all()
+        cls.date_c.between(semaine_debut, semaine_fin)).order_by(cls.date_c,
+                                                  cls.h_de_debut).all()
 class Cotiser(db.Model):
     """classe de Cotiser
     """

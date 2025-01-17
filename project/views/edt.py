@@ -28,7 +28,7 @@ def emploi_du_temps():
     # Si l'utilisateur est un moniteur
     if current_user.le_role == "moniteur":
         # Récupérer les cours de la semaine pour le moniteur
-        cours_semaine = Cours.get_cours_semaine(current_user.id_u,semaine_debut, semaine_fin)
+        cours_semaine = Cours.get_cours_semaine_utilisateur(current_user.id_u,semaine_debut, semaine_fin)
 
         # Ajouter les informations des participants pour chaque cours
         for cours in cours_semaine:
@@ -66,26 +66,21 @@ def emploi_du_temps():
     elif current_user.le_role == "adherent":
 
         # Récupérer les cours de la semaine
-        cours_semaine = Cours.query.filter(
-            Cours.date_c >= semaine_debut, Cours.date_c
-            <= semaine_fin).order_by(Cours.date_c, Cours.h_de_debut).all()
+        cours_semaine = Cours.get_cours_semaine(semaine_debut, semaine_fin)
 
         # Ajouter les informations d'inscription pour chaque cours
         for cours in cours_semaine:
-            cours.inscrit = Reserver.query.filter_by(
-                id_u=current_user.id_u, id_c=cours.id_c).first() is not None
+            cours.inscrit = Reserver.get_reservation_utilisateur_by_cours(current_user.id_u, cours.id_c)
 
             # Nombre de personnes inscrites à ce cours
-            cours.nb_inscriptions = Reserver.query.filter_by(
-                id_c=cours.id_c).count()
+            cours.nb_inscriptions = Reserver.get_nb_inscription(cours.id_c)
 
             # Ajoutez une information pour savoir si le cours est passé
             cours.est_passe = datetime.combine(
                 cours.date_c, datetime.min.time()) < datetime.now()
 
             # Récupérez le poney associé si l'utilisateur est inscrit
-            reservation = Reserver.query.filter_by(id_u=current_user.id_u,
-                                                   id_c=cours.id_c).first()
+            reservation = Reserver.get_reservation_utilisateur_by_cours(current_user.id_u, cours.id_c)
             if reservation:
                 cours.poney_attribue = reservation.poney.nom_po
 
@@ -113,24 +108,18 @@ def inscrire_au_cours(cours_id):
 
     # Vérifier si l'adhérent a une cotisation valide pour ce cours (dans la période de cotisation)
     if date(annee, 9, 1) < jour < date(annee, 12, 31):
-        cotisation = Cotiser.query.filter_by(id_u=current_user.get_id(),
-                                             annee_debut=annee,
-                                             annee_fin=annee + 1).first()
+        cotisation = Cotiser.get_cotisation_by_utilisateur_annee(current_user.id_u, annee, annee+1)
     else:
-        cotisation = Cotiser.query.filter_by(id_u=current_user.get_id(),
-                                             annee_debut=annee - 1,
-                                             annee_fin=annee).first()
-
+        cotisation = Cotiser.get_cotisation_by_utilisateur_annee(current_user.id_u, annee-1, annee)
     if cotisation.paye:
         # Trouver les poneys déjà réservés pour ce cours
         poneys_reserves = [
             reservation.id_po
-            for reservation in Reserver.query.filter_by(id_c=cours_id).all()
+            for reservation in Reserver.get_reservations_by_cours(cours_id)
         ]
 
         # Sélectionner un poney aléatoire non réservé
-        poneys_disponibles = Poney.query.filter(
-            Poney.id_po.notin_(poneys_reserves)).all()
+        poneys_disponibles = Poney.get_other_poneys(poneys_reserves)
 
         # Choisir un poney aléatoire
         poney_choisi = random.choice(poneys_disponibles)
@@ -156,8 +145,7 @@ def inscrire_au_cours(cours_id):
 def desinscrire_du_cours(cours_id):
 
     # Vérifiez si l'utilisateur est inscrit au cours
-    inscription = Reserver.query.filter_by(id_u=current_user.id_u,
-                                           id_c=cours_id).first()
+    inscription = Reserver.get_reservation_utilisateur_by_cours(current_user.id_u,cours_id)
 
     # Supprimer l'inscription
     db.session.delete(inscription)

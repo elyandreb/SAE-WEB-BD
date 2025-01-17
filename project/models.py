@@ -2,8 +2,9 @@
 module sqlalchemy
 """
 from sqlalchemy import CheckConstraint, text
-from .app import db, login_manager
 from flask_login import UserMixin
+from .app import db, login_manager
+
 
 
 class Poney(db.Model):
@@ -168,8 +169,8 @@ class Cours(db.Model):
             return False, "Cours non trouvé."
         nb_reservations = len(cours.reservations)
         if nouv_nb_pe < nb_reservations:
-            return False, (f"Le nombre de participants ne peut pas être inférieur "
-            "au nombre de réservations existantes ({nb_reservations}).")
+            return False, ("Le nombre de participants ne peut pas être inférieur "
+               f"au nombre de réservations existantes ({nb_reservations}).")
 
         return True, "Le nombre de participants est valide."
 
@@ -221,11 +222,11 @@ def load_user(user_id):
 
     Returns:
         Utilisateur: l'Utilisateur
-    """    
+    """
     return Utilisateur.query.get(int(user_id))
 
 
-class Trigger_manager:
+class TriggerManager:
     """classe des triggers
     """
 
@@ -246,9 +247,15 @@ class Trigger_manager:
                     db.session.execute(text(trigger_str))
                     db.session.commit()
 
-    def trigger_cavalierMoinsChargePoneyInsert(self) -> str:
+    def trigger_cavalier_moins_charge_poney_insert(self) -> str:
+        """trigger qui test si un cavalier à un poids plus
+        petit que la charge max du poney avant un insert
+
+        Returns:
+            str: le trigger
+        """
         return """
-        CREATE TRIGGER cavalierMoinsChargePoneyInsert 
+        CREATE TRIGGER cavalier_moins_charge_poney_insert 
         BEFORE INSERT ON RESERVER 
         FOR EACH ROW
         BEGIN
@@ -264,9 +271,15 @@ class Trigger_manager:
         END;
         """
 
-    def trigger_cavalierMoinsChargePoneyUpdate(self) -> str:
+    def trigger_cavalier_moins_charge_poney_update(self) -> str:
+        """trigger qui test si un cavalier à un poids plus
+        petit que la charge max du poney avant un update
+
+        Returns:
+            str: le trigger
+        """
         return """
-        CREATE TRIGGER cavalierMoinsChargePoneyUpdate 
+        CREATE TRIGGER cavalier_moins_charge_poneyUpdate 
         BEFORE UPDATE ON RESERVER 
         FOR EACH ROW
         BEGIN
@@ -282,9 +295,15 @@ class Trigger_manager:
         END;
         """
 
-    def trigger_nbInscritInferieurMaxInscriptionInsert(self) -> str:
+    def trigger_nb_inscrit_inferieur_max_inscription_insert(self) -> str:
+        """trigger qui vérifie s'il reste une place dans la réservation
+        avant un insert
+
+        Returns:
+            str: le trigger
+        """
         return """
-        CREATE TRIGGER nbInscritInferieurMaxInscriptionInsert 
+        CREATE TRIGGER nb_inscrit_inferieur_max_inscription_insert 
         BEFORE INSERT ON RESERVER 
         FOR EACH ROW
         BEGIN
@@ -300,9 +319,15 @@ class Trigger_manager:
         END;
         """
 
-    def trigger_nbInscritInferieurMaxInscriptionUpdate(self) -> str:
+    def trigger_nb_inscrit_inferieur_max_inscription_update(self) -> str:
+        """trigger qui vérifie s'il reste une place dans la réservation
+        avant un update
+
+        Returns:
+            str: le trigger
+        """
         return """
-        CREATE TRIGGER nbInscritInferieurMaxInscriptionUpdate 
+        CREATE TRIGGER nb_inscrit_inferieur_max_inscription_update 
         BEFORE UPDATE ON RESERVER 
         FOR EACH ROW
         BEGIN
@@ -318,9 +343,15 @@ class Trigger_manager:
         END;
         """
 
-    def trigger_pasDeCheuvauchementAdherantInsert(self) -> str:
+    def trigger_pas_de_cheuvauchement_adherant_insert(self) -> str:
+        """trigger qui vérifie qu'il n'y est pas de chevauchement
+        de cours pour un adhérent avant un insert
+
+        Returns:
+            str: le trigger
+        """
         return """
-        CREATE TRIGGER pasDeCheuvauchementAdherantInsert 
+        CREATE TRIGGER pas_de_cheuvauchement_adherant_insert 
         BEFORE INSERT ON RESERVER 
         FOR EACH ROW
         BEGIN
@@ -349,9 +380,15 @@ class Trigger_manager:
         END;
         """
 
-    def trigger_pasDeCheuvauchementAdherantUpdate(self) -> str:
+    def trigger_pas_de_cheuvauchement_adherant_update(self) -> str:
+        """trigger qui vérifie qu'il n'y est pas de chevauchement
+        de cours pour un adhérent avant un update
+
+        Returns:
+            str: le trigger
+        """
         return """
-        CREATE TRIGGER pasDeCheuvauchementAdherantUpdate 
+        CREATE TRIGGER pas_de_cheuvauchement_adherant_update 
         BEFORE UPDATE ON RESERVER 
         FOR EACH ROW
         BEGIN
@@ -380,9 +417,15 @@ class Trigger_manager:
         END;
         """
 
-    def trigger_pasDeCheuvauchementPoneyInsert(self) -> str:
+    def trigger_pas_de_cheuvauchement_poney_insert(self) -> str:
+        """trigger qui vérifie qu'il n'y est pas de chevauchement
+        de cours pour un poney avant un insert
+
+        Returns:
+            str: le trigger
+        """
         return """
-        CREATE TRIGGER pasDeCheuvauchementPoneyInsert 
+        CREATE TRIGGER pas_de_cheuvauchement_poney_insert 
         BEFORE INSERT ON RESERVER 
         FOR EACH ROW
         BEGIN
@@ -411,9 +454,15 @@ class Trigger_manager:
         END;
         """
 
-    def trigger_pasDeCheuvauchementPoneyUpdate(self) -> str:
+    def trigger_pas_de_cheuvauchement_poney_update(self) -> str:
+        """trigger qui vérifie qu'il n'y est pas de chevauchement
+        de cours pour un poney avant un update
+
+        Returns:
+            str: le trigger
+        """
         return """
-        CREATE TRIGGER pasDeCheuvauchementPoneyUpdate 
+        CREATE TRIGGER pas_de_cheuvauchement_poney_update 
         BEFORE UPDATE ON RESERVER 
         FOR EACH ROW
         BEGIN
@@ -442,9 +491,15 @@ class Trigger_manager:
         END;
         """
 
-    def trigger_pasDeCheuvauchementMoniteurInsert(self) -> str:
+    def trigger_pas_de_cheuvauchement_moniteur_insert(self) -> str:
+        """trigger qui vérifie qu'il n'y est pas de chevauchement
+        de cours pour un moniteur avant un insert
+
+        Returns:
+            str: le trigger
+        """
         return """
-        CREATE TRIGGER pasDeCheuvauchementMoniteurInsert 
+        CREATE TRIGGER pas_de_cheuvauchement_moniteur_insert 
         BEFORE INSERT ON COURS 
         FOR EACH ROW
         BEGIN
@@ -469,9 +524,15 @@ class Trigger_manager:
         END;
         """
 
-    def trigger_pasDeCheuvauchementMoniteurUpdate(self) -> str:
+    def trigger_pas_de_cheuvauchement_moniteur_update(self) -> str:
+        """trigger qui vérifie qu'il n'y est pas de chevauchement
+        de cours pour un moniteur avant un update
+
+        Returns:
+            str: le trigger
+        """
         return """
-        CREATE TRIGGER pasDeCheuvauchementMoniteurUpdate 
+        CREATE TRIGGER pas_de_cheuvauchement_moniteur_update 
         BEFORE UPDATE ON COURS 
         FOR EACH ROW
         BEGIN

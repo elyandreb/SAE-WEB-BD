@@ -1,13 +1,24 @@
+"""module pour les chemins normalisés
+"""
 import os.path
 
 from flask_sqlalchemy import SQLAlchemy
 from flask import Flask
 from flask_bootstrap import Bootstrap5
 from flask_login import LoginManager
-import project.auth as auth
+from project import auth
 
 
 def mkpath(p):
+    """
+    Normalise un chemin de fichier en combinant le chemin donné avec le répertoire du script actuel.
+
+    Args:
+        p (str): Le chemin relatif à normaliser.
+
+    Returns:
+        str: Le chemin absolu normalisé.
+    """
     return os.path.normpath(os.path.join(os.path.dirname(__file__), p))
 
 

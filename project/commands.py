@@ -2,7 +2,7 @@
 """
 from sqlalchemy.sql import text
 from .app import app, db
-from .models import TriggerManager
+from .models import Trigger_manager
 
 
 def execute_sql_file(filename):
@@ -27,7 +27,7 @@ def syncdb():
     execute_sql_file('BD/creation_grand_galop.sql')
 
     print("Mise en place des triggers...")
-    TriggerManager()
+    Trigger_manager()
 
     print("Insertion des données...")
     execute_sql_file('BD/insertion_grand_galop.sql')

@@ -1,9 +1,14 @@
+"""
+module sqlalchemy
+"""
 from sqlalchemy import CheckConstraint, text
 from .app import db, login_manager
 from flask_login import UserMixin
 
 
 class Poney(db.Model):
+    """classe de Poney
+    """
     __tablename__ = 'PONEY'
     id_po = db.Column(db.Integer, primary_key=True, autoincrement=True)
     nom_po = db.Column(db.String(42))
@@ -39,12 +44,15 @@ class Poney(db.Model):
         for reservation in poney.reservations:
             utilisateur = reservation.user
             if utilisateur.poids > nouvelle_charge:
-                return False, f"L'utilisateur {utilisateur.nom_u} {utilisateur.prenom_u} dépasse la nouvelle charge maximale."
+                return False, (f"L'utilisateur {utilisateur.nom_u} {utilisateur.prenom_u} "
+                               "dépasse la nouvelle charge maximale.")
 
         return True, "La nouvelle charge est suffisante pour tous les utilisateurs."
 
 
 class Utilisateur(db.Model, UserMixin):
+    """classe d'Utilisateur
+    """
     __tablename__ = 'UTILISATEUR'
     id_u = db.Column(db.Integer, primary_key=True, autoincrement=True)
     nom_u = db.Column(db.String(42))
@@ -92,10 +100,20 @@ class Utilisateur(db.Model, UserMixin):
 
     @classmethod
     def get_by_email(cls, email):
+        """return l'utilisateur grâce à son email
+
+        Args:
+            email (str): le mail de l'utilisateur
+
+        Returns:
+            Utilisateur: l'Utilisateur trouvé avec son email
+        """
         return cls.query.filter_by(email=email).first()
 
 
 class Reserver(db.Model):
+    """classe de Reserver
+    """
     __tablename__ = 'RESERVER'
     id_u = db.Column(db.Integer,
                      db.ForeignKey('UTILISATEUR.id_u'),
@@ -108,6 +126,8 @@ class Reserver(db.Model):
 
 
 class Cours(db.Model):
+    """classe de Cours
+    """
     __tablename__ = 'COURS'
     id_c = db.Column(db.Integer, primary_key=True, autoincrement=True)
     id_u = db.Column(db.Integer, db.ForeignKey('UTILISATEUR.id_u'))  # Moniteur
@@ -148,12 +168,15 @@ class Cours(db.Model):
             return False, "Cours non trouvé."
         nb_reservations = len(cours.reservations)
         if nouv_nb_pe < nb_reservations:
-            return False, f"Le nombre de participants ne peut pas être inférieur au nombre de réservations existantes ({nb_reservations})."
+            return False, (f"Le nombre de participants ne peut pas être inférieur "
+            "au nombre de réservations existantes ({nb_reservations}).")
 
         return True, "Le nombre de participants est valide."
 
 
 class Cotiser(db.Model):
+    """classe de Cotiser
+    """
     __tablename__ = 'COTISER'
     id_u = db.Column(db.Integer,
                      db.ForeignKey('UTILISATEUR.id_u'),
@@ -176,6 +199,8 @@ class Cotiser(db.Model):
 
 
 class Cotisation(db.Model):
+    """classe de Cotisation
+    """
     __tablename__ = 'COTISATION'
     annee_debut = db.Column(db.Integer, primary_key=True)
     annee_fin = db.Column(db.Integer, primary_key=True)
@@ -189,10 +214,20 @@ class Cotisation(db.Model):
 
 @login_manager.user_loader
 def load_user(user_id):
+    """fonction pour load l'Utilisateur
+
+    Args:
+        user_id (str): l'id de l'User
+
+    Returns:
+        Utilisateur: l'Utilisateur
+    """    
     return Utilisateur.query.get(int(user_id))
 
 
-class TriggerManager:
+class Trigger_manager:
+    """classe des triggers
+    """
 
     def __init__(self):
         self.execute_triggers()

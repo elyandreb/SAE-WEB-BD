@@ -23,11 +23,7 @@ def accueil(adherent_id):
     prochain_cours = Cours.get_prochain_cours(adherent_id)
 
     if utilisateur.le_role == "moniteur":
-        today = date.today()
-        prochains_cours = (Cours.query.filter(
-            Cours.id_u == utilisateur.id_u, Cours.date_c
-            >= today).order_by(Cours.date_c.asc(),
-                               Cours.h_de_debut.asc()).limit(3).all())
+        prochains_cours = Cours.get_3_prochain_cours(adherent_id)
         for cours in prochains_cours:
             cours.nb_inscriptions = Reserver.query.filter_by(
                 id_c=cours.id_c).count()

@@ -32,7 +32,7 @@ class Poney(db.Model):
         est compatible avec le poney
 
         Args:
-            poney_id (str): l'id du poney
+            poney_id (int): l'id du poney
             nouvelle_charge (str): la nouvelle charge a tester
 
         Returns:
@@ -158,7 +158,7 @@ class Cours(db.Model):
         au nombre de personnes ayant déjà réservées
 
         Args:
-            id_c (str): l'id du cours
+            id_c (int): l'id du cours
             nouv_nb_pe (str): le nouveau nb de personnes max
 
         Returns:
@@ -177,6 +177,14 @@ class Cours(db.Model):
     
     @classmethod
     def get_prochain_cours(cls, adherent_id):
+        """Méthode qui retourne le prochain cours de l'utilisateur
+
+        Args:
+            adherent_id (int): l'id de l'utilisateur
+
+        Returns:
+            Cours: le prochain cours de l'utilisateur
+        """        
         return cls.query.join(Reserver).filter(
             Reserver.id_u == adherent_id,
             cls.date_c >= date.today()
@@ -184,11 +192,17 @@ class Cours(db.Model):
 
     @classmethod
     def get_3_prochain_cours(cls, adherent_id):
-        return cls.query.join(Reserver).filter(Reserver.id_u == adherent_id, 
+        """Méthode qui retourne les 3 prochains cours de l'utilisateur
+
+        Args:
+            adherent_id (int): l'id de l'utilisateur
+
+        Returns:
+            list(Cours): les 3 prochains cours de l'utilisateur
+        """
+        return cls.query.filter(cls.id_u == adherent_id, 
                                                cls.date_c >= date.today()).order_by(cls.date_c.asc(), 
                                                                                     cls.h_de_debut.asc()).limit(3).all()
-
-
 
 class Cotiser(db.Model):
     """classe de Cotiser

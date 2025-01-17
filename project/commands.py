@@ -2,6 +2,7 @@ from .app import app, db
 from sqlalchemy.sql import text
 from .models import TriggerManager
 
+
 def execute_sql_file(filename):
     """Exécute un fichier SQL ligne par ligne."""
     with app.app_context():
@@ -9,7 +10,8 @@ def execute_sql_file(filename):
             sql_commands = file.read().split(';')
             for command in sql_commands:
                 if command.strip():  # Ignorer les lignes vides
-                    db.session.execute(text(command))  # Utilisation explicite de `text`
+                    db.session.execute(
+                        text(command))  # Utilisation explicite de `text`
             db.session.commit()
 
 

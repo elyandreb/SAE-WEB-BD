@@ -2,6 +2,7 @@ from sqlalchemy import CheckConstraint, text
 from .app import db, login_manager
 from flask_login import UserMixin
 
+
 class Poney(db.Model):
     __tablename__ = 'PONEY'
     id_po = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -10,14 +11,14 @@ class Poney(db.Model):
     reservations = db.relationship('Reserver', back_populates='poney')
 
     @classmethod
-    def get_poney_reserves(cls) :
+    def get_poney_reserves(cls):
         """Permet de récupérer les poneys réservés au moins une fois
 
         Returns:
             list(Poney): La liste des poneys réservés au moins une fois
-        """        
+        """
         return cls.query.join(Reserver).distinct().all()
-    
+
     @classmethod
     def verifier_charge(cls, poney_id, nouvelle_charge):
         """Permet de vérifier si la nouvelle charge 
@@ -30,7 +31,7 @@ class Poney(db.Model):
         Returns:
             (boolean, str): True si la charge est valide, False sinon 
             + un message indiquant plus précisément le pourquoi du comment
-        """        
+        """
         poney = cls.query.get(poney_id)
         if not poney:
             return False, "Poney non trouvé."
@@ -41,6 +42,7 @@ class Poney(db.Model):
                 return False, f"L'utilisateur {utilisateur.nom_u} {utilisateur.prenom_u} dépasse la nouvelle charge maximale."
 
         return True, "La nouvelle charge est suffisante pour tous les utilisateurs."
+
 
 class Utilisateur(db.Model, UserMixin):
     __tablename__ = 'UTILISATEUR'
@@ -58,47 +60,52 @@ class Utilisateur(db.Model, UserMixin):
 
     def get_id(self):
         return str(self.id_u)
-    
+
     @classmethod
-    def get_adherents(cls) :
+    def get_adherents(cls):
         """Permet de récupérer les adherents
 
         Returns:
             list(Utilisateur): la liste des adherents
-        """        
+        """
         return cls.query.filter_by(le_role="adherent").all()
-        
+
     @classmethod
-    def get_moniteurs(cls) :
+    def get_moniteurs(cls):
         """Permet de récupérer les moniteurs
 
         Returns:
             list(Utilisateur): la liste des moniteurs
-        """        
+        """
         return cls.query.filter_by(le_role="moniteur").all()
-    
+
     @classmethod
-    def get_moniteurs_attribues(cls) :
+    def get_moniteurs_attribues(cls):
         """Permet de récupérer les moniteurs 
         attribués à au moins un cours
 
         Returns:
             list(Utilisateur): la liste des moniteurs attribués à au moins un cours
-        """        
-        return cls.query.join(Cours, cls.id_u == Cours.id_u).filter(cls.le_role == "moniteur").distinct().all()
+        """
+        return cls.query.join(Cours, cls.id_u == Cours.id_u).filter(
+            cls.le_role == "moniteur").distinct().all()
 
     @classmethod
-    def get_by_email(cls, email) :
-        return cls.query.filter_by(email = email).first()
+    def get_by_email(cls, email):
+        return cls.query.filter_by(email=email).first()
+
 
 class Reserver(db.Model):
     __tablename__ = 'RESERVER'
-    id_u = db.Column(db.Integer, db.ForeignKey('UTILISATEUR.id_u'), primary_key=True)
+    id_u = db.Column(db.Integer,
+                     db.ForeignKey('UTILISATEUR.id_u'),
+                     primary_key=True)
     id_po = db.Column(db.Integer, db.ForeignKey('PONEY.id_po'))
     id_c = db.Column(db.Integer, db.ForeignKey('COURS.id_c'), primary_key=True)
     user = db.relationship('Utilisateur', back_populates='reservations')
     poney = db.relationship('Poney', back_populates='reservations')
     cours = db.relationship('Cours', back_populates='reservations')
+
 
 class Cours(db.Model):
     __tablename__ = 'COURS'
@@ -113,17 +120,17 @@ class Cours(db.Model):
     moniteur = db.relationship('Utilisateur', back_populates='cours')
 
     @classmethod
-    def get_cours_remplis(cls) :
+    def get_cours_remplis(cls):
         """permet de récupérer les cours 
         ayant au moins une réservation
 
         Returns:
             list(Cours): les cours ayant au moins une réservation
-        """        
+        """
         return cls.query.join(Reserver).distinct().all()
-    
+
     @classmethod
-    def verifier_nb_pe(cls, id_c, nouv_nb_pe) :
+    def verifier_nb_pe(cls, id_c, nouv_nb_pe):
         """Fonction permettant de vérifier que 
         le nb max de personnes ne soit pas inférieur 
         au nombre de personnes ayant déjà réservées
@@ -135,7 +142,7 @@ class Cours(db.Model):
         Returns:
             (boolean, str): True si le nombre est valide, False sinon 
             + un message indiquant plus précisément le pourquoi du comment
-        """        
+        """
         cours = cls.query.get(id_c)
         if not cours:
             return False, "Cours non trouvé."
@@ -145,23 +152,27 @@ class Cours(db.Model):
 
         return True, "Le nombre de participants est valide."
 
+
 class Cotiser(db.Model):
     __tablename__ = 'COTISER'
-    id_u = db.Column(db.Integer, db.ForeignKey('UTILISATEUR.id_u'), primary_key=True)
-    annee_debut = db.Column(db.Integer, db.ForeignKey('COTISATION.annee_debut'), primary_key=True)
-    annee_fin = db.Column(db.Integer, db.ForeignKey('COTISATION.annee_fin'), primary_key=True)
+    id_u = db.Column(db.Integer,
+                     db.ForeignKey('UTILISATEUR.id_u'),
+                     primary_key=True)
+    annee_debut = db.Column(db.Integer,
+                            db.ForeignKey('COTISATION.annee_debut'),
+                            primary_key=True)
+    annee_fin = db.Column(db.Integer,
+                          db.ForeignKey('COTISATION.annee_fin'),
+                          primary_key=True)
     paye = db.Column(db.Boolean)
     user = db.relationship('Utilisateur', back_populates='cotisations')
 
     cotisation = db.relationship(
         'Cotisation',
         back_populates='cotisants',
-        primaryjoin=(
-            "and_(Cotiser.annee_debut == Cotisation.annee_debut, "
-            "Cotiser.annee_fin == Cotisation.annee_fin)"
-        ),
-        foreign_keys=[annee_debut, annee_fin]
-    )
+        primaryjoin=("and_(Cotiser.annee_debut == Cotisation.annee_debut, "
+                     "Cotiser.annee_fin == Cotisation.annee_fin)"),
+        foreign_keys=[annee_debut, annee_fin])
 
 
 class Cotisation(db.Model):
@@ -171,18 +182,18 @@ class Cotisation(db.Model):
     cotisants = db.relationship(
         'Cotiser',
         back_populates='cotisation',
-        primaryjoin=(
-            "and_(Cotiser.annee_debut == Cotisation.annee_debut, "
-            "Cotiser.annee_fin == Cotisation.annee_fin)"
-        ),
-        foreign_keys="[Cotiser.annee_debut, Cotiser.annee_fin]"
-    )
+        primaryjoin=("and_(Cotiser.annee_debut == Cotisation.annee_debut, "
+                     "Cotiser.annee_fin == Cotisation.annee_fin)"),
+        foreign_keys="[Cotiser.annee_debut, Cotiser.annee_fin]")
+
 
 @login_manager.user_loader
 def load_user(user_id):
     return Utilisateur.query.get(int(user_id))
 
+
 class TriggerManager:
+
     def __init__(self):
         self.execute_triggers()
 
@@ -333,7 +344,7 @@ class TriggerManager:
             END IF;
         END;
         """
-    
+
     def trigger_pasDeCheuvauchementPoneyInsert(self) -> str:
         return """
         CREATE TRIGGER pasDeCheuvauchementPoneyInsert 

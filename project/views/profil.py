@@ -82,13 +82,9 @@ def profil():
     annee = jour.year
 
     if date(annee, 9, 1) < jour < date(annee, 12, 31):
-        cotisation = Cotiser.query.filter_by(id_u=utilisateur_id,
-                                             annee_debut=annee,
-                                             annee_fin=annee + 1).first()
+        cotisation = Cotiser.get_cotisation_by_utilisateur_annee(utilisateur_id, annee, (annee +1))
     else:
-        cotisation = Cotiser.query.filter_by(id_u=utilisateur_id,
-                                             annee_debut=annee - 1,
-                                             annee_fin=annee).first()
+        cotisation = Cotiser.get_cotisation_by_utilisateur_annee(utilisateur_id, (annee -1), annee)
 
     jour_str = f"{jour.day:02d} {MOIS[jour.month]} {jour.year}"
 

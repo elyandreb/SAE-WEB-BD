@@ -322,6 +322,12 @@ class Cotiser(db.Model):
     def get_cotisation_by_utilisateur(cls, id_u) :
         return cls.query.filter_by(id_u=id_u).all()
 
+    @classmethod
+    def get_cotisation_by_utilisateur_annee(cls, id_u, annee_debut, annee_fin) :
+        return cls.query.filter_by(id_u=id_u,
+                                             annee_debut=annee_debut,
+                                             annee_fin=annee_fin).first()
+
 
 class Cotisation(db.Model):
     """classe de Cotisation

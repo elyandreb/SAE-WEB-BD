@@ -20,9 +20,7 @@ def accueil(adherent_id):
         return render_template("admin_home.html", utilisateur=utilisateur)
 
     # Trouver le prochain cours réservé par cet adhérent
-    prochain_cours = (db.session.query(Cours).join(Reserver).filter(
-        Reserver.id_u == adherent_id, Cours.date_c
-        >= date.today()).order_by(Cours.date_c.asc()).first())
+    prochain_cours = Cours.get_prochain_cours(adherent_id)
 
     if utilisateur.le_role == "moniteur":
         today = date.today()

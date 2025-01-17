@@ -1,6 +1,7 @@
 """
 module sqlalchemy
 """
+from datetime import date
 from sqlalchemy import CheckConstraint, text
 from flask_login import UserMixin
 from .app import db, login_manager
@@ -173,6 +174,20 @@ class Cours(db.Model):
                f"au nombre de réservations existantes ({nb_reservations}).")
 
         return True, "Le nombre de participants est valide."
+    
+    @classmethod
+    def get_prochain_cours(cls, adherent_id):
+        return cls.query.join(Reserver).filter(
+            Reserver.id_u == adherent_id,
+            cls.date_c >= date.today()
+        ).order_by(cls.date_c.asc()).first()
+
+    @classmethod
+    def get_3_prochain_cours(cls, adherent_id):
+        return cls.query.join(Reserver).filter(Reserver.id_u == adherent_id, 
+                                               cls.date_c >= date.today()).order_by(cls.date_c.asc(), 
+                                                                                    cls.h_de_debut.asc()).limit(3).all()
+
 
 
 class Cotiser(db.Model):

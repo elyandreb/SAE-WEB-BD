@@ -136,6 +136,7 @@ Pour la gestion de notre travail nous avons utilisé plusieurs outils tels que <
 - Implémentation du back-end pour l'admin de poney, moniteur et reserver
 
 #### Elyandre :
+  #### Avant Présentation
   - Création du fichier pour le rendu des maquettes
   - Assemblage des différents travaux pour le rendu intermédiaire avec Loris
   - Mise à jour du header avec intégration des logos (logo du club, logo FFE)
@@ -145,5 +146,12 @@ Pour la gestion de notre travail nous avons utilisé plusieurs outils tels que <
   - Ajouts des redirections pour simplifier la navigation
   - Création d'un modal pour s'inscrire à un cours pour les adhérents
   - Création d'un modal pour se désinscrire à un cours pour les adhérents
+  #### Après Présentation
+  - Ajouts de modals d'informations pour les cours
+  - Ajouts de messages flash
+  - Gestion des cours passés
+  - Ajouts des informations concernant les cours réservés d'un adherent (poney attribué)
+  - Ajouts des informations concernant les cours d'un moniteur (liste des adhérents inscrits)
+  - Implémentation du front-end et liaison avec le back-end pour les pages admin (gestion poneys, moniteur, adherent, cours)
 
 #### Dan : 

@@ -19,16 +19,11 @@ def accueil(adherent_id):
     if utilisateur.le_role == "admin":
         return render_template("admin_home.html", utilisateur=utilisateur)
 
-    # Trouver le prochain cours réservé par cet adhérent
-    prochain_cours = Cours.get_prochain_cours(adherent_id)
-
     if utilisateur.le_role == "moniteur":
         prochains_cours = Cours.get_3_prochain_cours(adherent_id)
         for cours in prochains_cours:
-            cours.nb_inscriptions = Reserver.query.filter_by(
-                id_c=cours.id_c).count()
-
-            reservations = Reserver.query.filter_by(id_c=cours.id_c).all()
+            cours.nb_inscriptions = Reserver.get_nb_inscription(cours.id_c)
+            reservations = Reserver.get_reservations_by_cours(cours.id_c)
             participants = []
 
             for reservation in reservations:
@@ -48,8 +43,9 @@ def accueil(adherent_id):
                                prochains_cours=prochains_cours)
 
     else:
-        reservation = Reserver.query.filter_by(
-            id_u=current_user.id_u, id_c=prochain_cours.id_c).first()
+        # Trouver le prochain cours réservé par cet adhérent
+        prochain_cours = Cours.get_prochain_cours(adherent_id)
+        reservation = Reserver.get_reservation_utilisateur_by_cours(current_user.id_u,prochain_cours.id_c)
         if reservation:
             prochain_cours.poney_attribue = reservation.poney.nom_po
 

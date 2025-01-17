@@ -126,6 +126,44 @@ class Reserver(db.Model):
     poney = db.relationship('Poney', back_populates='reservations')
     cours = db.relationship('Cours', back_populates='reservations')
 
+    @classmethod
+    def get_reservations_by_cours(cls, id_cours) :
+        """getter des réservations d'un cours
+
+        Args:
+            id_cours (int): l'id du cours
+
+        Returns:
+            list(Reserver): la liste de réservation du cours
+        """        
+        return cls.query.filter_by(id_c=id_cours).all()
+    
+            
+    @classmethod
+    def get_reservation_utilisateur_by_cours(cls, id_utilisateur, id_cours) :
+        """getter des réservations d'un cours
+
+        Args:
+            id_cours (int): l'id du cours
+
+        Returns:
+            list(Reserver): la liste de réservation du cours
+        """        
+        return cls.query.filter_by(
+            id_u=id_utilisateur, id_c=id_cours).first()
+    
+    @classmethod
+    def get_nb_inscription(cls, id_cours) :
+        """Retourne le nombre d'inscription d'un cours
+
+        Args:
+            id_cours (int): l'id du cours choisi
+
+        Returns:
+            (int): le nombre d'inscription du cours
+        """        
+        return cls.query.filter_by(
+                id_c=id_cours).count()
 
 class Cours(db.Model):
     """classe de Cours

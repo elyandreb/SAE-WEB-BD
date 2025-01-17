@@ -10,6 +10,55 @@ Pour la gestion de notre travail nous avons utilisé plusieurs outils tels que <
 <a href="https://docs.google.com/document/d/1QOKi6AJ1f7ixYgi4_V4HSCbfHmSv0v1zCaBToUGGEPk/edit?pli=1&addon_store"> Google Docs</a> pour le brainstorming et le partage des données de base du projet, <a href="https://www.figma.com/design/SrcZYuSWxSrsRGlv7qquiy/Grand-galop?node-id=0-1&t=e4VgvLPyFRquz97s-1">Figma</a> pour les maquettes.
 
 
+## Installation de l'application
+
+### Prérequis
+- Python 3.8 ou supérieur
+
+### Étapes d'installation
+
+1. **Cloner le dépôt** :
+```bash
+git clone https://github.com/elyandreb/SAE-WEB-BD
+```
+
+2. **Créer et activer un environnement virtuel** (recommandé)
+```bash
+# Création
+python -m venv venv
+
+# Activation
+    # Pour Windows
+.\venv\Scripts\activate
+    # Pour Linux
+source venv/bin/activate
+```
+
+3. **Installer les dépendances**
+```bash
+pip install -r requirements.txt
+```
+4. **Créer son fichier auth.py**
+- Il est nécessaire d'avoir une base de donnée mysql nommée "DBvotrenom" (votrenom étant à modifié selon votre nom) afin de synchroniser la base de données
+- Créez un fichier auth.py dans le dossier project sous cette forme :
+```python
+nom = 'votre nom' # à modifier
+mdp = 'votre mdp' # à modifier
+db = 'localhost'
+```
+
+## Lancement de l'application
+1. Initier la base de données (avant le premier lancement)
+```bash
+flask syncdb
+```
+
+2. Lancer l'application
+```bash
+flask run
+```
+##### L'application sera accessible localement à l'adresse `http://127.0.0.1:5000`
+
 ## Historique des séances :
 
 ### Séance du 16/09/2024 (3h) :
@@ -119,6 +168,7 @@ Pour la gestion de notre travail nous avons utilisé plusieurs outils tels que <
 
 ### Travail supplémentaire hors créneaux SAE :
 #### Loris :
+#### Avant Présentation
 - Modification MCD pour ajouter la cotisation
 - Création tables COTISER et COTISATION
 - Insertions pour les tables COTISER et COTISATION
@@ -134,6 +184,9 @@ Pour la gestion de notre travail nous avons utilisé plusieurs outils tels que <
 - Implémentation du front-end de connexion et d'inscription
 - Migration des triggers dans models.py et finalisation de syncdb
 - Implémentation du back-end pour l'admin de poney, moniteur et reserver
+#### Après Présentation
+- Légères modifications d'affichage
+- Refactoring du code
 
 #### Elyandre :
   #### Avant Présentation
@@ -229,7 +282,7 @@ Pour la gestion de notre travail nous avons utilisé plusieurs outils tels que <
   - Possibilité de supprimer un moniteur et les réservations et cours associés.
 
 - **Recherche de moniteurs** :
-  - Barre de recherche pas implémentée.
+  - Barre de recherche non implémentée.
 
 ### Gestion des Adhérents
 - **Liste des adhérents** :
@@ -251,7 +304,7 @@ Pour la gestion de notre travail nous avons utilisé plusieurs outils tels que <
   - Suppression d'un adhérent avec les réservations et cotisations associées.
 
 - **Recherche d'adhérents** :
-  - Barre de recherche pas implémentée.
+  - Barre de recherche non implémentée.
 
 ### Gestion des Poneys
 - **Liste des poneys** :
@@ -269,7 +322,7 @@ Pour la gestion de notre travail nous avons utilisé plusieurs outils tels que <
   - Suppression d'un poney avec les réservations associées.
 
 - **Recherche de poneys** :
-  - Barre de recherche pas implémentée.
+  - Barre de recherche non implémentée.
 
 ### Gestion des Cours
   - **Affichage sous forme de calendrier défilable**

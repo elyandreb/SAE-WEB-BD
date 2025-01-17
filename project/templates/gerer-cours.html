@@ -1,0 +1,207 @@
+{% extends 'base.html' %}
+
+{% block title %}Gestion des Cours{% endblock %}
+
+{% block content %}
+
+<!-- Retour à l'accueil -->
+<div class="mt-4 w-auto retour_accueil">
+    <a class="btn btn-light shadow-lg" href="{{ url_for('accueil', adherent_id=utilisateur.id_u) }}" style="margin-left: 10px; background-color: #fae9d8;">
+        <i class="bi bi-arrow-left" style="font-size: 1.5rem;"></i>
+    </a>
+</div>
+
+<div class="container mt-5">
+    <!-- Titre principal -->
+    <div class="text-center mb-4">
+        <h1>Gestion des cours</h1>
+    </div>
+
+    <!--Message Flash-->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div class="mt-3">
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show alert-fixed" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    {% endwith %}
+
+    <!-- Navigation de la semaine -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <a href="{{ url_for('gerer_cours', week=previous_week) }}" class="btn btn-light">
+            <i class="bi bi-arrow-left"></i>
+        </a>
+        <h2 class="text-center">SEMAINE DU {{ semaine_debut.strftime('%d %B') }}</h2>
+        <a href="{{ url_for('gerer_cours', week=next_week) }}" class="btn btn-light">
+            <i class="bi bi-arrow-right"></i>
+        </a>
+    </div>
+
+    <!-- Tableau de l'emploi du temps -->
+    <div class="table-responsive">
+        <table class="table table-bordered text-center align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>Horaire</th>
+                    {% for jour in jours %}
+                    <th>{{ jour.strftime('%A %d/%m') }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for heure in horaires %}
+                <tr>
+                    <td>{{ heure }}:00</td>
+                    {% for jour in jours %}
+                    <td>
+                        {% for cours in cours_semaine %}
+                            {% if cours.date_c == jour and cours.h_de_debut == heure %}
+                            <div class="card shadow-sm" style="border-radius: 15px;">
+                                <div class="card-body p-2">
+                                    <p class="m-0 fw-bold">COURS</p>
+                                    <p class="m-0">Durée : {{ cours.duree }}h</p>
+                                    <div class="d-flex justify-content-between mt-2">
+                                        <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#updateCoursModal{{ cours.id_c }}">
+                                            <i class="bi bi-pencil"></i>
+                                        </button>
+                                        <form action="{{ url_for('drop_cours', id_c=cours.id_c) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce cours ?');">
+                                            <button type="submit" class="btn btn-sm btn-danger">
+                                                <i class="bi bi-x"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Modal de modification -->
+                            <div class="modal fade" id="updateCoursModal{{ cours.id_c }}" tabindex="-1" aria-labelledby="updateCoursLabel{{ cours.id_c }}" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <!-- En-tête du Modal -->
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="updateCoursLabel{{ cours.id_c }}">Modifier le Cours</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                            
+                                        <!-- Formulaire de modification -->
+                                        <form action="{{ url_for('update_cours', id_c=cours.id_c) }}" method="POST">
+                                            <div class="modal-body">
+                                                <!-- Moniteur -->
+                                                <div class="mb-3">
+                                                    <label for="moniteur{{ cours.id_c }}" class="form-label">Moniteur</label>
+                                                    <select class="form-select" id="moniteur{{ cours.id_c }}" name="moniteur" required>
+                                                        {% for moniteur in moniteurs %}
+                                                        <option value="{{ moniteur.id_u }}" {% if moniteur.id_u == cours.moniteur.id_u %}selected{% endif %}>
+                                                            {{ moniteur.prenom_u }} {{ moniteur.nom_u }}
+                                                        </option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                            
+                                                <!-- Nombre de participants -->
+                                                <div class="mb-3">
+                                                    <label for="nb_personne{{ cours.id_c }}" class="form-label">Nombre de Participants (max)</label>
+                                                    <input type="number" class="form-control" id="nb_personne{{ cours.id_c }}" name="nb_personne" value="{{ cours.nb_pe }}" min="1" max="10" required>
+                                                </div>
+                            
+                                                <!-- Heure de début -->
+                                                <div class="mb-3">
+                                                    <label for="h_de_debut{{ cours.id_c }}" class="form-label">Heure de Début</label>
+                                                    <input type="number" class="form-control" id="h_de_debut{{ cours.id_c }}" name="h_de_debut" value="{{ cours.h_de_debut }}" min="9" max="20" required>
+                                                </div>
+                            
+                                                <!-- Durée -->
+                                                <div class="mb-3">
+                                                    <label for="duree{{ cours.id_c }}" class="form-label">Durée (heures)</label>
+                                                    <input type="number" class="form-control" id="duree{{ cours.id_c }}" name="duree" value="{{ cours.duree }}" min="1" max="2" required>
+                                                </div>
+                            
+                                                <!-- Date -->
+                                                <div class="mb-3">
+                                                    <label for="date{{ cours.id_c }}" class="form-label">Date</label>
+                                                    <input type="date" class="form-control" id="date{{ cours.id_c }}" name="date" value="{{ cours.date_c.strftime('%Y-%m-%d') }}" required>
+                                                </div>
+                            
+                                                <!-- Prix -->
+                                                <div class="mb-3">
+                                                    <label for="prix{{ cours.id_c }}" class="form-label">Prix (€)</label>
+                                                    <input type="number" step="0.01" class="form-control" id="prix{{ cours.id_c }}" name="prix" value="{{ cours.prix }}" min="0" required>
+                                                </div>
+                                            </div>
+                            
+                                            <!-- Boutons du Modal -->
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                                                <button type="submit" class="btn btn-primary">Enregistrer</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>                            
+                            {% endif %}
+                        {% endfor %}
+                        <!-- Lien ou bouton pour ajouter un cours -->
+                        {% if not cours %}
+                        <button class="btn btn-light shadow-sm w-100 h-100 d-flex align-items-center justify-content-center" style="border-radius: 15px;" data-bs-toggle="modal" data-bs-target="#addCourseModal{{ jour.strftime('%Y-%m-%d') }}{{ heure }}">
+                            Ajouter un cours
+                        </button>
+
+                        <!-- Modal d'ajout -->
+                        <div class="modal fade" id="addCourseModal{{ jour.strftime('%Y-%m-%d') }}{{ heure }}" tabindex="-1" aria-labelledby="addCourseLabel{{ jour.strftime('%Y-%m-%d') }}{{ heure }}" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="addCourseLabel{{ jour.strftime('%Y-%m-%d') }}{{ heure }}">Ajouter un cours</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <form action="{{ url_for('add_cours') }}" method="POST">
+                                        <div class="modal-body">
+                                            <input type="hidden" name="date" value="{{ jour.strftime('%Y-%m-%d') }}">
+                                            <input type="hidden" name="h_de_debut" value="{{ heure }}">
+                                            
+                                            <div class="mb-3">
+                                                <label for="moniteur" class="form-label">Moniteur</label>
+                                                <select class="form-select" name="moniteur" required>
+                                                    <option value="" disabled selected>Choisir un moniteur</option>
+                                                    {% for moniteur in moniteurs %}
+                                                    <option value="{{ moniteur.id_u }}">{{ moniteur.prenom_u }} {{ moniteur.nom_u }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <label for="nb_personne" class="form-label">Nombre de participants (max)</label>
+                                                <input type="number" class="form-control" name="nb_personne" min="1" max="10" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="duree" class="form-label">Durée (h)</label>
+                                                <input type="number" class="form-control" name="duree" min="1" max="2" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="prix" class="form-label">Prix (€)</label>
+                                                <input type="number" class="form-control" name="prix" min="0" required>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                                            <button type="submit" class="btn btn-primary">Ajouter</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

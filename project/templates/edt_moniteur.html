@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block title %}Emploi du temps - Moniteur{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <!-- Navigation de la semaine -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <a href="{{ url_for('emploi_du_temps', week=previous_week) }}" class="btn btn-light">
+            <i class="bi bi-arrow-left"></i>
+        </a>
+        <h2 class="text-center">SEMAINE DU {{ semaine_debut.strftime('%d %B') }}</h2>
+        <a href="{{ url_for('emploi_du_temps', week=next_week) }}" class="btn btn-light">
+            <i class="bi bi-arrow-right"></i>
+        </a>
+    </div>
+
+    <!-- Tableau de l'emploi du temps -->
+    <div class="table-responsive">
+        <table class="table table-bordered text-center align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>Horaire</th>
+                    {% for jour in jours %}
+                    <th>{{ jour.strftime('%A %d/%m') }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for heure in horaires %}
+                <tr>
+                    <td>{{ heure }}:00</td>
+                    {% for jour in jours %}
+                    <td>
+                        {% for cours in cours_semaine %}
+                            {% if cours.date_c == jour and cours.h_de_debut == heure %}
+                            <div class="card shadow-sm">
+                                <div class="card-body p-2">
+                                    <p class="m-0 fw-bold">COURS</p>
+                                    <p class="m-0">Durée : {{ cours.duree }}h</p>
+                                    <a class="btn btn-sm btn-info mt-2" data-bs-toggle="modal" data-bs-target="#modalInfo{{ cours.id_c }}">
+                                        <i class="bi bi-info-circle"></i>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <!-- Modal d'information -->
+                            <div class="modal fade" id="modalInfo{{ cours.id_c }}" tabindex="-1" aria-labelledby="modalLabelInfo{{ cours.id_c }}" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="modalLabelInfo{{ cours.id_c }}">Détails du Cours</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p><strong>Date :</strong> {{ cours.date_c.strftime('%d/%m/%Y') }}</p>
+                                            <p><strong>Heure :</strong> {{ cours.h_de_debut }}:00</p>
+                                            <p><strong>Durée :</strong> {{ cours.duree }} heure(s)</p>
+                                            <p><strong>Participants :</strong> {{ cours.nb_inscriptions }} / {{ cours.nb_pe }}</p>
+                                            <!-- Liste des participants -->
+                                            {% if cours.participants %}
+                                            <ul class="list-group mt-3">
+                                                {% for participant in cours.participants %}
+                                                <li class="list-group-item">
+                                                    <strong>{{ participant.prenom }} {{ participant.nom }}</strong>
+                                                    {% if participant.poney %}
+                                                    <span class="badge bg-primary ms-2">Poney : {{ participant.poney }}</span>
+                                                    {% endif %}
+                                                </li>
+                                                {% endfor %}
+                                            </ul>
+                                            {% else %}
+                                            <p class="text-muted">Aucun participant pour ce cours.</p>
+                                            {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

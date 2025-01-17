@@ -1,17 +1,24 @@
 from project import app, db
 from flask import render_template, url_for, redirect, request
 from flask_wtf import FlaskForm
-from flask_login import login_user , current_user, logout_user, login_required
+from flask_login import login_user, current_user, logout_user, login_required
 from hashlib import sha256
 from wtforms import StringField, PasswordField, EmailField, DateField, HiddenField, DecimalField
 from wtforms.validators import DataRequired, EqualTo, Email, Length, Regexp, ValidationError, NumberRange
 from project.models import Utilisateur
 
-class LoginForm (FlaskForm):
-    email = EmailField("Email de l'utilisateur", validators=[DataRequired(), Email(message='Adresse mail invalide.'), 
-                                            Length(max=64)])
-    
-    password = PasswordField("Mot de passe", validators=[DataRequired(), Length(max=64)])
+
+class LoginForm(FlaskForm):
+    email = EmailField("Email de l'utilisateur",
+                       validators=[
+                           DataRequired(),
+                           Email(message='Adresse mail invalide.'),
+                           Length(max=64)
+                       ])
+
+    password = PasswordField("Mot de passe",
+                             validators=[DataRequired(),
+                                         Length(max=64)])
 
     def get_authentificated_user(self):
         """permet de savoir si le mot de passe de 
@@ -28,30 +35,48 @@ class LoginForm (FlaskForm):
         passwd = m.hexdigest()
         return user if passwd == user.mdp else None
 
-class RegisterForm (FlaskForm):
+
+class RegisterForm(FlaskForm):
     id_u = HiddenField()
 
-    name = StringField("Nom", validators=[DataRequired(), 
-                                          Length(max=42)])
-                                          
-    first_name = StringField("Prénom", validators=[DataRequired(), 
-                                                   Length(max=42)])
+    name = StringField("Nom", validators=[DataRequired(), Length(max=42)])
 
-    email = EmailField("Email", validators=[DataRequired(), Email(message='Adresse mail invalide.'), 
-                                            Length(max=64)])
-    
-    birth_date = DateField("Date de naissance", format='%Y-%m-%d', validators=[DataRequired()])
+    first_name = StringField("Prénom",
+                             validators=[DataRequired(),
+                                         Length(max=42)])
 
-    poids = DecimalField("Poids", validators=[DataRequired(), NumberRange(min=0, message='Le poids doit être un nombre positif.')])
+    email = EmailField("Email",
+                       validators=[
+                           DataRequired(),
+                           Email(message='Adresse mail invalide.'),
+                           Length(max=64)
+                       ])
 
-    password = PasswordField("Mot de passe", validators=[DataRequired(), 
-                                                         Length(max=64)])
+    birth_date = DateField("Date de naissance",
+                           format='%Y-%m-%d',
+                           validators=[DataRequired()])
 
-    password_check = PasswordField("Confirmez votre mot de passe", validators=[DataRequired(), 
-                                                                               EqualTo('password', message='Les mots de passe doivent correspondre.'),])
+    poids = DecimalField(
+        "Poids",
+        validators=[
+            DataRequired(),
+            NumberRange(min=0, message='Le poids doit être un nombre positif.')
+        ])
+
+    password = PasswordField("Mot de passe",
+                             validators=[DataRequired(),
+                                         Length(max=64)])
+
+    password_check = PasswordField(
+        "Confirmez votre mot de passe",
+        validators=[
+            DataRequired(),
+            EqualTo('password',
+                    message='Les mots de passe doivent correspondre.'),
+        ])
 
     def validate_email(self, field):
-        if Utilisateur.query.filter_by(email=field.data).first():
+        if Utilisateur.get_by_email(self.email.data):
             raise ValidationError("Cet e-mail est déjà utilisé.")
 
     def get_authentificated_user(self):
@@ -68,21 +93,24 @@ class RegisterForm (FlaskForm):
         m.update(self.password.data.encode())
         passwd = m.hexdigest()
         return user if passwd == user.mdp else None
-    
-    def create_user(self) :
+
+    def create_user(self):
         passwd = self.password.data
         m = sha256()
         m.update(passwd.encode())
-        return Utilisateur(
-                 nom_u = self.name.data,
-                 prenom_u = self.first_name.data,
-                 date_de_naissance=self.birth_date.data,
-                 email = self.email.data,
-                 poids = self.poids.data,
-                 mdp=m.hexdigest(),
-                 le_role="adherent")
+        return Utilisateur(nom_u=self.name.data,
+                           prenom_u=self.first_name.data,
+                           date_de_naissance=self.birth_date.data,
+                           email=self.email.data,
+                           poids=self.poids.data,
+                           mdp=m.hexdigest(),
+                           le_role="adherent")
 
-@app.route("/connexion", methods = ("GET", "POST", ))
+
+@app.route("/connexion", methods=(
+    "GET",
+    "POST",
+))
 def login():
     f = LoginForm()
     if f.validate_on_submit():
@@ -90,28 +118,31 @@ def login():
         if the_user:
             login_user(the_user)
             print(the_user.get_id())
-            return redirect(url_for("accueil",adherent_id = the_user.get_id()))
-    return render_template("connexion.html", form = f)
+            return redirect(url_for("accueil", adherent_id=the_user.get_id()))
+    return render_template("connexion.html", form=f)
+
 
 @app.route("/deconnexion")
 def logout():
     logout_user()
     return redirect(url_for("login"))
 
-@app.route("/inscription", methods = ["GET", "POST"])
+
+@app.route("/inscription", methods=["GET", "POST"])
 def register():
     f = RegisterForm()
     if f.validate_on_submit():
         u = f.create_user()
-        if Utilisateur.query.get(u.get_id()) :
-            return render_template("inscription.html", form = f)
-        else :
+        if Utilisateur.query.get(u.get_id()):
+            return render_template("inscription.html", form=f)
+        else:
             db.session.add(u)
             db.session.commit()
             login_user(u)
-            return redirect(url_for("accueil",adherent_id = u.get_id())) 
-    return render_template("inscription.html", form = f)
+            return redirect(url_for("accueil", adherent_id=u.get_id()))
+    return render_template("inscription.html", form=f)
+
 
 @app.route("/")
-def racine ():
+def racine():
     return redirect(url_for("login"))

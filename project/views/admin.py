@@ -130,8 +130,7 @@ class CoursForm(FlaskForm):
 def gerer_poney():
     f = PoneyForm()
     utilisateur = current_user
-    poneys = Poney.query.all()
-    print(poneys)
+    poneys = Poney.get_poneys()
     return render_template("gerer-poney.html",
                            form=f,
                            utilisateur=utilisateur,
@@ -153,7 +152,7 @@ def gerer_moniteur():
 @app.route("/gerer-adherent")
 @login_required
 def gerer_adherent():
-    adherents = Utilisateur.query.filter_by(le_role="adherent").all()
+    adherents = Utilisateur.get_adherents()
     f = UtilisateurForm()
 
     return render_template("gerer-adherent.html",
@@ -183,8 +182,7 @@ def gerer_cours():
     horaires = range(9, 21)  # De 9h à 20h
 
     # Récupération des cours pour la semaine
-    cours_semaine = Cours.query.filter(
-        Cours.date_c.between(semaine_debut, semaine_fin)).all()
+    cours_semaine = Cours.get_cours_semaine(semaine_debut,semaine_fin)
 
     moniteurs = Utilisateur.get_moniteurs()
 
@@ -256,12 +254,11 @@ def add_moniteur():
 @app.route("/delete_moniteur/<int:id_u>", methods=["POST"])
 @login_required
 def drop_moniteur(id_u):
-    print(id_u)
     moniteur = Utilisateur.query.get(id_u)
-    cours_moniteur = Cours.query.filter_by(id_u=id_u).all()
+    cours_moniteur = Cours.get_cours_by_utilisateur(id_u)
 
     for cours in cours_moniteur:
-        for res in Reserver.query.filter_by(id_c=cours.id_c).all():
+        for res in Reserver.get_reservations_by_cours(cours.id_c):
             db.session.delete(res)
         db.session.delete(cours)
 
@@ -299,7 +296,6 @@ def add_cours():
                       duree=f.duree.data,
                       date_c=f.date.data,
                       prix=f.prix.data)
-        print(f.data)
         db.session.add(cours)
         db.session.commit()
         flash("Cours ajouté avec succès.", "success")
@@ -363,10 +359,10 @@ def add_adherent():
 @login_required
 def drop_adherent(id_u):
     adherent = Utilisateur.query.get(id_u)
-    cours_adherent = Reserver.query.filter_by(id_u=id_u).all()
-    cotisation_adherent = Cotiser.query.filter_by(id_u=id_u).all()
+    resevations_adherent = Reserver.get_reservations_by_utilisateur(id_u)
+    cotisation_adherent = Cotiser.get_cotisation_by_utilisateur(id_u)
 
-    for res in cours_adherent:
+    for res in resevations_adherent:
         db.session.delete(res)
 
     for cot in cotisation_adherent:

@@ -18,6 +18,15 @@ class Poney(db.Model):
     reservations = db.relationship('Reserver', back_populates='poney')
 
     @classmethod
+    def get_poneys(cls) :
+        """getter des poneys
+
+        Returns:
+            list(Poney): la liste des poneys
+        """        
+        return cls.query.all()
+
+    @classmethod
     def get_poney_reserves(cls):
         """Permet de récupérer les poneys réservés au moins une fois
 
@@ -138,6 +147,29 @@ class Reserver(db.Model):
         """        
         return cls.query.filter_by(id_c=id_cours).all()
     
+    @classmethod
+    def get_reservations_by_poney(cls, id_poney) :
+        """getter des réservations en fonction du poney
+
+        Args:
+            id_poney (int): l'id du poney
+
+        Returns:
+            list(Reserver): la liste de réservation du poney
+        """        
+        return cls.query.filter_by(id_po=id_poney).all()
+    
+    @classmethod
+    def get_reservations_by_utilisateur(cls, id_u) :
+        """getter des réservations en fonction de l'utilisateur
+
+        Args:
+            id_u (int): l'id de l'utilisateur
+
+        Returns:
+            list(Reserver): la liste de réservation de l'utilisateur
+        """        
+        return cls.query.filter_by(id_u=id_u).all()
             
     @classmethod
     def get_reservation_utilisateur_by_cours(cls, id_utilisateur, id_cours) :
@@ -241,6 +273,27 @@ class Cours(db.Model):
         return cls.query.filter(cls.id_u == adherent_id, 
                                                cls.date_c >= date.today()).order_by(cls.date_c.asc(), 
                                                                                     cls.h_de_debut.asc()).limit(3).all()
+    
+    @classmethod
+    def get_cours_semaine(cls, semaine_debut, semaine_fin) :
+        """Getter des cours compris entre semaine_debut
+        et semaine_fin
+
+        Args:
+            semaine_debut (date): date de début de la semaine
+            semaine_fin (date): date de fin de la semaine
+
+        Returns:
+            list(Cours): la liste des cours
+            entre semaine_debut et semaine_fin
+        """        
+        return cls.query.filter(
+        cls.date_c.between(semaine_debut, semaine_fin)).all()
+    
+    @classmethod
+    def get_cours_by_utilisateur(cls, id_u) :
+        return cls.query.filter_by(id_u=id_u).all()
+
 
 class Cotiser(db.Model):
     """classe de Cotiser
@@ -264,6 +317,10 @@ class Cotiser(db.Model):
         primaryjoin=("and_(Cotiser.annee_debut == Cotisation.annee_debut, "
                      "Cotiser.annee_fin == Cotisation.annee_fin)"),
         foreign_keys=[annee_debut, annee_fin])
+    
+    @classmethod
+    def get_cotisation_by_utilisateur(cls, id_u) :
+        return cls.query.filter_by(id_u=id_u).all()
 
 
 class Cotisation(db.Model):

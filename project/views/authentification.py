@@ -1,3 +1,4 @@
+from datetime import date
 from project import app, db
 from flask import render_template, url_for, redirect, request
 from flask_wtf import FlaskForm
@@ -5,7 +6,7 @@ from flask_login import login_user, current_user, logout_user, login_required
 from hashlib import sha256
 from wtforms import StringField, PasswordField, EmailField, DateField, HiddenField, DecimalField
 from wtforms.validators import DataRequired, EqualTo, Email, Length, Regexp, ValidationError, NumberRange
-from project.models import Utilisateur
+from project.models import Utilisateur, Cotiser
 
 
 class LoginForm(FlaskForm):
@@ -133,10 +134,19 @@ def register():
     f = RegisterForm()
     if f.validate_on_submit():
         u = f.create_user()
+        
         if Utilisateur.query.get(u.get_id()):
             return render_template("inscription.html", form=f)
         else:
             db.session.add(u)
+            db.session.commit()
+            jour = date.today()  # date actuelle
+        annee = jour.year
+        if date(annee, 9, 1) < jour < date(annee, 12, 31):
+            cotisation = Cotiser(id_u =u.get_id(), annee_debut = annee,annee_fin = annee+1, paye=False)
+        else:
+            cotisation = Cotiser(id_u =u.get_id(), annee_debut = annee-1,annee_fin = annee, paye=False)
+            db.session.add(cotisation)
             db.session.commit()
             login_user(u)
             return redirect(url_for("accueil", adherent_id=u.get_id()))

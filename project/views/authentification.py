@@ -76,7 +76,7 @@ class RegisterForm(FlaskForm):
         ])
 
     def validate_email(self, field):
-        if Utilisateur.query.filter_by(email=field.data).first():
+        if Utilisateur.get_by_email(self.email.data):
             raise ValidationError("Cet e-mail est déjà utilisé.")
 
     def get_authentificated_user(self):

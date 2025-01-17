@@ -1,12 +1,14 @@
-from .app import app, db
+"""module sqlalchemy
+"""
 from sqlalchemy.sql import text
+from .app import app, db
 from .models import TriggerManager
 
 
 def execute_sql_file(filename):
     """Exécute un fichier SQL ligne par ligne."""
     with app.app_context():
-        with open(filename, 'r') as file:
+        with open(filename, 'r', encoding='utf-8') as file:
             sql_commands = file.read().split(';')
             for command in sql_commands:
                 if command.strip():  # Ignorer les lignes vides

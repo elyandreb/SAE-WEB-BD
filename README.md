@@ -155,3 +155,10 @@ Pour la gestion de notre travail nous avons utilisé plusieurs outils tels que <
   - Implémentation du front-end et liaison avec le back-end pour les pages admin (gestion poneys, moniteur, adherent, cours)
 
 #### Dan : 
+
+## Fonctionnalités implémentées
+- Système de connexion et d'inscription pour adhérents, moniteurs, poneys
+- Création d'une page d'accueil 
+   - Adherents : Affichage du prochain cours réservé avec toutes les informations utiles sur le cours 
+   - Moniteurs : Affichage des 3 prochains cours avec informations utiles sur les cours ()
+   - Admin :  

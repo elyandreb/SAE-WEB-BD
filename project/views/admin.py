@@ -139,6 +139,7 @@ def gerer_poney():
 
 
 @app.route("/gerer-moniteur")
+@login_required
 def gerer_moniteur():
     f = UtilisateurForm()
     utilisateur = current_user
@@ -162,6 +163,7 @@ def gerer_adherent():
 
 
 @app.route("/gerer-cours")
+@login_required
 def gerer_cours():
     f = CoursForm()
     # Configurer les dates en français
@@ -198,6 +200,7 @@ def gerer_cours():
 
 
 @app.route("/add_poney", methods=["POST"])
+@login_required
 def add_poney():
     f = PoneyForm()
     poney = Poney(nom_po=f.nom_po.data, charge_max=f.charge.data)
@@ -208,6 +211,7 @@ def add_poney():
 
 
 @app.route("/delete_poney/<int:id_po>", methods=["POST"])
+@login_required
 def drop_poney(id_po):
     poney = Poney.query.get(id_po)
     res_poney = Reserver.query.filter_by(id_po=id_po).all()
@@ -220,6 +224,7 @@ def drop_poney(id_po):
 
 
 @app.route("/update_poney/<int:id_po>", methods=["POST"])
+@login_required
 def update_poney(id_po):
     poney = Poney.query.get(id_po)
     f = PoneyForm()
@@ -236,6 +241,7 @@ def update_poney(id_po):
 
 
 @app.route("/add_moniteur", methods=["POST"])
+@login_required
 def add_moniteur():
     f = UtilisateurForm()
     moniteur = f.create_moniteur()
@@ -248,6 +254,7 @@ def add_moniteur():
 
 
 @app.route("/delete_moniteur/<int:id_u>", methods=["POST"])
+@login_required
 def drop_moniteur(id_u):
     print(id_u)
     moniteur = Utilisateur.query.get(id_u)
@@ -266,6 +273,7 @@ def drop_moniteur(id_u):
 
 
 @app.route("/update_moniteur/<int:id_u>", methods=["POST"])
+@login_required
 def update_moniteur(id_u):
     moniteur = Utilisateur.query.get(id_u)
     f = UtilisateurForm()
@@ -281,6 +289,7 @@ def update_moniteur(id_u):
 
 
 @app.route("/add_cours", methods=["POST"])
+@login_required
 def add_cours():
     f = CoursForm()
     try:
@@ -302,6 +311,7 @@ def add_cours():
 
 
 @app.route("/delete_cours/<int:id_c>", methods=["POST"])
+@login_required
 def drop_cours(id_c):
     cours = Cours.query.get(id_c)
     res_cours = Reserver.query.filter_by(id_c=id_c).all()
@@ -314,6 +324,7 @@ def drop_cours(id_c):
 
 
 @app.route("/update_cours/<int:id_c>", methods=["POST"])
+@login_required
 def update_cours(id_c):
     cours = Cours.query.get(id_c)
     f = CoursForm()

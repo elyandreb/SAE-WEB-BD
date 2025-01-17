@@ -28,17 +28,13 @@ def emploi_du_temps():
     # Si l'utilisateur est un moniteur
     if current_user.le_role == "moniteur":
         # Récupérer les cours de la semaine pour le moniteur
-        cours_semaine = (Cours.query.filter(
-            Cours.id_u == current_user.id_u, Cours.date_c >= semaine_debut,
-            Cours.date_c <= semaine_fin).order_by(Cours.date_c,
-                                                  Cours.h_de_debut).all())
+        cours_semaine = Cours.get_cours_semaine(current_user.id_u,semaine_debut, semaine_fin)
 
         # Ajouter les informations des participants pour chaque cours
         for cours in cours_semaine:
-            cours.nb_inscriptions = Reserver.query.filter_by(
-                id_c=cours.id_c).count()
+            cours.nb_inscriptions = Reserver.get_nb_inscription(cours.id_c)
 
-            reservations = Reserver.query.filter_by(id_c=cours.id_c).all()
+            reservations = Reserver.get_reservations_by_cours(cours.id_c)
             participants = []
 
             for reservation in reservations:

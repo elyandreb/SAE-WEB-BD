@@ -293,8 +293,23 @@ class Cours(db.Model):
     @classmethod
     def get_cours_by_utilisateur(cls, id_u) :
         return cls.query.filter_by(id_u=id_u).all()
+    
+    @classmethod
+    def get_cours_semaine(cls, id_u, semaine_debut, semaine_fin) :
+        """Getter des cours compris entre semaine_debut
+        et semaine_fin
 
+        Args:
+            semaine_debut (date): date de début de la semaine
+            semaine_fin (date): date de fin de la semaine
 
+        Returns:
+            list(Cours): la liste des cours
+            entre semaine_debut et semaine_fin
+        """        
+        return cls.query.filter( cls.id_u == id_u,
+        cls.date_c.between(semaine_debut, semaine_fin)).order_by(Cours.date_c,
+                                                  Cours.h_de_debut).all()
 class Cotiser(db.Model):
     """classe de Cotiser
     """

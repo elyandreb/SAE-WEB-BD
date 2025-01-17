@@ -45,9 +45,10 @@ def accueil(adherent_id):
     else:
         # Trouver le prochain cours réservé par cet adhérent
         prochain_cours = Cours.get_prochain_cours(adherent_id)
-        reservation = Reserver.get_reservation_utilisateur_by_cours(current_user.id_u,prochain_cours.id_c)
-        if reservation:
-            prochain_cours.poney_attribue = reservation.poney.nom_po
+        if prochain_cours :
+            reservation = Reserver.get_reservation_utilisateur_by_cours(current_user.id_u,prochain_cours.id_c)
+            if reservation:
+                prochain_cours.poney_attribue = reservation.poney.nom_po
 
         return render_template('adherent_home.html',
                                utilisateur=utilisateur,

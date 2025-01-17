@@ -156,9 +156,134 @@ Pour la gestion de notre travail nous avons utilisé plusieurs outils tels que <
 
 #### Dan : 
 
-## Fonctionnalités implémentées
-- Système de connexion et d'inscription pour adhérents, moniteurs, poneys
-- Création d'une page d'accueil 
-   - Adherents : Affichage du prochain cours réservé avec toutes les informations utiles sur le cours 
-   - Moniteurs : Affichage des 3 prochains cours avec informations utiles sur les cours ()
-   - Admin :  
+# Fonctionnalités implémentées
+## Système de connexion, déconnexion et d'inscription
+- Gestion des rôles : **Adhérents**, **Moniteurs**, **Admins**
+- Authentification sécurisée :
+  - Hashage des mots de passe avec SHA256
+  - Vérification des informations de connexion
+- Inscription pour chaque rôle avec validation des données
+  
+## Création d'une page d'accueil :
+### Adhérents :
+- **Affichage du prochain cours réservé** :
+  - Date, heure, durée
+  - Poney attribué
+  - Moniteur en charge
+- **Bouton d'inscription rapide** :
+  - Redirection vers l'emploi du temps pour s'inscrire à un cours
+
+### Moniteurs :
+- **Affichage des 3 prochains cours** :
+  - Nombre de participants
+  - Date, heure, durée
+  - Liste des participants avec poneys attribués
+
+### Admin :
+- **Dashboard de gestion** :
+  - Boutons pour accéder aux sections : `Gérer poneys`, `Gérer adhérents`, `Gérer moniteurs`, `Gérer cours`
+
+
+## Accès à l'emploi du temps (Calendrier hebdomadaire)
+### Adhérents :
+- Consultation des **cours passés et futurs**
+- Bouton **`i`** pour afficher les informations détaillées d’un cours (date, durée, moniteur, poney attribué)
+- **Inscription** à un cours disponible (si cotisation payée) via un bouton `S'inscrire`
+- **Désinscription** d’un cours réservé via un bouton `Se désinscrire`
+
+### Moniteurs :
+- Consultation des **cours passés et futurs**
+- Bouton **`i`** pour afficher les informations détaillées d’un cours (participants inscrits, poneys attribués, etc.)
+
+## Gestion des profils :
+### Adhérents :
+- **Modification des informations personnelles** :
+  - Nom, prénom, date de naissance, poids, email, mot de passe
+- **Statut de cotisation** : Indication si la cotisation est payée ou non
+
+### Moniteurs :
+- **Modification des informations personnelles** :
+  - Nom, prénom, date de naissance, poids, email, mot de passe
+
+### Admin :
+- **Modification des informations personnelles** :
+  - Nom, prénom, date de naissance, poids, email, mot de passe
+
+## Gestion Admin
+### Gestion des Moniteurs
+- **Liste des moniteurs** :
+  - Affichage de tous les moniteurs avec leur nom et prénom sous forme de cartes.
+- **Ajout d'un moniteur** :
+  - Modal d'ajout avec les champs suivants :
+    - Nom.
+    - Prénom.
+    - Date de naissance.
+    - Email.
+    - Poids.
+    - Mot de passe.
+
+- **Modification d'un moniteur** :
+  - Modal permettant de modifier les informations d'un moniteur existant.
+
+- **Suppression d'un moniteur** :
+  - Possibilité de supprimer un moniteur et les réservations et cours associés.
+
+- **Recherche de moniteurs** :
+  - Barre de recherche pas implémentée.
+
+### Gestion des Adhérents
+- **Liste des adhérents** :
+  - Affichage de tous les adhérents avec leur nom et prénom sous forme de cartes.
+
+- **Ajout d'un adhérent** :
+  - Modal d'ajout avec les champs suivants :
+    - Nom.
+    - Prénom.
+    - Date de naissance.
+    - Email.
+    - Poids.
+    - Mot de passe.
+
+- **Modification d'un adhérent** :
+  - Modal permettant de modifier les informations d'un adhérent existant.
+
+- **Suppression d'un adhérent** :
+  - Suppression d'un adhérent avec les réservations et cotisations associées.
+
+- **Recherche d'adhérents** :
+  - Barre de recherche pas implémentée.
+
+### Gestion des Poneys
+- **Liste des poneys** :
+  - Affichage de tous les poneys avec leur nom et charge maximale.
+
+- **Ajout d'un poney** :
+  - Modal d'ajout avec les champs suivants :
+    - Nom du poney.
+    - Charge maximale.
+
+- **Modification d'un poney** :
+  - Modal permettant de mettre à jour les informations d'un poney.
+
+- **Suppression d'un poney** :
+  - Suppression d'un poney avec les réservations associées.
+
+- **Recherche de poneys** :
+  - Barre de recherche pas implémentée.
+
+### Gestion des Cours
+  - **Affichage sous forme de calendrier défilable**
+  - **Possibilité d'ajouter un cours via un bouton dans chaque case du calendrier**
+  - **Modal de suppression pour supprimer un cours et toutes les réservations associés**
+  - **Modal de modification du cours avec toutes les informations du cours modifiables**
+
+## Fonctionnalités supplémentaires 
+-  **Messages flash pour informer l'utilisateur des actions réussies ou des erreurs (ex : ajout, suppression, etc.)**
+
+# Fonctionnalités rajoutées après la séance
+- **Ajouts de modals d'informations pour les cours**
+- **Ajouts de messages flash pour informer l'utilisateur**
+- **Affichage des cours passés et suppression de possibilité de s'inscrire aux cours terminés**
+- **Ajouts de nouvelles informations concernant les cours réservés d'un adherent (poney attribué)**
+- **Ajouts de nouvelles informations concernant les cours d'un moniteur (liste des adhérents inscrits)**
+- **Toutes les fonctionnalités pour la gestion des poneys, moniteurs, adherents et cours implémentés (ajout, suppression, modification) avec un affichage** 
